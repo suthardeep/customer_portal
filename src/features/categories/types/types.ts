@@ -15,3 +15,4 @@ export interface Category {
 }
 
 export type CategoryTreeResponse = BaseApiResponse<PaginatedResponse<Category>>;
+export type CategoryResponse = BaseApiResponse<Category>;

@@ -7,10 +7,7 @@ import FallbackView from "@/components/empty-states/FallbackView";
 
 export const Route = createFileRoute("/_protected/categories/")({
   loader: async ({ context }) => {
-    const result = await context.queryClient.ensureQueryData(
-      categoryQueries.tree(),
-    );
-    return result;
+    await context.queryClient.ensureQueryData(categoryQueries.tree());
   },
   pendingComponent: CategoryListSkeleton,
   errorComponent: ({ error }) => (
@@ -27,7 +24,7 @@ export const Route = createFileRoute("/_protected/categories/")({
 
 function CategoriesIndexComponent() {
   const { data: categoryResponse } = useSuspenseQuery(categoryQueries.tree());
-  const categories = categoryResponse.data;
+  const categories = categoryResponse?.data ?? [];
 
   return (
     <div className="container mx-auto px-4 py-8">

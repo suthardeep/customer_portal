@@ -85,7 +85,7 @@ React 19 + TypeScript e-commerce app built with Vite, TanStack Start (file-based
 ### Architecture
 
 - **No direct fetch calls** - use TanStack Query only
-- Services: Feature-level `[feature]Service.ts` using createServerFn
+- Services: Feature-level `[feature]Service.ts` using createServerFn ⚠️ **MUST be top-level exports, never wrap in objects**. Use descriptive function names (e.g., `getProductById`, `createOrder`)
 - Queries: Use query options pattern in `[feature]Queries.ts` with feature level exported object and all queries inside that object.
 - Query keys: Define in `[feature]QueryFactory.ts`
 - Mutations: Separate `[feature]Mutations.ts` file consisting of hooks

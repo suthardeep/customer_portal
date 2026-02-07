@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as ProtectedCategoriesIndexRouteImport } from './routes/_protected/categories/index'
+import { Route as ProtectedCategoriesCategoryIdRouteImport } from './routes/_protected/categories/$categoryId'
 
 const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
   id: '/_protected/',
@@ -23,30 +24,44 @@ const ProtectedCategoriesIndexRoute =
     path: '/categories/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ProtectedCategoriesCategoryIdRoute =
+  ProtectedCategoriesCategoryIdRouteImport.update({
+    id: '/_protected/categories/$categoryId',
+    path: '/categories/$categoryId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
+  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
   '/categories/': typeof ProtectedCategoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
+  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
   '/categories': typeof ProtectedCategoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
   '/_protected/categories/': typeof ProtectedCategoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/categories/'
+  fullPaths: '/' | '/categories/$categoryId' | '/categories/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/categories'
-  id: '__root__' | '/_protected/' | '/_protected/categories/'
+  to: '/' | '/categories/$categoryId' | '/categories'
+  id:
+    | '__root__'
+    | '/_protected/'
+    | '/_protected/categories/$categoryId'
+    | '/_protected/categories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedCategoriesCategoryIdRoute: typeof ProtectedCategoriesCategoryIdRoute
   ProtectedCategoriesIndexRoute: typeof ProtectedCategoriesIndexRoute
 }
 
@@ -66,11 +81,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCategoriesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/categories/$categoryId': {
+      id: '/_protected/categories/$categoryId'
+      path: '/categories/$categoryId'
+      fullPath: '/categories/$categoryId'
+      preLoaderRoute: typeof ProtectedCategoriesCategoryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedCategoriesCategoryIdRoute: ProtectedCategoriesCategoryIdRoute,
   ProtectedCategoriesIndexRoute: ProtectedCategoriesIndexRoute,
 }
 export const routeTree = rootRouteImport
