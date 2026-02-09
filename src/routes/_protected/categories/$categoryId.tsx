@@ -1,11 +1,15 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
-import { categoryQueries } from '@/features/categories/categoryQueries';
-import { CategoryDetailSkeleton } from '@/features/categories/components/CategoryDetailSkeleton';
-import { CategoryGrid } from '@/features/categories/components/CategoryGrid';
-import { DEFAULT_CATEGORY_IMAGE } from '@/features/categories/constants';
+import HorizontalScrollSection from "@/components/compound/HorizontalScrollSection";
+import QueryStateHandler from "@/components/compound/QueryStateHandler";
+import { categoryQueries } from "@/features/categories/categoryQueries";
+import { CategoryCard } from "@/features/categories/components/CategoryCard";
+import { CategoryDetailSkeleton } from "@/features/categories/components/skeletons/CategoryDetailSkeleton";
+import { ProductCard } from "@/features/products/components/ProductCard";
+import { ProductCardSkeleton } from "@/features/products/components/ProductCardSkeleton";
+import { productQueries } from "@/features/products/productQueries";
+import { useQueries, useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_protected/categories/$categoryId')({
+export const Route = createFileRoute("/_protected/categories/$categoryId")({
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
       categoryQueries.detail(params.categoryId),
@@ -13,40 +17,72 @@ export const Route = createFileRoute('/_protected/categories/$categoryId')({
   },
   pendingComponent: CategoryDetailSkeleton,
   component: CategoryDetailComponent,
+  errorComponent: (err) => <div>Err - {err.error.message} </div>,
 });
 
 function CategoryDetailComponent() {
   const { categoryId } = Route.useParams();
 
-  const { data: category } = useSuspenseQuery(
-    categoryQueries.detail(categoryId),
-  );
+  const { data } = useSuspenseQuery(categoryQueries.detail(categoryId));
+  const { subCategories } = data;
+
+  const productQueriesResults = useQueries({
+    queries: subCategories.map((subcategory) =>
+      productQueries.list({
+        categoryId: subcategory.id,
+        pageSize: PRODUCTS_PER_SUBCATEGORY,
+        currentPage: 1,
+      }),
+    ),
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <nav className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        <span>{category.fullPath.split('/').join(' / ')}</span>
-      </nav>
-
-      <h1 className="mb-8">{category.name}</h1>
-
-      {category.image && (
-        <div className="mb-8">
-          <img
-            src={category.image || DEFAULT_CATEGORY_IMAGE}
-            alt={category.name}
-            className="w-full max-w-4xl rounded-lg object-cover"
-            style={{ aspectRatio: '21/9' }}
-          />
+      {/* Subcategory cards */}
+      {subCategories.length > 0 && (
+        <div className="mb-8 flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+          {subCategories?.map((category) => (
+            <CategoryCard key={category?.id} category={category} />
+          ))}
         </div>
       )}
 
-      {category.children.length > 0 && (
-        <div>
-          <h2 className="mb-6">Subcategories</h2>
-          <CategoryGrid categories={category.children} />
-        </div>
-      )}
+      {subCategories.map((subcategory, index) => {
+        const query = productQueriesResults[index];
+        const hasNoProducts = query?.data?.meta?.totalRows === 0;
+        const hasMultiplePages = (query?.data?.meta?.totalPages ?? 0) > 1;
+        if (hasNoProducts) return;
+
+        return (
+          <HorizontalScrollSection
+            key={subcategory.id}
+            title={subcategory.name}
+            seeAllLink={`/categories/${subcategory.id}/products`}
+            className="mb-8"
+            hideSeeAll={!hasMultiplePages}
+          >
+            <QueryStateHandler
+              query={query}
+              emptyTitle="No products here"
+              loadingSkeleton={<ProductCardSkeleton />}
+              isEmpty={query?.data?.meta?.totalRows === 0}
+              fallbackIcon="PackageRemove"
+            >
+              <>
+                {query?.data?.data.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    className="w-48 shrink-0"
+                  />
+                ))}
+              </>
+            </QueryStateHandler>
+          </HorizontalScrollSection>
+        );
+      })}
     </div>
   );
 }
+
+const PRODUCTS_PER_SUBCATEGORY = 10;

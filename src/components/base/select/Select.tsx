@@ -1,5 +1,10 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  Tick02Icon,
+  ArrowDown01Icon,
+  ArrowUp01Icon,
+} from "@hugeicons/core-free-icons";
 import { useId } from "react";
 import { cn } from "@/utils/cssHelpers";
 import type { SelectProps } from "./select.types";
@@ -127,7 +132,8 @@ export function Select({
         >
           <SelectPrimitive.Value placeholder={placeholder} />
           <SelectPrimitive.Icon asChild>
-            <ChevronDown
+            <HugeiconsIcon
+              icon={ArrowDown01Icon}
               className="transition-transform duration-150 data-[state=open]:rotate-180"
               size={iconSizeMap[size]}
             />
@@ -143,7 +149,7 @@ export function Select({
           >
             {/* Scroll Up Button */}
             <SelectPrimitive.ScrollUpButton className={scrollButtonStyles}>
-              <ChevronUp size={16} />
+              <HugeiconsIcon icon={ArrowUp01Icon} size={16} />
             </SelectPrimitive.ScrollUpButton>
 
             {/* Viewport */}
@@ -159,7 +165,7 @@ export function Select({
                     {option.label}
                   </SelectPrimitive.ItemText>
                   <SelectPrimitive.ItemIndicator>
-                    <Check size={16} />
+                    <HugeiconsIcon icon={Tick02Icon} size={16} />
                   </SelectPrimitive.ItemIndicator>
                 </SelectPrimitive.Item>
               ))}
@@ -167,7 +173,7 @@ export function Select({
 
             {/* Scroll Down Button */}
             <SelectPrimitive.ScrollDownButton className={scrollButtonStyles}>
-              <ChevronDown size={16} />
+              <HugeiconsIcon icon={ArrowDown01Icon} size={16} />
             </SelectPrimitive.ScrollDownButton>
           </SelectPrimitive.Content>
         </SelectPrimitive.Portal>

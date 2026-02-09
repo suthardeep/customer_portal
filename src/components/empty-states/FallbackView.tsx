@@ -1,10 +1,14 @@
 import { cn } from "@/utils/cssHelpers";
-import * as LucideIcons from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  iconRegistry,
+  type IconName,
+} from "@/components/base/icon/iconRegistry";
 import type { ReactNode } from "react";
 
 export interface FallbackViewProps {
   title: string;
-  icon?: keyof typeof LucideIcons;
+  icon?: IconName;
   footer?: ReactNode;
   classname?: string;
   version?: "default" | "compact";
@@ -13,7 +17,7 @@ export interface FallbackViewProps {
 const FallbackView: React.FC<FallbackViewProps> = (props) => {
   const { title, footer, icon, classname, version = "default" } = props;
 
-  const Icon = icon ? (LucideIcons[icon] as LucideIcons.LucideIcon) : null;
+  const iconData = icon ? iconRegistry[icon] : null;
 
   const isCompact = version === "compact";
 
@@ -27,8 +31,15 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
         classname,
       )}
     >
-      {Icon && <Icon size={isCompact ? 20 : 48} strokeWidth={1.5} />}
-      <p className={cn(!isCompact && "text-center")}>
+      {iconData && (
+        <HugeiconsIcon
+          icon={iconData}
+          size={isCompact ? 20 : 48}
+          strokeWidth={1.5}
+          className="text-n-800"
+        />
+      )}
+      <p className={cn(!isCompact && "text-center text-n-800 font-medium")}>
         {title || "No data found"}
       </p>
       {footer && footer}

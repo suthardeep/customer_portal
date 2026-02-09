@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
-import * as LucideIcons from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { iconRegistry } from "@/components/base/icon/iconRegistry";
 import { cn } from "@/utils/cssHelpers";
 import type {
   ButtonProps,
@@ -29,13 +30,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    // Get icon components
-    const StartIcon = startIcon
-      ? (LucideIcons[startIcon] as LucideIcons.LucideIcon)
-      : null;
-    const EndIcon = endIcon
-      ? (LucideIcons[endIcon] as LucideIcons.LucideIcon)
-      : null;
+    // Get icon data from registry
+    const startIconData = startIcon ? iconRegistry[startIcon] : null;
+    const endIconData = endIcon ? iconRegistry[endIcon] : null;
 
     // Compose button classes
     const buttonClasses = cn(
@@ -69,8 +66,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 contentHeights[size],
               )}
             >
-              {StartIcon && (
-                <StartIcon
+              {startIconData && (
+                <HugeiconsIcon
+                  icon={startIconData}
                   className={cn(
                     "mr-1.5",
                     variant === "filled" &&
@@ -82,8 +80,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 />
               )}
               {children}
-              {EndIcon && (
-                <EndIcon
+              {endIconData && (
+                <HugeiconsIcon
+                  icon={endIconData}
                   className={cn("ml-1.5", endIconClassname)}
                   size={iconSizes[size]}
                 />

@@ -9,69 +9,140 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
+import { Route as AuthVerifyOtpRouteImport } from './routes/_auth/verify-otp'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as ProtectedCategoriesIndexRouteImport } from './routes/_protected/categories/index'
 import { Route as ProtectedCategoriesCategoryIdRouteImport } from './routes/_protected/categories/$categoryId'
+import { Route as ProtectedCategoriesCategoryIdProductsRouteImport } from './routes/_protected/categories/$categoryId.products'
 
+const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
-  id: '/_protected/',
+  id: '/',
   path: '/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+const AuthVerifyOtpRoute = AuthVerifyOtpRouteImport.update({
+  id: '/_auth/verify-otp',
+  path: '/verify-otp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedCategoriesIndexRoute =
   ProtectedCategoriesIndexRouteImport.update({
-    id: '/_protected/categories/',
+    id: '/categories/',
     path: '/categories/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 const ProtectedCategoriesCategoryIdRoute =
   ProtectedCategoriesCategoryIdRouteImport.update({
-    id: '/_protected/categories/$categoryId',
+    id: '/categories/$categoryId',
     path: '/categories/$categoryId',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+const ProtectedCategoriesCategoryIdProductsRoute =
+  ProtectedCategoriesCategoryIdProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => ProtectedCategoriesCategoryIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
-  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
+  '/login': typeof AuthLoginRoute
+  '/verify-otp': typeof AuthVerifyOtpRoute
+  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/categories/': typeof ProtectedCategoriesIndexRoute
+  '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
 }
 export interface FileRoutesByTo {
+  '/login': typeof AuthLoginRoute
+  '/verify-otp': typeof AuthVerifyOtpRoute
   '/': typeof ProtectedIndexRoute
-  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
+  '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/categories': typeof ProtectedCategoriesIndexRoute
+  '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_protected': typeof ProtectedRouteRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/verify-otp': typeof AuthVerifyOtpRoute
   '/_protected/': typeof ProtectedIndexRoute
-  '/_protected/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRoute
+  '/_protected/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/_protected/categories/': typeof ProtectedCategoriesIndexRoute
+  '/_protected/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/categories/$categoryId' | '/categories/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/verify-otp'
+    | '/categories/$categoryId'
+    | '/categories/'
+    | '/categories/$categoryId/products'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/categories/$categoryId' | '/categories'
+  to:
+    | '/login'
+    | '/verify-otp'
+    | '/'
+    | '/categories/$categoryId'
+    | '/categories'
+    | '/categories/$categoryId/products'
   id:
     | '__root__'
+    | '/_protected'
+    | '/_auth/login'
+    | '/_auth/verify-otp'
     | '/_protected/'
     | '/_protected/categories/$categoryId'
     | '/_protected/categories/'
+    | '/_protected/categories/$categoryId/products'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ProtectedIndexRoute: typeof ProtectedIndexRoute
-  ProtectedCategoriesCategoryIdRoute: typeof ProtectedCategoriesCategoryIdRoute
-  ProtectedCategoriesIndexRoute: typeof ProtectedCategoriesIndexRoute
+  ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthVerifyOtpRoute: typeof AuthVerifyOtpRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/': {
       id: '/_protected/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof ProtectedIndexRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
+    '/_auth/verify-otp': {
+      id: '/_auth/verify-otp'
+      path: '/verify-otp'
+      fullPath: '/verify-otp'
+      preLoaderRoute: typeof AuthVerifyOtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/categories/': {
@@ -79,22 +150,61 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories/'
       preLoaderRoute: typeof ProtectedCategoriesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProtectedRouteRoute
     }
     '/_protected/categories/$categoryId': {
       id: '/_protected/categories/$categoryId'
       path: '/categories/$categoryId'
       fullPath: '/categories/$categoryId'
       preLoaderRoute: typeof ProtectedCategoriesCategoryIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
+    '/_protected/categories/$categoryId/products': {
+      id: '/_protected/categories/$categoryId/products'
+      path: '/products'
+      fullPath: '/categories/$categoryId/products'
+      preLoaderRoute: typeof ProtectedCategoriesCategoryIdProductsRouteImport
+      parentRoute: typeof ProtectedCategoriesCategoryIdRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
+interface ProtectedCategoriesCategoryIdRouteChildren {
+  ProtectedCategoriesCategoryIdProductsRoute: typeof ProtectedCategoriesCategoryIdProductsRoute
+}
+
+const ProtectedCategoriesCategoryIdRouteChildren: ProtectedCategoriesCategoryIdRouteChildren =
+  {
+    ProtectedCategoriesCategoryIdProductsRoute:
+      ProtectedCategoriesCategoryIdProductsRoute,
+  }
+
+const ProtectedCategoriesCategoryIdRouteWithChildren =
+  ProtectedCategoriesCategoryIdRoute._addFileChildren(
+    ProtectedCategoriesCategoryIdRouteChildren,
+  )
+
+interface ProtectedRouteRouteChildren {
+  ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedCategoriesCategoryIdRoute: typeof ProtectedCategoriesCategoryIdRouteWithChildren
+  ProtectedCategoriesIndexRoute: typeof ProtectedCategoriesIndexRoute
+}
+
+const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
-  ProtectedCategoriesCategoryIdRoute: ProtectedCategoriesCategoryIdRoute,
+  ProtectedCategoriesCategoryIdRoute:
+    ProtectedCategoriesCategoryIdRouteWithChildren,
   ProtectedCategoriesIndexRoute: ProtectedCategoriesIndexRoute,
+}
+
+const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
+  ProtectedRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthVerifyOtpRoute: AuthVerifyOtpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

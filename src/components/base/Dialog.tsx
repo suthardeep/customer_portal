@@ -1,9 +1,11 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { cn } from "@/utils/cssHelpers";
-import { X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import type { ReactNode } from "react";
 import { Button } from "./button/Button";
 import type { ButtonProps } from "./button/button.types";
+import { IconButton } from "./icon-button/IconButton";
 
 const Dialog: React.FC<DialogProps> = (props) => {
   const {
@@ -35,14 +37,14 @@ const Dialog: React.FC<DialogProps> = (props) => {
           )}
         </div>
         {trialingTitleComponent}
-        <button
-          type="button"
-          className="cursor-pointer text-n-700 hover:text-n-900"
+        <IconButton
+          icon="X"
           aria-label="Close dialog"
           onClick={onClose}
-        >
-          <X size={18} />
-        </button>
+          size="sm"
+          variant="ghost"
+          color="neutral"
+        />
       </div>
 
       <div className="flex-1 overflow-hidden px-5 py-4">

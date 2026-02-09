@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
-import * as LucideIcons from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { iconRegistry } from "@/components/base/icon/iconRegistry";
 import { cn } from "@/utils/cssHelpers";
 import type {
   IconButtonProps,
@@ -25,7 +26,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref,
   ) => {
-    const IconComponent = LucideIcons[icon] as LucideIcons.LucideIcon;
+    const iconData = iconRegistry[icon];
 
     const buttonClasses = cn(
       baseStyles,
@@ -58,7 +59,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
                 contentHeights[size],
               )}
             >
-              <IconComponent size={iconSizes[size]} />
+              <HugeiconsIcon icon={iconData} size={iconSizes[size]} />
             </div>
 
             {/* Loading spinner */}
@@ -147,7 +148,7 @@ const variantStyles: Record<
     secondary:
       "text-s-600 hover:bg-s-50 active:bg-s-100 focus-visible:ring-s-500 disabled:text-s-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     neutral:
-      "text-n-700 hover:bg-n-100 active:bg-n-200 focus-visible:ring-n-500 disabled:text-n-400 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "text-n-800 hover:bg-n-300 active:bg-n-200 focus-visible:ring-n-500 disabled:text-n-400 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     success:
       "text-success-600 hover:bg-success-50 active:bg-success-100 focus-visible:ring-success-500 disabled:text-success-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     danger:

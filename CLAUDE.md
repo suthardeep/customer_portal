@@ -185,7 +185,7 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 
 ### Skeleton Rules
 
-- Always create Skeletons in a separate file: `[Component]Skeleton.tsx`
+- Always create Skeletons using shimmer class and in a separate file: `[Component]Skeleton.tsx` under folder components>skeletons
 - Skeletons must match the actual UI layout exactly
 - Store in feature's components folder: `/features/[feature]/components/[Component]Skeleton.tsx`
 - Route-level: Import and use in `pendingComponent`
@@ -205,12 +205,9 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 - Use `toast` from toast component for mutation success
 - Use `showErrorToasts` in mutation `onError`
 
----
+### General
 
-### Currency
-
-- Always use <CurrencyRenderer /> component for displaying any currency/price data
-- Never format currency manually or use raw numbers
+- Always use `<Image />` instead of `<img>` tags
 
 ---
 
@@ -264,7 +261,7 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 ## Utilities
 
 - Enums: Create object mappers (e.g., `getStatusLabel`)
-- Use formatters for: dates, phone numbers, currency
+- Use formatters for: dates, phone numbers, formatCurrency util for currency
 
 ---
 

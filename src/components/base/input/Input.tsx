@@ -1,5 +1,6 @@
 import { forwardRef, useId, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ViewIcon, ViewOffIcon } from "@hugeicons/core-free-icons";
 import { cn } from "@/utils/cssHelpers";
 import type { InputProps, InputSize } from "./input.types";
 
@@ -123,13 +124,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <EyeOff size={iconSizes[size]} />
+                    <HugeiconsIcon icon={ViewOffIcon} size={iconSizes[size]} />
                   ) : (
-                    <Eye size={iconSizes[size]} />
+                    <HugeiconsIcon icon={ViewIcon} size={iconSizes[size]} />
                   )}
                 </button>
               ) : (
-                <span className="pointer-events-auto text-n-700">{rightElement}</span>
+                <span className="pointer-events-auto text-n-700">
+                  {rightElement}
+                </span>
               )}
             </div>
           )}
@@ -156,17 +159,17 @@ Input.displayName = "Input";
 
 // Base input styles
 const baseInputStyles =
-  "w-full rounded-[10px] border bg-n-50 text-n-925 placeholder:text-n-600 " +
+  "w-full rounded-xl border bg-n-50 text-n-925 placeholder:text-n-600 " +
   "transition-[border-color,box-shadow] duration-150 ease-out " +
   "focus:outline-none focus:ring-2 focus:ring-offset-0 " +
   "disabled:cursor-not-allowed disabled:bg-n-200 disabled:text-n-700";
 
 // Size styles
 const sizeStyles: Record<InputSize, string> = {
-  xs: "px-2 py-1 text-xs h-7",
-  sm: "px-2.5 py-1.5 text-sm h-8",
-  md: "px-3 py-2 text-base h-10",
-  lg: "px-4 py-2.5 text-lg h-12",
+  xs: "px-2 py-1 text-xs ",
+  sm: "px-2.5 py-1.5 text-sm",
+  md: "px-3 py-2.5 text-base",
+  lg: "px-4 py-2.5 text-lg",
 };
 
 // Left padding adjustments for left element
@@ -189,7 +192,7 @@ const rightPaddingStyles: Record<InputSize, string> = {
 const iconContainerStyles: Record<InputSize, string> = {
   xs: "h-7",
   sm: "h-8",
-  md: "h-10",
+  md: "h-11",
   lg: "h-12",
 };
 
@@ -232,7 +235,7 @@ const helperSizeStyles: Record<InputSize, string> = {
 
 // State-based border/ring styles
 const stateStyles = {
-  default: "border-n-400 focus:border-p-500 focus:ring-p-500/20",
+  default: "border-n-500 focus:border-n-600 focus:ring-n-500/20",
   error: "border-danger-500 focus:border-danger-500 focus:ring-danger-500/20",
   disabled: "border-n-300",
 };

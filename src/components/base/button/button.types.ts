@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import type * as LucideIcons from "lucide-react";
+import type { IconName } from "@/components/base/icon/iconRegistry";
 
 export type ButtonVariant = "filled" | "outline" | "ghost" | "link";
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
@@ -16,8 +16,8 @@ export interface ButtonProps
   className?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  startIcon?: keyof typeof LucideIcons;
-  endIcon?: keyof typeof LucideIcons;
+  startIcon?: IconName;
+  endIcon?: IconName;
   isLoading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;

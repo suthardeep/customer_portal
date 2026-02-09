@@ -1,0 +1,56 @@
+import type { CategoryInfo, ProductStatus } from "./index";
+
+export interface Product {
+  id: string;
+  name: string;
+  categoryId: string;
+  externalSku: string;
+  hasVariants: boolean;
+  brandName?: string;
+  brandId?: string;
+  brandLogoUrl?: string;
+  categoryPath?: string[];
+  categories?: CategoryInfo[];
+  customFields?: Array<{
+    groupName: string;
+    fields: Record<string, string>;
+  }>;
+  vendorId?: string;
+  createdByAdminId?: string;
+  createdBy: "vendor" | "admin";
+  description?: string;
+  bulletPoints?: string[];
+  mediaUrls?: string[];
+  modelNumber?: string;
+  modelName?: string;
+  isFragile: boolean;
+  manufacturerName?: string;
+  packerDetails?: string;
+  importerDetails?: string;
+  tags?: string[];
+  hsnCode?: string;
+  gstRate?: number;
+  cessCode?: string;
+  countryOfOrigin?: string;
+  sizeChartId?: string;
+  priceDisplayAttribute?: string;
+  imageDisplayAttribute?: string;
+  minPrice: number;
+  maxPrice: number;
+  avgRating: number;
+  reviewCount: number;
+  viewCount: number;
+  soldCount: number;
+  approvedAt?: string;
+  approvedBy?: string;
+  rejectedAt?: string;
+  rejectedBy?: string;
+  rejectionReason?: string;
+  rejectedFields?: Array<{ field: string; reason: string }>;
+  adminNotes?: string;
+  status: ProductStatus;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  variants: string;
+}

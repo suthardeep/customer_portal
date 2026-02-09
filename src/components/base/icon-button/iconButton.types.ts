@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
-import type * as LucideIcons from "lucide-react";
+import type { IconName } from "@/components/base/icon/iconRegistry";
 
 export type IconButtonVariant = "filled" | "outline" | "ghost";
 export type IconButtonSize = "xs" | "sm" | "md" | "lg";
@@ -12,8 +12,8 @@ export type IconButtonColor =
 
 export interface IconButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
-  /** Lucide icon name (e.g., "Plus", "X", "ChevronDown") */
-  icon: keyof typeof LucideIcons;
+  /** Icon name from iconRegistry (e.g., "Search", "X", "ChevronDown") */
+  icon: IconName;
   /** Required for accessibility - describes the button action */
   "aria-label": string;
   /** Visual style variant */

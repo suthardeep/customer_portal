@@ -2,9 +2,11 @@
 @import "./theme.css";
 @import "./components.css";
 
+@import '@fontsource-variable/plus-jakarta-sans';
+
 body {
   @apply m-0;
-  font-family:
+  font-family: 'Plus Jakarta Sans Variable',
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,4 +22,15 @@ code {
   .fall {
     @apply flex items-center justify-center;
   }
+}
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

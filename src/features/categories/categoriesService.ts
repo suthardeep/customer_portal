@@ -1,20 +1,21 @@
-import { createServerFn } from '@tanstack/react-start';
-import { getApiBaseUrl, ApiError } from '@/utils/api';
-import { objectToSearchParams } from '@/utils/apiHelpers';
-import type { PaginationQueryParams } from '@/types/general.types';
-import type { CategoryTreeResponse, CategoryResponse } from './types/types';
+import { createServerFn } from "@tanstack/react-start";
+import { getApiBaseUrl, ApiError } from "@/utils/api";
+import { objectToSearchParams } from "@/utils/apiHelpers";
+import type { PaginationQueryParams } from "@/types/general.types";
+import type { CategoryTreeResponse, CategoryDetailResponse } from "./types/types";
+import { getCookies } from "@tanstack/react-start/server";
 
-export const getCategoriesTree = createServerFn({ method: 'GET' })
+export const getCategoriesTree = createServerFn({ method: "GET" })
   .inputValidator((data?: PaginationQueryParams) => data)
   .handler(async ({ data }): Promise<CategoryTreeResponse> => {
     const apiBaseUrl = getApiBaseUrl();
     const queryString = objectToSearchParams(data);
-    const url = `${apiBaseUrl}/v1/categories/public/tree${queryString ? `?${queryString}` : ''}`;
+    const url = `${apiBaseUrl}/v1/categories/public/tree${queryString ? `?${queryString}` : ""}`;
 
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -28,16 +29,18 @@ export const getCategoriesTree = createServerFn({ method: 'GET' })
     return response.json();
   });
 
-export const getCategoryById = createServerFn({ method: 'GET' })
+export const getCategoryById = createServerFn({ method: "GET" })
   .inputValidator((id: string) => id)
-  .handler(async ({ data: id }): Promise<CategoryResponse> => {
+  .handler(async ({ data: id }): Promise<CategoryDetailResponse> => {
     const apiBaseUrl = getApiBaseUrl();
     const url = `${apiBaseUrl}/v1/categories/${id}`;
-
+     const { access_token } = getCookies();
+    
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
       },
     });
 
