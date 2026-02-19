@@ -1,38 +1,40 @@
-import { Chip } from "@/components/base/chip/Chip";
+import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
+import { Icon } from "@/components/base/icon";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { Image } from "@/components/base/Image";
 import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { FavouriteIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import type { Product } from "../types";
+import { Link } from "@tanstack/react-router";
 
 interface ProductCardProps {
   product: Product;
-  isWishlisted?: boolean;
-  onWishlistToggle?: (productId: string) => void;
-  onAddToCart?: (productId: string) => void;
+  onAddToCartSuccess?: (productId: string) => void;
   className?: string;
+  disableDetailPageRedirection?: boolean;
 }
 
 export function ProductCard({
   product,
-  isWishlisted = false,
-  onWishlistToggle,
-  onAddToCart,
+  onAddToCartSuccess,
   className,
+  disableDetailPageRedirection = false,
 }: ProductCardProps) {
   const imageUrl = product.mediaUrls?.[0];
 
-  const handleWishlistClick = () => {
-    onWishlistToggle?.(product.id);
+  const isWishlisted = false;
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
   };
 
-  const handleAddToCartClick = () => {
-    onAddToCart?.(product.id);
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onAddToCartSuccess) {
+      onAddToCartSuccess?.(product.id);
+    }
   };
 
-  return (
+  const content = () => (
     <div
       className={cn(
         "flex flex-col overflow-hidden rounded-lg border border-n-300 bg-white",
@@ -45,21 +47,25 @@ export function ProductCard({
         <Image src={imageUrl ?? ""} alt={product.name} />
 
         {/* Wishlist Button */}
+
         <button
           type="button"
           onClick={handleWishlistClick}
           aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           className={cn(
-            "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full",
-            "bg-white/80 backdrop-blur-sm transition-colors hover:bg-white",
+            "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full group",
+            "backdrop-blur-xl transition-colors bg-black/30 hover:bg-red-50",
           )}
         >
-          <HugeiconsIcon
-            icon={FavouriteIcon}
-            size={18}
+          <Icon
+            name="Heart"
+            size="md"
+            strokeWidth={2.5}
             className={cn(
-              "transition-colors",
-              isWishlisted ? "fill-danger-500 text-danger-500" : "text-n-700",
+              "transition-all duration-200",
+              isWishlisted
+                ? "fill-danger-500 text-danger-500"
+                : "text-white group-hover:text-danger-500 group-hover:scale-110",
             )}
           />
         </button>
@@ -80,19 +86,7 @@ export function ProductCard({
       <div className="flex flex-col gap-1 px-3 pt-1 pb-2">
         {/* Earn Points Chip */}
         <div>
-          <Chip
-            color="secondary"
-            size="sm"
-            className="inline-flex items-center gap-1.5"
-          >
-            <Image
-              src="/aavak-coin-v1.png"
-              alt="product-aavak-coin"
-              eager
-              className="size-4 object-contain"
-            />
-            <span className="text-nowrap text-p-900">Earn 100</span>
-          </Chip>
+          <AavakCoinsChip coins={100} />
         </div>
 
         {/* Brand Name */}
@@ -117,5 +111,15 @@ export function ProductCard({
         <span className="text-n-700">Delivery by Mon, 10 Feb</span>
       </div>
     </div>
+  );
+
+  if (disableDetailPageRedirection) {
+    return content();
+  }
+
+  return (
+    <Link to="/product/product/$productId" params={{ productId: product?.id }}>
+      {content()}
+    </Link>
   );
 }

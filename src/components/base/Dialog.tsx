@@ -1,7 +1,5 @@
-import * as RadixDialog from "@radix-ui/react-dialog";
 import { cn } from "@/utils/cssHelpers";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import * as RadixDialog from "@radix-ui/react-dialog";
 import type { ReactNode } from "react";
 import { Button } from "./button/Button";
 import type { ButtonProps } from "./button/button.types";
@@ -112,7 +110,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
         <RadixDialog.Content
           className={cn(
             "fixed left-1/2 top-1/2 z-101",
-            "flex flex-col rounded-2xl border bg-n-50 shadow-xl/5",
+            "flex flex-col rounded-2xl border bg-n-50 shadow-xl/5 overflow-hidden",
             "border-n-300",
             "data-[state=open]:animate-content-show data-[state=closed]:animate-content-hide",
             SIZE_MAP[size],

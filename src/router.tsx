@@ -13,6 +13,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    defaultStaleTime: 5 * 60 * 1000,
     context: {
       ...rqContext,
     },

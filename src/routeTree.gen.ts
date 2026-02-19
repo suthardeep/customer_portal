@@ -15,6 +15,7 @@ import { Route as AuthVerifyOtpRouteImport } from './routes/_auth/verify-otp'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as ProtectedCategoriesIndexRouteImport } from './routes/_protected/categories/index'
 import { Route as ProtectedCategoriesCategoryIdRouteImport } from './routes/_protected/categories/$categoryId'
+import { Route as ProtectedProductProductProductIdRouteImport } from './routes/_protected/product/product.$productId'
 import { Route as ProtectedCategoriesCategoryIdProductsRouteImport } from './routes/_protected/categories/$categoryId.products'
 
 const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
@@ -48,6 +49,12 @@ const ProtectedCategoriesCategoryIdRoute =
     path: '/categories/$categoryId',
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
+const ProtectedProductProductProductIdRoute =
+  ProtectedProductProductProductIdRouteImport.update({
+    id: '/product/product/$productId',
+    path: '/product/product/$productId',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
 const ProtectedCategoriesCategoryIdProductsRoute =
   ProtectedCategoriesCategoryIdProductsRouteImport.update({
     id: '/products',
@@ -62,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/categories/': typeof ProtectedCategoriesIndexRoute
   '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
+  '/product/product/$productId': typeof ProtectedProductProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
   '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/categories': typeof ProtectedCategoriesIndexRoute
   '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
+  '/product/product/$productId': typeof ProtectedProductProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +89,7 @@ export interface FileRoutesById {
   '/_protected/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
   '/_protected/categories/': typeof ProtectedCategoriesIndexRoute
   '/_protected/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
+  '/_protected/product/product/$productId': typeof ProtectedProductProductProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,6 +100,7 @@ export interface FileRouteTypes {
     | '/categories/$categoryId'
     | '/categories/'
     | '/categories/$categoryId/products'
+    | '/product/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -98,6 +109,7 @@ export interface FileRouteTypes {
     | '/categories/$categoryId'
     | '/categories'
     | '/categories/$categoryId/products'
+    | '/product/product/$productId'
   id:
     | '__root__'
     | '/_protected'
@@ -107,6 +119,7 @@ export interface FileRouteTypes {
     | '/_protected/categories/$categoryId'
     | '/_protected/categories/'
     | '/_protected/categories/$categoryId/products'
+    | '/_protected/product/product/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -159,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCategoriesCategoryIdRouteImport
       parentRoute: typeof ProtectedRouteRoute
     }
+    '/_protected/product/product/$productId': {
+      id: '/_protected/product/product/$productId'
+      path: '/product/product/$productId'
+      fullPath: '/product/product/$productId'
+      preLoaderRoute: typeof ProtectedProductProductProductIdRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
     '/_protected/categories/$categoryId/products': {
       id: '/_protected/categories/$categoryId/products'
       path: '/products'
@@ -188,6 +208,7 @@ interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedCategoriesCategoryIdRoute: typeof ProtectedCategoriesCategoryIdRouteWithChildren
   ProtectedCategoriesIndexRoute: typeof ProtectedCategoriesIndexRoute
+  ProtectedProductProductProductIdRoute: typeof ProtectedProductProductProductIdRoute
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
@@ -195,6 +216,7 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedCategoriesCategoryIdRoute:
     ProtectedCategoriesCategoryIdRouteWithChildren,
   ProtectedCategoriesIndexRoute: ProtectedCategoriesIndexRoute,
+  ProtectedProductProductProductIdRoute: ProtectedProductProductProductIdRoute,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(

@@ -6,6 +6,7 @@ import type { GeneralQueryParams } from "@/types/general.types";
 import type { Product } from "./product.types";
 
 export type { Product } from "./product.types";
+export type { ProductVariant, VariantTargetGender } from "./variant.types";
 
 export enum ProductStatus {
   DRAFT = "draft",

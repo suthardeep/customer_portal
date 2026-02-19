@@ -1,6 +1,6 @@
 import { forwardRef, useId, useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ViewIcon, ViewOffIcon } from "@hugeicons/core-free-icons";
+import { Icon } from "@/components/base/icon/Icon";
+import type { IconSize } from "@/components/base/icon/icon.types";
 import { cn } from "@/utils/cssHelpers";
 import type { InputProps, InputSize } from "./input.types";
 
@@ -124,9 +124,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <HugeiconsIcon icon={ViewOffIcon} size={iconSizes[size]} />
+                    <Icon
+                      name="EyeOff"
+                      size={iconSizeToPreset[size]}
+                      className={size === "md" ? "size-4.5" : undefined}
+                    />
                   ) : (
-                    <HugeiconsIcon icon={ViewIcon} size={iconSizes[size]} />
+                    <Icon
+                      name="Eye"
+                      size={iconSizeToPreset[size]}
+                      className={size === "md" ? "size-4.5" : undefined}
+                    />
                   )}
                 </button>
               ) : (
@@ -204,12 +212,12 @@ const iconContainerWidths: Record<InputSize, string> = {
   lg: "w-12",
 };
 
-// Icon sizes for password toggle
-const iconSizes: Record<InputSize, number> = {
-  xs: 14,
-  sm: 16,
-  md: 18,
-  lg: 20,
+// Icon size mapping for password toggle
+const iconSizeToPreset: Record<InputSize, IconSize> = {
+  xs: "sm", // 14px → 14px ✓
+  sm: "md", // 16px → 16px ✓
+  md: "lg", // 18px → 20px (override with className size-4.5)
+  lg: "lg", // 20px → 20px ✓
 };
 
 // Label styles

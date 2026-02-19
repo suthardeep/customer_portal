@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { iconRegistry } from "@/components/base/icon/iconRegistry";
+import { Icon } from "@/components/base/icon/Icon";
+import type { IconSize } from "@/components/base/icon/icon.types";
 import { cn } from "@/utils/cssHelpers";
 import type {
   ButtonProps,
@@ -30,10 +30,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    // Get icon data from registry
-    const startIconData = startIcon ? iconRegistry[startIcon] : null;
-    const endIconData = endIcon ? iconRegistry[endIcon] : null;
-
     // Compose button classes
     const buttonClasses = cn(
       baseStyles,
@@ -66,9 +62,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 contentHeights[size],
               )}
             >
-              {startIconData && (
-                <HugeiconsIcon
-                  icon={startIconData}
+              {startIcon && (
+                <Icon
+                  name={startIcon}
                   className={cn(
                     "mr-1.5",
                     variant === "filled" &&
@@ -76,15 +72,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                       "text-white",
                     startIconClassname,
                   )}
-                  size={iconSizes[size]}
+                  size={iconSizeToPreset[size]}
                 />
               )}
               {children}
-              {endIconData && (
-                <HugeiconsIcon
-                  icon={endIconData}
+              {endIcon && (
+                <Icon
+                  name={endIcon}
                   className={cn("ml-1.5", endIconClassname)}
-                  size={iconSizes[size]}
+                  size={iconSizeToPreset[size]}
                 />
               )}
             </div>
@@ -108,11 +104,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 // Icon size mapping based on button size
-const iconSizes: Record<ButtonSize, number> = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 20,
+const iconSizeToPreset: Record<ButtonSize, IconSize> = {
+  xs: "xs", // 12px → 12px ✓
+  sm: "sm", // 14px → 14px ✓
+  md: "md", // 16px → 16px ✓
+  lg: "lg", // 20px → 20px ✓
 };
 
 // Content height for slide animation
@@ -128,16 +124,16 @@ const sizeStyles: Record<ButtonSize, string> = {
   xs: "px-2 py-0.5 text-xs gap-1",
   sm: "px-3 py-1 text-sm gap-1.5",
   md: "px-4 py-1.5 text-base gap-2",
-  lg: "px-5 py-2 text-lg gap-2.5",
+  lg: "px-5 py-2 text-base gap-2.5",
 };
 
 // Variant-color matrix
 const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
   filled: {
     primary:
-      "bg-p-500 text-white hover:bg-p-600 active:bg-p-700 focus-visible:ring-p-500 disabled:bg-p-300 disabled:cursor-not-allowed",
+      "bg-p-950 text-white hover:bg-p-800 active:bg-p-900 focus-visible:ring-p-500 disabled:bg-n-700 disabled:cursor-not-allowed",
     secondary:
-      "bg-s-500 text-white hover:bg-s-600 active:bg-s-700 focus-visible:ring-s-500 disabled:bg-s-300 disabled:cursor-not-allowed",
+      "bg-s-500 text-white hover:bg-s-600 active:bg-s-700 focus-visible:ring-s-500 disabled:bg-n-700 disabled:cursor-not-allowed",
     neutral:
       "bg-n-700 text-white hover:bg-n-800 active:bg-n-900 focus-visible:ring-n-700 disabled:bg-n-400 disabled:cursor-not-allowed",
     success:
@@ -147,7 +143,7 @@ const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
   },
   outline: {
     primary:
-      "border-2 border-p-500 text-p-600 hover:bg-p-50 hover:border-p-600 active:bg-p-100 active:border-p-700 focus-visible:ring-p-500 disabled:border-p-300 disabled:text-p-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-p-950 text-p-950 hover:bg-p-50/40 active:bg-p-100 active:border-p-700 focus-visible:ring-p-500 disabled:border-p-300 disabled:text-p-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     secondary:
       "border-2 border-s-500 text-s-600 hover:bg-s-50 hover:border-s-600 active:bg-s-100 active:border-s-700 focus-visible:ring-s-500 disabled:border-s-300 disabled:text-s-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     neutral:

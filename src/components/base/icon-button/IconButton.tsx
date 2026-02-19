@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { iconRegistry } from "@/components/base/icon/iconRegistry";
+import { Icon } from "@/components/base/icon/Icon";
+import type { IconSize } from "@/components/base/icon/icon.types";
 import { cn } from "@/utils/cssHelpers";
 import type {
   IconButtonProps,
@@ -26,8 +26,6 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref,
   ) => {
-    const iconData = iconRegistry[icon];
-
     const buttonClasses = cn(
       baseStyles,
       variantStyles[variant][color],
@@ -59,7 +57,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
                 contentHeights[size],
               )}
             >
-              <HugeiconsIcon icon={iconData} size={iconSizes[size]} />
+              <Icon name={icon} size={iconSizeToPreset[size]} />
             </div>
 
             {/* Loading spinner */}
@@ -93,7 +91,15 @@ const squareSizes: Record<IconButtonSize, string> = {
   lg: "size-9",
 };
 
-// Icon sizes matching Button component
+// Icon size mapping to presets
+const iconSizeToPreset: Record<IconButtonSize, IconSize> = {
+  xs: "xs", // 12px → 12px ✓
+  sm: "sm", // 14px → 14px ✓
+  md: "md", // 15px → 16px (acceptable +1px)
+  lg: "lg", // 20px → 20px ✓
+};
+
+// Numeric icon sizes for spinner calculation (iconSize - 2)
 const iconSizes: Record<IconButtonSize, number> = {
   xs: 12,
   sm: 14,

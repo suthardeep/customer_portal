@@ -1,9 +1,5 @@
 import { cn } from "@/utils/cssHelpers";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  iconRegistry,
-  type IconName,
-} from "@/components/base/icon/iconRegistry";
+import { Icon, type IconName } from "@/components/base/icon";
 import type { ReactNode } from "react";
 
 export interface FallbackViewProps {
@@ -17,8 +13,6 @@ export interface FallbackViewProps {
 const FallbackView: React.FC<FallbackViewProps> = (props) => {
   const { title, footer, icon, classname, version = "default" } = props;
 
-  const iconData = icon ? iconRegistry[icon] : null;
-
   const isCompact = version === "compact";
 
   return (
@@ -31,12 +25,11 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
         classname,
       )}
     >
-      {iconData && (
-        <HugeiconsIcon
-          icon={iconData}
-          size={isCompact ? 20 : 48}
-          strokeWidth={1.5}
-          className="text-n-800"
+      {icon && (
+        <Icon
+          name={icon}
+          size="lg"
+          className={cn("text-n-800", !isCompact && "size-12")}
         />
       )}
       <p className={cn(!isCompact && "text-center text-n-800 font-medium")}>

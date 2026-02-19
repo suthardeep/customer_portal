@@ -1,10 +1,10 @@
+import { BaseApiResponse } from '@/types/baseApi.types';
 import type { Product as ProductListItem } from './product.types';
-import type { BaseApiResponse } from '@/types/general.types';
 import type { IconName } from '@/components/base/icon/iconRegistry';
-
+import type { ProductVariant } from './variant.types';
 // Core product detail (extends existing list type)
 // For now, variants will be part of the response but not fully integrated
-export interface ProductDetail extends Omit<ProductListItem, 'variants'> {
+export interface ProductDetail extends ProductListItem {
   description: string;
   bulletPoints?: string[];
 
@@ -21,22 +21,23 @@ export interface ProductDetail extends Omit<ProductListItem, 'variants'> {
   specifications?: ProductSpecification[];
 }
 
-// Variant structures (for future use - API already returns this)
-export interface VariantAttribute {
-  id: string;
-  name: string;
-  values: string[];
+// Variant structures
+export interface VariantAttributeValue {
+  value: string;
+  label: string;
+  image?: string;
+  colorHex?: string;
 }
 
-export interface ProductVariant {
-  id: string;
-  sku: string;
-  price?: number;
-  stock?: number;
-  attributes: Record<string, string>; // e.g., { "color": "red", "size": "L" }
-  images?: string[];
-  available?: boolean;
+export interface VariantAttribute {
+  name: string;
+  label: string;
+  values: VariantAttributeValue[];
+  displayPrice: boolean;
+  displayImage: boolean;
 }
+
+export type { ProductVariant } from './variant.types';
 
 // Delivery information (UI-specific, may be calculated)
 export interface DeliveryInfo {
@@ -93,7 +94,7 @@ export interface ProductRewards {
 
 // Specifications (may come from product description or separate field)
 export interface ProductSpecification {
-  name: string;
+  label: string;
   value: string;
 }
 

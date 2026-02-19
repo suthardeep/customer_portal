@@ -5,7 +5,7 @@ interface ImageProps extends Omit<
   React.ImgHTMLAttributes<HTMLImageElement>,
   "onLoad" | "onError"
 > {
-  src: string;
+  src: string | undefined;
   alt: string;
   fallbackSrc?: string;
   eager?: boolean;

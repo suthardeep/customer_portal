@@ -209,13 +209,36 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 
 - Always use `<Image />` instead of `<img>` tags
 
+### Icon Usage
+
+- Use `<Icon name="..." size="..." />` for standalone icons
+- Use `IconButton` for interactive icons (already uses registry)
+- Use `startIcon`/`endIcon` props in Button/Input components (already uses registry)
+- **Size presets**: `xs` (12px), `sm` (14px), `md` (16px), `lg` (20px)
+- **Custom sizes**: Use className override: `<Icon name="Star" size="lg" className="size-6" />`
+- **Colors**: Use className with theme colors: `className="text-p-500"`
+- **All icons must be in iconRegistry** - add new icons there first
+- Icon names are type-safe via `IconName` type
+
+**Examples:**
+
+```typescript
+// Basic usage
+<Icon name="Heart" size="md" className="text-danger-500" />
+
+// Custom size override (24px instead of default lg=20px)
+<Icon name="Star" size="lg" className="size-6 text-yellow-500" />
+
+// Interactive icon (prefer IconButton for this)
+<Icon name="Search" size="sm" onClick={handleClick} className="cursor-pointer" />
+```
+
 ---
 
 ## Forms & Validation
 
 - Always use React Hook Form + Zod
 - Use Zod schemas for route search param validation
-- Access route values via `getRouteApi("/_layout/path")` - no prop drilling
 
 ---
 
@@ -252,7 +275,7 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 ### Rules
 
 - Define all route paths in route constants file
-- Use `getRouteApi("/_protected/account")` to access route params/search and other route data
+- When in non page routes, use `getRouteApi("/_protected/account")` to access route params/search and other route data
 - Colocate route-specific components in the route file or feature folder
 - Use Zod schemas for search param validation in route files
 

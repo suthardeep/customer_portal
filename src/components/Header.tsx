@@ -6,19 +6,13 @@ import { Suspense, type ReactNode } from "react";
 import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
 import { AavakFinTechLogo } from "./compound/logo/AavakFinTechLogo";
 import { cn } from "@/utils/cssHelpers";
-import {
-  Search01Icon,
-  ShoppingBasket02Icon,
-  Store02Icon,
-  UserIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { Icon } from "@/components/base/icon/Icon";
 
 export default function Header() {
   return (
     <div>
       <header className="border-b border-n-500">
-        <div className="p-3 max-w-7xl mx-auto flex items-center justify-between">
+        <div className="p-3 max-w-8xl mx-auto flex items-center justify-between">
           <Link to="/">
             <Logo className="w-32" />
           </Link>
@@ -34,7 +28,7 @@ export default function Header() {
                   {item.icon}
                   <p
                     className={cn(
-                      "font-medium text-n-900  group-hover:text-n-950 transition-colors",
+                      "font-medium text-n-900  group-hover:text-n-950 transition-colors text-[13px]!",
                     )}
                   >
                     {item.label}
@@ -75,29 +69,19 @@ const iconClassName = `text-n-900 group-hover:text-n-950`;
 const NAV_ITEMS: NavItem[] = [
   {
     label: "Search",
-    icon: (
-      <HugeiconsIcon icon={Search01Icon} size={20} className={iconClassName} />
-    ),
+    icon: <Icon name="Search" size="lg" className={iconClassName} />,
   },
   {
     label: "Sell Now",
-    icon: (
-      <HugeiconsIcon icon={Store02Icon} size={20} className={iconClassName} />
-    ),
+    icon: <Icon name="Store" size="lg" className={iconClassName} />,
   },
   {
     label: "Cart",
-    icon: (
-      <HugeiconsIcon
-        icon={ShoppingBasket02Icon}
-        size={20}
-        className={iconClassName}
-      />
-    ),
+    icon: <Icon name="ShoppingCart" size="lg" className={iconClassName} />,
   },
   {
     label: "Login",
-    icon: <HugeiconsIcon icon={UserIcon} size={20} className={iconClassName} />,
+    icon: <Icon name="User" size="lg" className={iconClassName} />,
   },
   { label: "Fintech", icon: <AavakFinTechLogo />, isFinTechLogo: true },
   { label: "Protect", icon: <AavakProtectLogo /> },

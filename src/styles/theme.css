@@ -1,8 +1,8 @@
 :root {
-  /* Primary Color Scale - 50 to 950 */
+  /* Primary Color Scale - 50 to 1000 */
   --p-50: #e6f7fd;
   --p-100: #d9f3fd;
-  --p-200: #b0ebfa;
+  --p-200: #b0e6fa;
   --p-300: #80e0f7;
   --p-400: #33c4f0;
   --p-500: #00afef;
@@ -10,11 +10,11 @@
   --p-700: #008cbf;
   --p-800: #0083b3;
   --p-850: #00698f;
-  --p-900: #004f6c;
-  --p-925: #003d54;
-  --p-950: #001e29;
+  --p-900: #00416c;
+  --p-950: #003d54;
+  --p-1000: #001e29;
 
-  /* Secondary Color Scale - 50 to 950 */
+  /* Secondary Color Scale - 50 to 1000 */
   --s-50: #f4e9fd;
   --s-100: #efdffc;
   --s-200: #debcf8;
@@ -26,10 +26,10 @@
   --s-800: #6f1dae;
   --s-850: #59178b;
   --s-900: #431268;
-  --s-925: #340e51;
-  --s-950: #160623;
+  --s-950: #340e51;
+  --s-1000: #160623;
 
-  /* Neutral Color Scale - 50 to 950 */
+  /* Neutral Color Scale - 50 to 1000 */
   --n-50: #ffffff;
   --n-100: #fefefe;
   --n-200: #fdfdfd;
@@ -41,8 +41,8 @@
   --n-800: #959595;
   --n-850: #707070;
   --n-900: #575757;
-  --n-925: #2b2b2b;
-  --n-950: #000000;
+  --n-950: #2b2b2b;
+  --n-1000: #000000;
 
   /* Success Color Scale - 50 to 950 */
   --success-50: #f0fdf4;
@@ -107,6 +107,10 @@
 
   --font-jakarta: 'Plus Jakarta Sans Variable', sans-serif;
 
+  /* Disable border-inline-start/end width utilities to avoid collision with s-* color namespace */
+  --border-inline-start-*: initial;
+  --border-inline-end-*: initial;
+
   /* Primary Color Scale */
   --color-p-50: var(--p-50);
   --color-p-100: var(--p-100);
@@ -119,8 +123,8 @@
   --color-p-800: var(--p-800);
   --color-p-850: var(--p-850);
   --color-p-900: var(--p-900);
-  --color-p-925: var(--p-925);
   --color-p-950: var(--p-950);
+  --color-p-1000: var(--p-1000);
 
   /* Secondary Color Scale */
   --color-s-50: var(--s-50);
@@ -134,8 +138,8 @@
   --color-s-800: var(--s-800);
   --color-s-850: var(--s-850);
   --color-s-900: var(--s-900);
-  --color-s-925: var(--s-925);
   --color-s-950: var(--s-950);
+  --color-s-1000: var(--s-1000);
 
   /* Neutral Color Scale */
   --color-n-50: var(--n-50);
@@ -149,8 +153,8 @@
   --color-n-800: var(--n-800);
   --color-n-850: var(--n-850);
   --color-n-900: var(--n-900);
-  --color-n-925: var(--n-925);
   --color-n-950: var(--n-950);
+  --color-n-1000: var(--n-1000);
 
   /* Success Color Scale */
   --color-success-50: var(--success-50);
@@ -164,6 +168,9 @@
   --color-success-800: var(--success-800);
   --color-success-900: var(--success-900);
   --color-success-950: var(--success-950);
+
+  /* Max Width */
+  --max-width-8xl: 1568px;
 
   /* Danger Color Scale */
   --color-danger-50: var(--danger-50);

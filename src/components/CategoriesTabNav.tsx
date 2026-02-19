@@ -37,7 +37,7 @@ const CategoriesTabNav = () => {
     >
       <div
         ref={containerRef}
-        className="flex items-center overflow-x-auto no-scrollbar gap-4 max-w-7xl mx-auto border-b border-n-500"
+        className="flex items-center overflow-x-auto no-scrollbar gap-4 max-w-8xl mx-auto border-b border-n-500"
       >
         {categories.map((category) => {
           const isActive = category.id === categoryId;

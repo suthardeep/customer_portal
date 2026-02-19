@@ -1,13 +1,9 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Tick02Icon,
-  ArrowDown01Icon,
-  ArrowUp01Icon,
-} from "@hugeicons/core-free-icons";
+import { Icon } from "@/components/base/icon/Icon";
+import type { IconSize } from "@/components/base/icon/icon.types";
 import { useId } from "react";
 import { cn } from "@/utils/cssHelpers";
-import type { SelectProps } from "./select.types";
+import type { SelectProps, SelectSize } from "./select.types";
 
 /**
  * Select component built with Radix UI
@@ -54,11 +50,11 @@ export function Select({
     lg: "text-sm",
   };
 
-  const iconSizeMap = {
-    xs: 14,
-    sm: 16,
-    md: 18,
-    lg: 20,
+  const iconSizeToPreset: Record<SelectSize, IconSize> = {
+    xs: "sm", // 14px → 14px ✓
+    sm: "md", // 16px → 16px ✓
+    md: "lg", // 18px → 20px (acceptable +2px)
+    lg: "lg", // 20px → 20px ✓
   };
 
   // Base trigger styles
@@ -79,7 +75,7 @@ export function Select({
 
   // Item styles
   const itemBaseStyles =
-    "relative flex cursor-pointer items-center justify-between px-3 py-2 text-sm outline-none transition-colors data-[disabled]:cursor-not-allowed data-[disabled]:text-n-400 data-[disabled]:opacity-50";
+    "relative flex cursor-pointer items-center justify-between rounded-sm px-3 py-2 text-sm outline-none transition-colors data-[disabled]:cursor-not-allowed data-[disabled]:text-n-400  data-[disabled]:opacity-50 [&_span]:text-sm!";
 
   const itemStateStyles =
     "data-[highlighted]:bg-p-50 data-[state=checked]:bg-p-100 data-[state=checked]:text-p-700 data-[state=checked]:font-medium";
@@ -132,10 +128,10 @@ export function Select({
         >
           <SelectPrimitive.Value placeholder={placeholder} />
           <SelectPrimitive.Icon asChild>
-            <HugeiconsIcon
-              icon={ArrowDown01Icon}
+            <Icon
+              name="ChevronDown"
               className="transition-transform duration-150 data-[state=open]:rotate-180"
-              size={iconSizeMap[size]}
+              size={iconSizeToPreset[size]}
             />
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
@@ -149,7 +145,7 @@ export function Select({
           >
             {/* Scroll Up Button */}
             <SelectPrimitive.ScrollUpButton className={scrollButtonStyles}>
-              <HugeiconsIcon icon={ArrowUp01Icon} size={16} />
+              <Icon name="ChevronUp" size="md" />
             </SelectPrimitive.ScrollUpButton>
 
             {/* Viewport */}
@@ -165,7 +161,7 @@ export function Select({
                     {option.label}
                   </SelectPrimitive.ItemText>
                   <SelectPrimitive.ItemIndicator>
-                    <HugeiconsIcon icon={Tick02Icon} size={16} />
+                    <Icon name="Check" size="md" />
                   </SelectPrimitive.ItemIndicator>
                 </SelectPrimitive.Item>
               ))}
@@ -173,7 +169,7 @@ export function Select({
 
             {/* Scroll Down Button */}
             <SelectPrimitive.ScrollDownButton className={scrollButtonStyles}>
-              <HugeiconsIcon icon={ArrowDown01Icon} size={16} />
+              <Icon name="ChevronDown" size="md" />
             </SelectPrimitive.ScrollDownButton>
           </SelectPrimitive.Content>
         </SelectPrimitive.Portal>

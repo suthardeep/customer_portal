@@ -52,5 +52,4 @@ export interface Product {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  variants: string;
 }
