@@ -14,6 +14,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
   const mainImageRef = useRef<HTMLDivElement>(null);
 
   const currentIndex = useImageGalleryStore((state) => state.currentIndex);
+  const previousIndex = useImageGalleryStore((state) => state.previousIndex);
   const isZoomed = useImageGalleryStore((state) => state.isZoomed);
   const setImages = useImageGalleryStore((state) => state.setImages);
   const setIsZoomed = useImageGalleryStore((state) => state.setIsZoomed);
@@ -167,12 +168,20 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
         className="flex-1 relative aspect-square overflow-hidden rounded-lg border border-n-400 bg-n-50 p-2 cursor-zoom-in"
         onClick={handleMainImageClick}
       >
-        <Image
-          src={currentImage}
-          alt="Product main image"
-          className="size-full object-contain"
-          eager
-        />
+        <div
+          className={cn(
+            "image-gallery-transition",
+            previousIndex !== null && "changing",
+          )}
+        >
+          <Image
+            key={currentIndex}
+            src={currentImage}
+            alt="Product main image"
+            className="size-full object-contain"
+            eager
+          />
+        </div>
 
         {/* Mobile navigation dots */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 lg:hidden">

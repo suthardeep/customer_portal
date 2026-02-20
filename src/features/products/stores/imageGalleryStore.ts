@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 interface ImageGalleryState {
   currentIndex: number;
+  previousIndex: number | null;
   isZoomed: boolean;
   images: string[];
   setCurrentIndex: (index: number) => void;
@@ -15,6 +16,7 @@ interface ImageGalleryState {
 
 export const useImageGalleryStore = create<ImageGalleryState>((set, get) => ({
   currentIndex: 0,
+  previousIndex: null,
   isZoomed: false,
   images: [],
 
@@ -27,23 +29,35 @@ export const useImageGalleryStore = create<ImageGalleryState>((set, get) => ({
   next: () => {
     const { currentIndex, images } = get();
     if (currentIndex < images.length - 1) {
-      set({ currentIndex: currentIndex + 1 });
+      get().goTo(currentIndex + 1);
     }
   },
 
   prev: () => {
     const { currentIndex } = get();
     if (currentIndex > 0) {
-      set({ currentIndex: currentIndex - 1 });
+      get().goTo(currentIndex - 1);
     }
   },
 
   goTo: (index) => {
-    const { images } = get();
-    if (index >= 0 && index < images.length) {
+    const { currentIndex, images } = get();
+    if (index === currentIndex || index < 0 || index >= images.length) return;
+
+    // Trigger fade out
+    set({ previousIndex: currentIndex });
+
+    // Wait for fade out, then change image and fade in
+    setTimeout(() => {
       set({ currentIndex: index });
-    }
+
+      // Small delay then remove changing class to fade in
+      setTimeout(() => {
+        set({ previousIndex: null });
+      }, 20);
+    }, 200);
   },
 
-  reset: () => set({ currentIndex: 0, isZoomed: false, images: [] }),
+  reset: () =>
+    set({ currentIndex: 0, previousIndex: null, isZoomed: false, images: [] }),
 }));

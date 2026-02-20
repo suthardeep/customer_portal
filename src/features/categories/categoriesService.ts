@@ -7,7 +7,7 @@ import type { CategoryTreeResponse, CategoryDetailResponse } from "./types/types
 export const getCategoriesTree = createServerFn({ method: "GET" })
   .inputValidator((data?: PaginationQueryParams) => data)
   .handler(async ({ data }): Promise<CategoryTreeResponse> => {
-    return apiRequest<CategoryTreeResponse>("/v2/categories/public/tree", {
+    return apiRequest<CategoryTreeResponse>("/v1/categories/public/tree", {
       params: data,
     });
   });

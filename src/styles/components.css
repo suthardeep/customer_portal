@@ -83,6 +83,25 @@
   }
 }
 
+/* Image Gallery Transitions */
+.image-gallery-transition {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.image-gallery-transition.changing {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-gallery-transition {
+    transition: opacity 0.2s ease;
+    transform: none !important;
+  }
+}
+
 @theme inline {
   /* Dialog Animations */
   --animate-overlay-show: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
