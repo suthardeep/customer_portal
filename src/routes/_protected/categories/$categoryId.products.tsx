@@ -16,6 +16,9 @@ export const Route = createFileRoute(
   },
   pendingComponent: ProductListSkeleton,
   component: ProductListComponent,
+  staticData: {
+    showCategorySubNav: true,
+  },
 });
 
 function ProductListComponent() {

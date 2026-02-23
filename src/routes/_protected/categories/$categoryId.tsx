@@ -18,6 +18,9 @@ export const Route = createFileRoute("/_protected/categories/$categoryId")({
   pendingComponent: CategoryDetailSkeleton,
   component: CategoryDetailComponent,
   errorComponent: (err) => <div>Err - {err.error.message} </div>,
+  staticData: {
+    showCategorySubNav: true,
+  },
 });
 
 function CategoryDetailComponent() {

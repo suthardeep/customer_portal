@@ -50,13 +50,7 @@ export async function apiRequest<T>(
   endpoint: string,
   options?: ApiRequestOptions,
 ): Promise<T> {
-  const {
-    method = "GET",
-    params,
-    body,
-    headers = {},
-    token,
-  } = options ?? {};
+  const { method = "GET", params, body, headers = {}, token } = options ?? {};
 
   const baseUrl = getApiBaseUrl();
   const queryString = params ? objectToSearchParams(params) : "";
@@ -83,7 +77,8 @@ export async function apiRequest<T>(
     // Attempt to parse error response body
     const errorData = await response.json().catch(() => ({}));
     throw new ApiError(
-      errorData.message || `${method} ${endpoint} failed: ${response.statusText}`,
+      errorData.message ||
+        `${method} ${endpoint} failed: ${response.statusText}`,
       response.status,
       errorData,
     );

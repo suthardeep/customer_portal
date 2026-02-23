@@ -123,8 +123,8 @@ const contentHeights: Record<ButtonSize, string> = {
 const sizeStyles: Record<ButtonSize, string> = {
   xs: "px-2 py-0.5 text-xs gap-1",
   sm: "px-3 py-1 text-sm gap-1.5",
-  md: "px-4 py-1.5 text-base gap-2",
-  lg: "px-5 py-2 text-base gap-2.5",
+  md: "px-4 py-2 text-base gap-2",
+  lg: "px-5 py-2.5 text-base gap-2.5",
 };
 
 // Variant-color matrix
@@ -159,7 +159,7 @@ const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
     secondary:
       "text-s-600 hover:bg-s-50 active:bg-s-100 focus-visible:ring-s-500 disabled:text-s-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     neutral:
-      "text-n-700 hover:bg-n-100 active:bg-n-200 focus-visible:ring-n-500 disabled:text-n-400 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "text-n-800 hover:bg-n-300 active:bg-n-200 focus-visible:ring-n-500 disabled:text-n-400 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     success:
       "text-success-600 hover:bg-success-50 active:bg-success-100 focus-visible:ring-success-500 disabled:text-success-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     danger:
@@ -181,4 +181,4 @@ const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
 
 // Base button styles
 const baseStyles =
-  "inline-flex items-center justify-center font-medium transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-[10px]";
+  "inline-flex items-center justify-center font-medium transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none cursor-pointer rounded-[10px]";

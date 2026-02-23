@@ -1,11 +1,25 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
-import { Link } from "@tanstack/react-router";
+import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 
 interface ProductTopBarProps {
   brandName?: string;
+  productName: string;
 }
 
-export function ProductTopBar({ brandName }: ProductTopBarProps) {
+export function ProductTopBar({ brandName, productName }: ProductTopBarProps) {
+  const { productId } = useParams({
+    from: "/_protected/product/product/$productId",
+  });
+  const { variantId } = useSearch({
+    from: "/_protected/product/product/$productId",
+  });
+  const openWishlistSheet = useWishlistSheetStore((state) => state.open);
+
+  const handleAddToWishlist = () => {
+    openWishlistSheet({ productId, productName, variantId: variantId ?? "" });
+  };
+
   return (
     <div className="flex gap-2 justify-between items-center">
       {brandName && (
@@ -27,7 +41,7 @@ export function ProductTopBar({ brandName }: ProductTopBarProps) {
           size="lg"
           variant="ghost"
           color="neutral"
-          onClick={() => console.log("Wishlist clicked")}
+          onClick={handleAddToWishlist}
           aria-label="Add to wishlist"
         />
         <IconButton

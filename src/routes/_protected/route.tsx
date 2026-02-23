@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/shared/Header";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected")({
@@ -9,7 +9,9 @@ function RouteComponent() {
   return (
     <div>
       <Header />
-      <Outlet />
+      <div className="max-w-8xl mx-auto">
+        <Outlet />
+      </div>
     </div>
   );
 }

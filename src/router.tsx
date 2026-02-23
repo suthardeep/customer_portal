@@ -38,3 +38,10 @@ export const getRouter = () => {
 
   return router;
 };
+
+declare module "@tanstack/react-router" {
+  interface StaticDataRouteOption {
+    showCategorySubNav?: boolean;
+    maxWidth?: "max-w-7xl" | "max-w-8xl";
+  }
+}

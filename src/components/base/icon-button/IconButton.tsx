@@ -22,6 +22,8 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       disabled = false,
       type = "button",
       "aria-label": ariaLabel,
+      iconClassName = "",
+      strokeWidth = 1.5,
       ...restProps
     },
     ref,
@@ -57,7 +59,12 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
                 contentHeights[size],
               )}
             >
-              <Icon name={icon} size={iconSizeToPreset[size]} />
+              <Icon
+                name={icon}
+                size={iconSizeToPreset[size]}
+                className={cn(iconClassName)}
+                strokeWidth={strokeWidth}
+              />
             </div>
 
             {/* Loading spinner */}
@@ -89,6 +96,7 @@ const squareSizes: Record<IconButtonSize, string> = {
   sm: "size-7",
   md: "size-8",
   lg: "size-9",
+  xl: "size-9",
 };
 
 // Icon size mapping to presets
@@ -97,6 +105,7 @@ const iconSizeToPreset: Record<IconButtonSize, IconSize> = {
   sm: "sm", // 14px → 14px ✓
   md: "md", // 15px → 16px (acceptable +1px)
   lg: "lg", // 20px → 20px ✓
+  xl: "xl", // 24px → 24px ✓
 };
 
 // Numeric icon sizes for spinner calculation (iconSize - 2)
@@ -105,6 +114,7 @@ const iconSizes: Record<IconButtonSize, number> = {
   sm: 14,
   md: 15,
   lg: 20,
+  xl: 24,
 };
 
 // Content heights for loading animation
@@ -113,11 +123,12 @@ const contentHeights: Record<IconButtonSize, string> = {
   sm: "h-3.5",
   md: "h-4",
   lg: "h-5",
+  xl: "h-6",
 };
 
 // Base button styles
 const baseStyles =
-  "inline-flex items-center justify-center transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-[10px]";
+  "inline-flex items-center cursor-pointer justify-center transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-[10px]";
 
 // Variant-color matrix (same as Button, excluding "link")
 const variantStyles: Record<

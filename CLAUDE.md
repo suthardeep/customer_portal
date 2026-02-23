@@ -204,10 +204,12 @@ export const Route = createFileRoute("/_protected/products/$productId")({
 
 - Use `toast` from toast component for mutation success
 - Use `showErrorToasts` in mutation `onError`
+- Do not add success toast by default, if there is one needed i will tell you
 
 ### General
 
 - Always use `<Image />` instead of `<img>` tags
+- Never use hardcoded queries while invalidating queries, always use from query factory
 
 ### Icon Usage
 

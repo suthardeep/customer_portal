@@ -13,10 +13,14 @@ import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
 import { Route as AuthVerifyOtpRouteImport } from './routes/_auth/verify-otp'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as ProtectedAccountRouteRouteImport } from './routes/_protected/account/route'
 import { Route as ProtectedCategoriesIndexRouteImport } from './routes/_protected/categories/index'
+import { Route as ProtectedAccountIndexRouteImport } from './routes/_protected/account/index'
 import { Route as ProtectedCategoriesCategoryIdRouteImport } from './routes/_protected/categories/$categoryId'
+import { Route as ProtectedAccountWishlistIndexRouteImport } from './routes/_protected/account/wishlist/index'
 import { Route as ProtectedProductProductProductIdRouteImport } from './routes/_protected/product/product.$productId'
 import { Route as ProtectedCategoriesCategoryIdProductsRouteImport } from './routes/_protected/categories/$categoryId.products'
+import { Route as ProtectedAccountWishlistCollectionIdRouteImport } from './routes/_protected/account/wishlist/$collectionId'
 
 const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
   id: '/_protected',
@@ -37,17 +41,33 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedAccountRouteRoute = ProtectedAccountRouteRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
 const ProtectedCategoriesIndexRoute =
   ProtectedCategoriesIndexRouteImport.update({
     id: '/categories/',
     path: '/categories/',
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
+const ProtectedAccountIndexRoute = ProtectedAccountIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedAccountRouteRoute,
+} as any)
 const ProtectedCategoriesCategoryIdRoute =
   ProtectedCategoriesCategoryIdRouteImport.update({
     id: '/categories/$categoryId',
     path: '/categories/$categoryId',
     getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+const ProtectedAccountWishlistIndexRoute =
+  ProtectedAccountWishlistIndexRouteImport.update({
+    id: '/wishlist/',
+    path: '/wishlist/',
+    getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
 const ProtectedProductProductProductIdRoute =
   ProtectedProductProductProductIdRouteImport.update({
@@ -61,65 +81,93 @@ const ProtectedCategoriesCategoryIdProductsRoute =
     path: '/products',
     getParentRoute: () => ProtectedCategoriesCategoryIdRoute,
   } as any)
+const ProtectedAccountWishlistCollectionIdRoute =
+  ProtectedAccountWishlistCollectionIdRouteImport.update({
+    id: '/wishlist/$collectionId',
+    path: '/wishlist/$collectionId',
+    getParentRoute: () => ProtectedAccountRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
+  '/account': typeof ProtectedAccountRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
+  '/account/': typeof ProtectedAccountIndexRoute
   '/categories/': typeof ProtectedCategoriesIndexRoute
+  '/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
   '/product/product/$productId': typeof ProtectedProductProductProductIdRoute
+  '/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/': typeof ProtectedIndexRoute
   '/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
+  '/account': typeof ProtectedAccountIndexRoute
   '/categories': typeof ProtectedCategoriesIndexRoute
+  '/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
   '/product/product/$productId': typeof ProtectedProductProductProductIdRoute
+  '/account/wishlist': typeof ProtectedAccountWishlistIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected': typeof ProtectedRouteRouteWithChildren
+  '/_protected/account': typeof ProtectedAccountRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/verify-otp': typeof AuthVerifyOtpRoute
   '/_protected/': typeof ProtectedIndexRoute
   '/_protected/categories/$categoryId': typeof ProtectedCategoriesCategoryIdRouteWithChildren
+  '/_protected/account/': typeof ProtectedAccountIndexRoute
   '/_protected/categories/': typeof ProtectedCategoriesIndexRoute
+  '/_protected/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/_protected/categories/$categoryId/products': typeof ProtectedCategoriesCategoryIdProductsRoute
   '/_protected/product/product/$productId': typeof ProtectedProductProductProductIdRoute
+  '/_protected/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account'
     | '/login'
     | '/verify-otp'
     | '/categories/$categoryId'
+    | '/account/'
     | '/categories/'
+    | '/account/wishlist/$collectionId'
     | '/categories/$categoryId/products'
     | '/product/product/$productId'
+    | '/account/wishlist/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
     | '/verify-otp'
     | '/'
     | '/categories/$categoryId'
+    | '/account'
     | '/categories'
+    | '/account/wishlist/$collectionId'
     | '/categories/$categoryId/products'
     | '/product/product/$productId'
+    | '/account/wishlist'
   id:
     | '__root__'
     | '/_protected'
+    | '/_protected/account'
     | '/_auth/login'
     | '/_auth/verify-otp'
     | '/_protected/'
     | '/_protected/categories/$categoryId'
+    | '/_protected/account/'
     | '/_protected/categories/'
+    | '/_protected/account/wishlist/$collectionId'
     | '/_protected/categories/$categoryId/products'
     | '/_protected/product/product/$productId'
+    | '/_protected/account/wishlist/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/account': {
+      id: '/_protected/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof ProtectedAccountRouteRouteImport
+      parentRoute: typeof ProtectedRouteRoute
+    }
     '/_protected/categories/': {
       id: '/_protected/categories/'
       path: '/categories'
@@ -165,12 +220,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCategoriesIndexRouteImport
       parentRoute: typeof ProtectedRouteRoute
     }
+    '/_protected/account/': {
+      id: '/_protected/account/'
+      path: '/'
+      fullPath: '/account/'
+      preLoaderRoute: typeof ProtectedAccountIndexRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
     '/_protected/categories/$categoryId': {
       id: '/_protected/categories/$categoryId'
       path: '/categories/$categoryId'
       fullPath: '/categories/$categoryId'
       preLoaderRoute: typeof ProtectedCategoriesCategoryIdRouteImport
       parentRoute: typeof ProtectedRouteRoute
+    }
+    '/_protected/account/wishlist/': {
+      id: '/_protected/account/wishlist/'
+      path: '/wishlist'
+      fullPath: '/account/wishlist/'
+      preLoaderRoute: typeof ProtectedAccountWishlistIndexRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
     }
     '/_protected/product/product/$productId': {
       id: '/_protected/product/product/$productId'
@@ -186,8 +255,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCategoriesCategoryIdProductsRouteImport
       parentRoute: typeof ProtectedCategoriesCategoryIdRoute
     }
+    '/_protected/account/wishlist/$collectionId': {
+      id: '/_protected/account/wishlist/$collectionId'
+      path: '/wishlist/$collectionId'
+      fullPath: '/account/wishlist/$collectionId'
+      preLoaderRoute: typeof ProtectedAccountWishlistCollectionIdRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
   }
 }
+
+interface ProtectedAccountRouteRouteChildren {
+  ProtectedAccountIndexRoute: typeof ProtectedAccountIndexRoute
+  ProtectedAccountWishlistCollectionIdRoute: typeof ProtectedAccountWishlistCollectionIdRoute
+  ProtectedAccountWishlistIndexRoute: typeof ProtectedAccountWishlistIndexRoute
+}
+
+const ProtectedAccountRouteRouteChildren: ProtectedAccountRouteRouteChildren = {
+  ProtectedAccountIndexRoute: ProtectedAccountIndexRoute,
+  ProtectedAccountWishlistCollectionIdRoute:
+    ProtectedAccountWishlistCollectionIdRoute,
+  ProtectedAccountWishlistIndexRoute: ProtectedAccountWishlistIndexRoute,
+}
+
+const ProtectedAccountRouteRouteWithChildren =
+  ProtectedAccountRouteRoute._addFileChildren(
+    ProtectedAccountRouteRouteChildren,
+  )
 
 interface ProtectedCategoriesCategoryIdRouteChildren {
   ProtectedCategoriesCategoryIdProductsRoute: typeof ProtectedCategoriesCategoryIdProductsRoute
@@ -205,6 +299,7 @@ const ProtectedCategoriesCategoryIdRouteWithChildren =
   )
 
 interface ProtectedRouteRouteChildren {
+  ProtectedAccountRouteRoute: typeof ProtectedAccountRouteRouteWithChildren
   ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedCategoriesCategoryIdRoute: typeof ProtectedCategoriesCategoryIdRouteWithChildren
   ProtectedCategoriesIndexRoute: typeof ProtectedCategoriesIndexRoute
@@ -212,6 +307,7 @@ interface ProtectedRouteRouteChildren {
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
+  ProtectedAccountRouteRoute: ProtectedAccountRouteRouteWithChildren,
   ProtectedIndexRoute: ProtectedIndexRoute,
   ProtectedCategoriesCategoryIdRoute:
     ProtectedCategoriesCategoryIdRouteWithChildren,

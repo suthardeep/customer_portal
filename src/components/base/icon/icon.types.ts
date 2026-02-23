@@ -1,6 +1,6 @@
 import type { IconName } from "./iconRegistry";
 
-export type IconSize = "xs" | "sm" | "md" | "lg";
+export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface IconProps {
   name: IconName;

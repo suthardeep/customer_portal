@@ -6,6 +6,8 @@ import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
 import type { Product } from "../types";
 import { Link } from "@tanstack/react-router";
+import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
+import { Button } from "@/components/base/button/Button";
 
 interface ProductCardProps {
   product: Product;
@@ -20,11 +22,16 @@ export function ProductCard({
   className,
   disableDetailPageRedirection = false,
 }: ProductCardProps) {
-  const imageUrl = product.mediaUrls?.[0];
+  const imageUrl = product?.mediaUrls?.[0];
 
   const isWishlisted = false;
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    openWishlistSheet({
+      productId: product.id,
+      productName: product.name,
+      variantId: product?.variantId,
+    });
   };
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
@@ -34,11 +41,12 @@ export function ProductCard({
     }
   };
 
+  const openWishlistSheet = useWishlistSheetStore((state) => state.open);
+
   const content = () => (
     <div
       className={cn(
         "flex flex-col overflow-hidden rounded-lg border border-n-300 bg-white",
-        "transition-shadow hover:shadow-md",
         className,
       )}
     >
@@ -71,15 +79,15 @@ export function ProductCard({
         </button>
 
         {/* Add to Cart Button */}
-        <IconButton
-          icon="Add"
-          size="sm"
-          variant="filled"
-          color="primary"
-          aria-label="Add to cart"
+        <Button
           onClick={handleAddToCartClick}
-          className="absolute bottom-2 right-2"
-        />
+          className="absolute bottom-0 right-0 rounded-md bg-white! hover:text-p-600"
+          aria-label="Add to cart"
+          size="xs"
+          variant="outline"
+        >
+          Add
+        </Button>
       </div>
 
       {/* Content Section */}

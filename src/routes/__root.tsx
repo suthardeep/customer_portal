@@ -5,7 +5,10 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Toaster } from "sonner";
 
+import { AppSheets } from "../components/shared/AppSheets";
+import { LoginDialog } from "../features/auth/components/LoginDialog";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 import appCss from "../styles/styles.css?url";
@@ -48,7 +51,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className="max-w-8xl mx-auto">{children}</div>
+        <div>{children}</div>
+        <LoginDialog />
+        <AppSheets />
+        <Toaster position="top-right" richColors={false} closeButton={false} />
         <TanStackDevtools
           config={{
             position: "bottom-right",

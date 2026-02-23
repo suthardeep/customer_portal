@@ -1,10 +1,8 @@
-import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { Image } from "@/components/base/Image";
 import { cn } from "@/utils/cssHelpers";
-import type { VariantAttribute, VariantAttributeValue } from "../types/types";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import type { ProductVariant } from "../types";
-
-const routeApi = getRouteApi("/_protected/product/product/$productId");
+import type { VariantAttribute, VariantAttributeValue } from "../types/types";
 
 interface ProductVariantSelectorProps {
   variantAttributes: VariantAttribute[];
@@ -52,7 +50,9 @@ function LabelChip({
       className={cn(
         "relative px-3 py-1.5 rounded-lg border-2 font-medium transition-all capitalize cursor-pointer",
         isSelected && "border-p-500 bg-p-50 text-p-800",
-        !isSelected && !isUnavailable && "border-n-400 text-n-900 hover:border-n-600",
+        !isSelected &&
+          !isUnavailable &&
+          "border-n-400 text-n-900 hover:border-n-600",
         !isSelected && isUnavailable && "opacity-60 border-n-600 text-n-800",
         isSelected && isUnavailable && "opacity-60",
       )}
@@ -174,7 +174,9 @@ function AttributeGroup({
                 attrValue={attrValue}
                 isSelected={isSelected}
                 isUnavailable={isUnavailable}
-                onClick={() => onAttributeChange(attribute.name, attrValue.value)}
+                onClick={() =>
+                  onAttributeChange(attribute.name, attrValue.value)
+                }
               />
             );
           }
@@ -198,19 +200,30 @@ export function ProductVariantSelector({
   variantAttributes,
   variants,
 }: ProductVariantSelectorProps) {
-  const { attributes } = routeApi.useSearch();
+  const { variantId } = useSearch({
+    from: "/_protected/product/product/$productId",
+  });
   const navigate = useNavigate();
 
   if (!variantAttributes || variantAttributes.length === 0) return null;
 
-  const selectedAttributes = attributes ?? {};
+  const selectedVariant =
+    variants.find((v) => v.id === variantId) ?? variants[0];
+  const selectedAttributes = selectedVariant?.combination ?? {};
 
   const handleAttributeChange = (name: string, value: string) => {
+    const newAttributes = { ...selectedAttributes, [name]: value };
+    const matchedVariant = variants.find((v) =>
+      Object.entries(newAttributes).every(
+        ([attrName, attrValue]) => v.combination[attrName] === attrValue,
+      ),
+    );
+
     navigate({
       to: ".",
       search: (prev) => ({
         ...prev,
-        attributes: { ...prev.attributes, [name]: value },
+        variantId: matchedVariant?.id,
       }),
       replace: true,
     });

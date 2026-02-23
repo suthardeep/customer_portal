@@ -50,6 +50,7 @@ export interface Product {
   adminNotes?: string;
   status: ProductStatus;
   isActive: boolean;
+  variantId: string;
   createdAt: string;
   updatedAt: string;
 }

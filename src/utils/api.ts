@@ -14,7 +14,7 @@ export class ApiError extends Error {
     public statusCode?: number,
     public response?: unknown,
   ) {
-    super(message);
+    super(statusCode ? `${message} [${statusCode}]` : message);
     this.name = 'ApiError';
   }
 }

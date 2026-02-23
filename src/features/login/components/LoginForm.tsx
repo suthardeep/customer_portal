@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/base/input/Input";
 import { Button } from "@/components/base/button/Button";
 import { loginFormSchema, type LoginFormData } from "../types/types";
+import { Logo } from "@/components/compound/logo/Logo";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
@@ -24,11 +25,11 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-sm space-y-6"
+      className="w-full space-y-6 mx-auto"
     >
-      <div>
-        <h4>Login</h4>
-        <p className="text-n-600">Enter your mobile number to continue</p>
+      <div className="fall flex-col gap-4 mb-8">
+        <Logo />
+        <h6 className="font-semibold">Login</h6>
       </div>
 
       <Input

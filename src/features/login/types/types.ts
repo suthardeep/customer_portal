@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { User } from "@/types/user.types";
 
 export const loginFormSchema = z.object({
   mobileNumber:  z
@@ -10,22 +11,8 @@ export const loginFormSchema = z.object({
 
 export type LoginFormData = z.infer<typeof loginFormSchema>;
 
-// User type
-export interface User {
-  aavakUserId: string;
-  phone: string;
-  email?: string;
-  fullName?: string;
-  platforms: string[];
-  phoneVerified: boolean;
-  emailVerified: boolean;
-  isActive: boolean;
-  deviceId?: string;
-  fcmToken?: string;
-  hashToken?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+// Re-export User type for backward compatibility
+export type { User };
 
 // API Request/Response types
 export interface SendOtpRequest {

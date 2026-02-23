@@ -24,7 +24,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
       <div className={cn("flex shrink-0 items-center gap-4", PADDING_CLASS)}>
         <div className="mr-auto flex flex-col">
           {title && (
-            <RadixDialog.Title className="font-medium text-n-900">
+            <RadixDialog.Title className="font-medium text-n-900 text-lg">
               {title}
             </RadixDialog.Title>
           )}

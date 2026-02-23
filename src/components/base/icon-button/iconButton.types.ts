@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import type { IconName } from "@/components/base/icon/iconRegistry";
 
 export type IconButtonVariant = "filled" | "outline" | "ghost";
-export type IconButtonSize = "xs" | "sm" | "md" | "lg";
+export type IconButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type IconButtonColor =
   | "primary"
   | "secondary"
@@ -30,4 +30,6 @@ export interface IconButtonProps
   type?: "button" | "submit" | "reset";
   /** Additional CSS classes */
   className?: string;
+  iconClassName?: string;
+  strokeWidth?: number
 }

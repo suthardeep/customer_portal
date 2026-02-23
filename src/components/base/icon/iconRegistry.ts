@@ -1,5 +1,6 @@
 import {
   Add01Icon,
+  Alert01Icon,
   AlertCircleIcon,
   ArrowDown01Icon,
   ArrowLeft01Icon,
@@ -8,15 +9,25 @@ import {
   Award01Icon,
   Cancel01Icon,
   Cash02Icon,
+  CustomerService01Icon,
+  Delete02Icon,
   DeliveryReturn01Icon,
   DeliveryTruck01Icon,
+  Edit02Icon,
   FavouriteIcon,
   FlashIcon,
   FolderOpenIcon,
+  Image01Icon,
   ImageNotFound01Icon,
+  InformationCircleIcon,
   Link01Icon,
   Location01Icon,
+  MessageMultiple02Icon,
+  Notification01Icon,
   PackageRemoveIcon,
+  PencilEdit01Icon,
+  AddCircleIcon,
+  RemoveCircleIcon,
   Remove01Icon,
   Search01Icon,
   Share08Icon,
@@ -26,11 +37,15 @@ import {
   StarHalfIcon,
   StarIcon,
   Store01Icon,
+  Store02Icon,
   Tick01Icon,
   Tick02Icon,
+  Coupon02Icon,
   UserIcon,
   ViewIcon,
-  ViewOffIcon
+  ViewOffIcon,
+  Wallet02Icon,
+  VideoCameraAiIcon
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -73,6 +88,24 @@ export const iconRegistry = {
   // Header navigation icons
   ShoppingCart: ShoppingBasket02Icon,
   User: UserIcon,
+  // Account sidebar icons
+  Wallet: Wallet02Icon,
+  Edit: Edit02Icon,
+  Pencil: PencilEdit01Icon,
+  Bell: Notification01Icon,
+  Studio: Store02Icon,
+  Coupon: Coupon02Icon,
+  Support: CustomerService01Icon,
+  Feedback: MessageMultiple02Icon,
+  // Toast icons
+  Info: InformationCircleIcon,
+  Warning: Alert01Icon,
+  // Wishlist icons
+  Image: Image01Icon,
+  AddCircle: AddCircleIcon,
+  RemoveCircle: RemoveCircleIcon,
+  Trash: Delete02Icon,
+  VideoCameraSpark: VideoCameraAiIcon
 } as const;
 
 

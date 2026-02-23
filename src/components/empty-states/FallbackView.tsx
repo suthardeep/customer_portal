@@ -4,21 +4,33 @@ import type { ReactNode } from "react";
 
 export interface FallbackViewProps {
   title: string;
+  subtitle?: string;
   icon?: IconName;
   footer?: ReactNode;
   classname?: string;
   version?: "default" | "compact";
+  color?: FallbackViewColor;
 }
 
 const FallbackView: React.FC<FallbackViewProps> = (props) => {
-  const { title, footer, icon, classname, version = "default" } = props;
+  const {
+    title,
+    subtitle,
+    footer,
+    icon,
+    classname,
+    version = "default",
+    color = "neutral",
+  } = props;
 
   const isCompact = version === "compact";
+  const styles = colorStyles[color];
 
   return (
     <div
       className={cn(
-        "bg-gray-50 flex w-full rounded-xl",
+        "flex w-full rounded-xl",
+        styles.bg,
         isCompact
           ? "flex-row items-center gap-3 p-3"
           : "flex items-center justify-center flex-col gap-4 p-8",
@@ -29,15 +41,46 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
         <Icon
           name={icon}
           size="lg"
-          className={cn("text-n-800", !isCompact && "size-12")}
+          className={cn(styles.icon, !isCompact && "size-12")}
         />
       )}
-      <p className={cn(!isCompact && "text-center text-n-800 font-medium")}>
-        {title || "No data found"}
-      </p>
+      <div className={cn(!isCompact && "text-center flex flex-col gap-1")}>
+        <h6 className={cn(styles.text, !isCompact && "font-medium")}>
+          {title || "No data found"}
+        </h6>
+        {subtitle && (
+          <p
+            className={cn(
+              styles.text,
+              "opacity-70 mt-1",
+              isCompact && "text-xs",
+            )}
+          >
+            {subtitle}
+          </p>
+        )}
+      </div>
       {footer && footer}
     </div>
   );
 };
 
 export default FallbackView;
+
+type FallbackViewColor = "neutral" | "danger";
+
+const colorStyles: Record<
+  FallbackViewColor,
+  { bg: string; icon: string; text: string }
+> = {
+  neutral: {
+    bg: "bg-n-50",
+    icon: "text-n-800",
+    text: "text-n-800",
+  },
+  danger: {
+    bg: "bg-danger-50",
+    icon: "text-danger-500",
+    text: "text-danger-600",
+  },
+};

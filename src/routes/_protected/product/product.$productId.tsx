@@ -1,29 +1,29 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { z } from "zod";
 import { Button } from "@/components/base/button/Button";
-import { ProductBreadcrumb } from "@/features/products/components/ProductBreadcrumb";
-import { ProductImageGallery } from "@/features/products/components/ProductImageGallery";
-import { ProductDetailHeader } from "@/features/products/components/ProductDetailHeader";
+import FallbackView from "@/components/empty-states/FallbackView";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
-import { ProductBadges } from "@/features/products/components/ProductBadges";
-import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
-import { ProductQuantitySelector } from "@/features/products/components/ProductQuantitySelector";
 import { OffersList } from "@/features/products/components/OffersList";
+import { ProductBadges } from "@/features/products/components/ProductBadges";
+import { ProductBreadcrumb } from "@/features/products/components/ProductBreadcrumb";
+import { ProductDetailHeader } from "@/features/products/components/ProductDetailHeader";
+import { ProductImageGallery } from "@/features/products/components/ProductImageGallery";
+import { ProductQuantitySelector } from "@/features/products/components/ProductQuantitySelector";
 import { ProductTabs } from "@/features/products/components/ProductTabs";
+import { ProductTopBar } from "@/features/products/components/ProductTopBar";
+import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
-import { productQueries } from "@/features/products/productQueries";
 import {
   MOCK_DELIVERY_INFO,
   MOCK_PRODUCT_FEATURES,
   MOCK_PRODUCT_OFFERS,
 } from "@/features/products/constants";
-import FallbackView from "@/components/empty-states/FallbackView";
+import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
-import { ProductTopBar } from "@/features/products/components/ProductTopBar";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
 const productDetailSearchSchema = z.object({
-  attributes: z.record(z.string(), z.string()).optional(),
+  variantId: z.string().optional(),
   quantity: z.number().int().min(1).optional().default(1),
 });
 
@@ -43,20 +43,15 @@ export const Route = createFileRoute("/_protected/product/product/$productId")({
 
 function ProductDetailComponent() {
   const { productId } = Route.useParams();
-  const { attributes } = Route.useSearch();
+  const { variantId } = Route.useSearch();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId));
 
   const selectedVariant: ProductVariant | undefined = (() => {
     if (!product.variants?.length) return undefined;
-    if (!attributes || Object.keys(attributes).length === 0)
-      return product.variants[0];
-    return (
-      product.variants.find((v) =>
-        Object.entries(attributes).every(
-          ([name, value]) => v.combination[name] === value,
-        ),
-      ) ?? product.variants[0]
-    );
+    if (variantId) {
+      return product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+    }
+    return product.variants[0];
   })();
 
   const isOutOfStock = selectedVariant
@@ -100,8 +95,10 @@ function ProductDetailComponent() {
 
         {/* Right: Product Details */}
         <div className="flex flex-col gap-6">
-          <ProductTopBar brandName={product.brandName} />
-
+          <ProductTopBar
+            brandName={product.brandName}
+            productName={product.name}
+          />
           <div className="flex flex-col xl:flex-row gap-8">
             <div className="w-full">
               <ProductDetailHeader
@@ -141,11 +138,11 @@ function ProductDetailComponent() {
               <ProductBadges features={features} />
             </div>
           </div>
+
           <ProductVariantSelector
             variantAttributes={product.variantAttributes ?? []}
             variants={product.variants ?? []}
           />
-
           <OffersList offers={offers} />
         </div>
       </div>
