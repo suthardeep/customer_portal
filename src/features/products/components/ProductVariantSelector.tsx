@@ -201,7 +201,7 @@ export function ProductVariantSelector({
   variants,
 }: ProductVariantSelectorProps) {
   const { variantId } = useSearch({
-    from: "/_protected/product/product/$productId",
+    from: "/_public/product/$productId",
   });
   const navigate = useNavigate();
 

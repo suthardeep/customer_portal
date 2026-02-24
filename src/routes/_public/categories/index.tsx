@@ -5,7 +5,7 @@ import { CategoryGrid } from "@/features/categories/components/CategoryGrid";
 import { CategoryListSkeleton } from "@/features/categories/components/skeletons/CategoryListSkeleton";
 import FallbackView from "@/components/empty-states/FallbackView";
 
-export const Route = createFileRoute("/_protected/categories/")({
+export const Route = createFileRoute("/_public/categories/")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       categoryQueries.tree({

@@ -24,12 +24,12 @@ const Dialog: React.FC<DialogProps> = (props) => {
       <div className={cn("flex shrink-0 items-center gap-4", PADDING_CLASS)}>
         <div className="mr-auto flex flex-col">
           {title && (
-            <RadixDialog.Title className="font-medium text-n-900 text-lg">
+            <RadixDialog.Title className="font-semibold text-n-900 text-lg">
               {title}
             </RadixDialog.Title>
           )}
           {subTitle && (
-            <RadixDialog.Description className="mt-0.5 text-n-700">
+            <RadixDialog.Description className="mt-0.5 text-n-800">
               {subTitle}
             </RadixDialog.Description>
           )}
@@ -45,11 +45,13 @@ const Dialog: React.FC<DialogProps> = (props) => {
         />
       </div>
 
-      <div className="flex-1 overflow-hidden px-5 py-4">
-        <div className="no-scrollbar max-h-[70dvh] overflow-y-auto">
-          {children}
+      {children && (
+        <div className="flex-1 overflow-hidden px-5 py-4">
+          <div className="no-scrollbar max-h-[70dvh] overflow-y-auto">
+            {children}
+          </div>
         </div>
-      </div>
+      )}
 
       {actions && (
         <div className={cn("flex shrink-0 justify-end gap-x-2", PADDING_CLASS)}>

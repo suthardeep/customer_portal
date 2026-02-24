@@ -1,13 +1,17 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
-import { Icon } from "@/components/base/icon";
-import { IconButton } from "@/components/base/icon-button/IconButton";
+import { Button } from "@/components/base/button/Button";
 import { Image } from "@/components/base/Image";
+import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
+import { WishlistButton } from "@/features/wishlist/components/WishlistButton";
 import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
-import type { Product } from "../types";
 import { Link } from "@tanstack/react-router";
-import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
-import { Button } from "@/components/base/button/Button";
+import type { Product } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
+import { useAddItemToCollectionMutation } from "@/features/wishlist/wishlistMutations";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 
 interface ProductCardProps {
   product: Product;
@@ -22,11 +26,43 @@ export function ProductCard({
   className,
   disableDetailPageRedirection = false,
 }: ProductCardProps) {
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
+
   const imageUrl = product?.mediaUrls?.[0];
 
-  const isWishlisted = false;
+  const wishlistItems = useQuery(
+    wishlistQueries.collectionsProducts("ALL", {
+      pageSize: 100,
+    }),
+  );
+
+  const isWishlisted = wishlistItems?.data?.data?.some(
+    (item) => item?.productId === product?.id,
+  );
+
+  const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
+
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      loginDialog.open({
+        onSuccess: () => {
+          handleWishlistAdd();
+        },
+      });
+      return;
+    }
+    handleWishlistAdd();
+  };
+
+  const handleWishlistAdd = () => {
+    if (!isWishlisted) {
+      addItemToAllCollectionMutation.mutate({
+        productId: product.id,
+        variantId: product?.variantId,
+      });
+    }
     openWishlistSheet({
       productId: product.id,
       productName: product.name,
@@ -55,28 +91,10 @@ export function ProductCard({
         <Image src={imageUrl ?? ""} alt={product.name} />
 
         {/* Wishlist Button */}
-
-        <button
-          type="button"
+        <WishlistButton
+          isWishlisted={!!isWishlisted}
           onClick={handleWishlistClick}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className={cn(
-            "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full group",
-            "backdrop-blur-xl transition-colors bg-black/30 hover:bg-red-50",
-          )}
-        >
-          <Icon
-            name="Heart"
-            size="md"
-            strokeWidth={2.5}
-            className={cn(
-              "transition-all duration-200",
-              isWishlisted
-                ? "fill-danger-500 text-danger-500"
-                : "text-white group-hover:text-danger-500 group-hover:scale-110",
-            )}
-          />
-        </button>
+        />
 
         {/* Add to Cart Button */}
         <Button
@@ -109,7 +127,7 @@ export function ProductCard({
         <div className="flex flex-wrap items-center gap-2">
           <p className="font-semibold text-n-900">
             {" "}
-            {formatCurrency(product.minPrice)}{" "}
+            {formatCurrency(product.price)}{" "}
           </p>
           <p className="text-n-600 line-through"> {formatCurrency(1599)} </p>
         </div>
@@ -126,7 +144,7 @@ export function ProductCard({
   }
 
   return (
-    <Link to="/product/product/$productId" params={{ productId: product?.id }}>
+    <Link to="/product/$productId" params={{ productId: product?.id }}>
       {content()}
     </Link>
   );

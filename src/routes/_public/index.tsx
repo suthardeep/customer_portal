@@ -9,7 +9,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_protected/")({
+export const Route = createFileRoute("/_public/")({
   component: App,
   staticData: { showCategorySubNav: true },
 });

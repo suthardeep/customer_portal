@@ -18,11 +18,14 @@ interface UseAuthReturn {
 
 export const useAuth = (): UseAuthReturn => {
   const router = useRouter();
-  const { data: user, isLoading, error, refetch } = useQuery(
-    authQueries.profile(),
-  );
-
+  const {
+    data: user,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery(authQueries.profile());
   // Auto-logout on 401 error
+
   useEffect(() => {
     if (error && getErrorStatusCode(error) === 401) {
       logout();

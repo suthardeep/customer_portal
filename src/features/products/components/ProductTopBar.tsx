@@ -1,5 +1,12 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
+import { useAddItemToCollectionMutation } from "@/features/wishlist/wishlistMutations";
+import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
+import { cn } from "@/utils/cssHelpers";
+import { toast } from "@/utils/toast";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useParams, useSearch } from "@tanstack/react-router";
 
 interface ProductTopBarProps {
@@ -9,14 +16,41 @@ interface ProductTopBarProps {
 
 export function ProductTopBar({ brandName, productName }: ProductTopBarProps) {
   const { productId } = useParams({
-    from: "/_protected/product/product/$productId",
+    from: "/_public/product/$productId",
   });
   const { variantId } = useSearch({
-    from: "/_protected/product/product/$productId",
+    from: "/_public/product/$productId",
   });
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
+
+  const wishlistItems = useQuery(
+    wishlistQueries.collectionsProducts("ALL", {
+      pageSize: 100,
+    }),
+  );
+  const isWishlisted = wishlistItems?.data?.data?.some(
+    (item) => item?.productId === productId,
+  );
+
   const openWishlistSheet = useWishlistSheetStore((state) => state.open);
+  const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
 
   const handleAddToWishlist = () => {
+    if (!isAuthenticated) {
+      loginDialog.open();
+      return;
+    }
+    if (!isWishlisted) {
+      if (variantId) {
+        addItemToAllCollectionMutation.mutate({
+          productId: productId,
+          variantId: variantId,
+        });
+      } else {
+        toast.error("Please select at least one variant");
+      }
+    }
     openWishlistSheet({ productId, productName, variantId: variantId ?? "" });
   };
 
@@ -43,6 +77,7 @@ export function ProductTopBar({ brandName, productName }: ProductTopBarProps) {
           color="neutral"
           onClick={handleAddToWishlist}
           aria-label="Add to wishlist"
+          iconClassName={cn(isWishlisted && "fill-danger-500 text-danger-500")}
         />
         <IconButton
           icon="Share"

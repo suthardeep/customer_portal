@@ -3,13 +3,22 @@ import type { PaginationQueryParams } from "@/types/general.types";
 export const wishlistKeys = {
   all: ["wishlist"] as const,
   collections: (params: PaginationQueryParams) =>
-    ["wishlist", "collections", params] as const,
+    [...wishlistKeys.all, "collections", params] as const,
   collectionDetails: (collectionId: string) =>
-    ["wishlist", "collection-details", collectionId] as const,
-  collectionProducts: (collectionId: string) =>
-    ["wishlist", "collection-products", collectionId] as const,
+    [...wishlistKeys.all, "collection-details", collectionId] as const,
+  collectionProducts: (collectionId: string, params: PaginationQueryParams) =>
+    [...wishlistKeys.all, "collection-products", collectionId, params] as const,
   collectionProductsInfinite: (
     collectionId: string,
     params: Omit<PaginationQueryParams, "currentPage">,
-  ) => ["wishlist", "collection", collectionId, "infinite", params] as const,
+  ) =>
+    [
+      ...wishlistKeys.all,
+      "collection",
+      collectionId,
+      "infinite",
+      params,
+    ] as const,
+  collectionsByProduct: (productId: string) =>
+    [...wishlistKeys.all, "collections-by-product", productId] as const,
 };

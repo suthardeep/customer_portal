@@ -1,5 +1,6 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { Image } from "@/components/base/Image";
+import Spinner from "@/components/compound/spinner/Spinner";
 import { WishlistCollection } from "@/features/wishlist/types/types";
 
 interface WishlistCollectionTile {
@@ -7,11 +8,16 @@ interface WishlistCollectionTile {
   alreadyHasThisProduct?: boolean;
   onAdd: () => void;
   onRemove: () => void;
+  isLoading?: boolean;
 }
 
 const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
-  const { collection, alreadyHasThisProduct, onAdd, onRemove } = props;
-  const hasImages = collection?.itemImages?.length > 0;
+  const { collection, alreadyHasThisProduct, onAdd, onRemove, isLoading } =
+    props;
+  const imageCount = collection?.itemImages?.length ?? 0;
+  const hasImages = imageCount > 0;
+  const displayImages = imageCount > 2 ? collection.itemImages.slice(0, 4) : collection.itemImages?.slice(0, imageCount);
+  const gridCols = imageCount === 1 ? "grid-cols-1" : "grid-cols-2";
 
   const handleClick = () => {
     if (alreadyHasThisProduct) {
@@ -28,8 +34,8 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
     >
       <div className="size-10 rounded-lg overflow-hidden">
         {hasImages ? (
-          <div className="grid grid-cols-2">
-            {collection.itemImages.slice(0, 4).map((image, index) => (
+          <div className={`grid ${gridCols}`}>
+            {displayImages.map((image, index) => (
               <Image
                 key={index}
                 alt={`${collection.name} item ${index + 1}`}
@@ -51,18 +57,26 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
       <p className="line-clamp-2 font-medium text-gray-900">
         {collection.name}
       </p>
-      <IconButton
-        aria-label="Add product to this collection"
-        icon={alreadyHasThisProduct ? "Check" : "AddCircle"}
-        className="ml-auto"
-        variant={"ghost"}
-        size="xl"
-        strokeWidth={alreadyHasThisProduct ? 3 : 1.5}
-        color="neutral"
-        iconClassName={
-          alreadyHasThisProduct ? "bg-p-100 rounded-full text-p-500 p-1" : ""
-        }
-      />
+
+      <div className="fall ml-auto">
+        {isLoading ? (
+          <Spinner className="mr-2 stroke-n-700" />
+        ) : (
+          <IconButton
+            aria-label="Add product to this collection"
+            icon={alreadyHasThisProduct ? "Check" : "AddCircle"}
+            variant={"ghost"}
+            size="xl"
+            strokeWidth={alreadyHasThisProduct ? 3 : 1.5}
+            color="neutral"
+            iconClassName={
+              alreadyHasThisProduct
+                ? "bg-p-100 rounded-full text-p-500 p-1"
+                : ""
+            }
+          />
+        )}
+      </div>
     </div>
   );
 };

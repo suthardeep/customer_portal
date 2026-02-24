@@ -2,14 +2,15 @@ import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
 import type { PaginationQueryParams } from "@/types/general.types";
 import { apiRequest } from "@/utils/apiRequest";
 import { getToken } from "@/utils/getToken";
-import type { Product } from "@/features/products/types/product.types";
-import type {
-  WishlistCollection,
-  CreateCollectionRequest,
-  UpdateCollectionRequest,
-  AddItemToCollectionRequest,
-} from "./types/types";
 import { createServerFn } from "@tanstack/react-start";
+import type {
+  AddItemToCollectionRequest,
+  CreateCollectionRequest,
+  RemoveItemFromWishlistRequest,
+  UpdateCollectionRequest,
+  WishlistCollection,
+  WishlistProduct,
+} from "./types/types";
 
 // GET /api/v1/wishlist/collections
 export const getWishlistCollections = createServerFn({ method: "GET" })
@@ -31,12 +32,16 @@ export const getWishlistCollectionDetailsById = createServerFn({
   method: "GET",
 })
   .inputValidator((collectionId: string) => collectionId)
-  .handler(async ({ data: collectionId }): Promise<BaseApiResponse<WishlistCollection>> => {
-    const token = getToken();
-    return apiRequest(`/v1/wishlist/collections/${collectionId}`, {
-      token,
-    });
-  });
+  .handler(
+    async ({
+      data: collectionId,
+    }): Promise<BaseApiResponse<WishlistCollection>> => {
+      const token = getToken();
+      return apiRequest(`/v1/wishlist/collections/${collectionId}`, {
+        token,
+      });
+    },
+  );
 export const getWishlistCollectionProductsById = createServerFn({
   method: "GET",
 })
@@ -44,7 +49,9 @@ export const getWishlistCollectionProductsById = createServerFn({
     (data: { collectionId: string } & PaginationQueryParams) => data,
   )
   .handler(
-    async ({ data }): Promise<BaseApiResponse<PaginatedResponse<Product>>> => {
+    async ({
+      data,
+    }): Promise<BaseApiResponse<PaginatedResponse<WishlistProduct>>> => {
       const { collectionId, ...params } = data;
       const token = getToken();
       return apiRequest(`/v1/wishlist/collections/${collectionId}/items`, {
@@ -93,6 +100,18 @@ export const addItemToCollection = createServerFn({ method: "POST" })
     });
   });
 
+// DELETE /api/v1/wishlist/items (removes from all collections)
+export const removeItemFromWishlist = createServerFn({ method: "POST" })
+  .inputValidator((data: RemoveItemFromWishlistRequest) => data)
+  .handler(async ({ data }): Promise<BaseApiResponse<void>> => {
+    const token = getToken();
+    return apiRequest("/v1/wishlist/items", {
+      method: "DELETE",
+      body: data,
+      token,
+    });
+  });
+
 // DELETE /api/v1/wishlist/collections/{id}
 export const deleteWishlistCollection = createServerFn({ method: "POST" })
   .inputValidator((id: string) => id)
@@ -101,5 +120,15 @@ export const deleteWishlistCollection = createServerFn({ method: "POST" })
     return apiRequest(`/v1/wishlist/collections/${id}`, {
       method: "DELETE",
       token,
+    });
+  });
+
+export const getAllCollectionIdsFromProductId = createServerFn()
+  .inputValidator((productId: string) => productId)
+  .handler(async ({ data: productId }): Promise<BaseApiResponse<string[]>> => {
+    const token = getToken();
+    return apiRequest(`/v1/wishlist/items/collections`, {
+      token,
+      params: { productId },
     });
   });

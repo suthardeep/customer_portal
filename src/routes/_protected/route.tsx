@@ -1,8 +1,38 @@
 import Header from "@/components/shared/Header";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { authQueries } from "@/features/auth/authQueries";
+import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected")({
   component: RouteComponent,
+  beforeLoad: async ({ context, location }) => {
+    const path = location.pathname;
+
+    try {
+      const user = await context.queryClient.fetchQuery(authQueries.profile());
+      if (!user)
+        throw redirect({
+          to: "/login",
+          search: {
+            redirectTo: path,
+          },
+        });
+    } catch {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirectTo: path,
+        },
+      });
+    }
+  },
+  loader: ({ context }) => {
+    context.queryClient.prefetchQuery(
+      wishlistQueries.collectionsProducts("ALL", {
+        pageSize: 100,
+      }),
+    );
+  },
 });
 
 function RouteComponent() {

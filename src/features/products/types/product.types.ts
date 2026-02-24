@@ -32,6 +32,7 @@ export interface Product {
   gstRate?: number;
   cessCode?: string;
   countryOfOrigin?: string;
+  price: number;
   sizeChartId?: string;
   priceDisplayAttribute?: string;
   imageDisplayAttribute?: string;

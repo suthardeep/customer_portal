@@ -20,7 +20,7 @@ export const useVerifyOtpMutation = () => {
     },
     onSuccess: () => {
       // Invalidate profile to trigger fresh fetch
-      queryClient.invalidateQueries({ queryKey: authKeys.profile() });
+      queryClient.refetchQueries({ queryKey: authKeys.profile() });
     },
   });
 };

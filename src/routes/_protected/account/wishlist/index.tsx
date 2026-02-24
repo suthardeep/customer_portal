@@ -1,5 +1,6 @@
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AllCollectionsCard from "@/features/wishlist/components/AllCollectionsCard";
 import { CollectionCard } from "@/features/wishlist/components/CollectionCard";
 import { CreateCollectionCard } from "@/features/wishlist/components/CreateCollectionCard";
 import { CreateCollectionDialog } from "@/features/wishlist/components/CreateCollectionDialog";
@@ -40,7 +41,7 @@ function WishlistCollectionsComponent() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {/* Create New Collection Card (First) */}
           <CreateCollectionCard onClick={createDialog.open} />
-
+          <AllCollectionsCard />
           {/* Collection Cards */}
           {collections.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />

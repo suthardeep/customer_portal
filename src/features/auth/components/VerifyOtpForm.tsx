@@ -10,7 +10,7 @@ const RESEND_COUNTDOWN_SECONDS = 30;
 
 interface VerifyOtpFormProps {
   phone: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   onBack?: () => void;
 }
 
@@ -41,7 +41,9 @@ const VerifyOtpForm = ({ phone, onSuccess, onBack }: VerifyOtpFormProps) => {
       { phone, otp },
       {
         onSuccess: () => {
-          onSuccess();
+          if (onSuccess) {
+            onSuccess();
+          }
         },
         onError: (err) => {
           setError(err.message || "Invalid OTP. Please try again.");

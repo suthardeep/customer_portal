@@ -35,7 +35,7 @@ export function ProductDetailHeader({
       {/* Rating and Reviews */}
       {product.avgRating !== undefined && (
         <StarRating
-          rating={product.avgRating}
+          rating={parseFloat(product.avgRating)}
           reviewCount={product.reviewCount}
           size="sm"
         />

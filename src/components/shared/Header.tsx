@@ -28,7 +28,9 @@ export default function Header() {
     if (isAuthenticated) {
       navigate({ to: "/account" });
     } else {
-      loginDialog.open();
+      loginDialog.open({
+        onSuccess: () => navigate({ to: "/account" }),
+      });
     }
   };
 

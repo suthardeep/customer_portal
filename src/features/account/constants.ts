@@ -20,7 +20,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Address",
         icon: "Location",
-        to: "/account/address",
+        to: "/account/addresses",
       },
       {
         label: "My wishlist",

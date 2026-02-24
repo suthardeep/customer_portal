@@ -7,7 +7,7 @@ import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_protected/categories/$categoryId/products",
+  "/_public/categories/$categoryId/products",
 )({
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(

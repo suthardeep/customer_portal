@@ -27,7 +27,7 @@ const productDetailSearchSchema = z.object({
   quantity: z.number().int().min(1).optional().default(1),
 });
 
-export const Route = createFileRoute("/_protected/product/product/$productId")({
+export const Route = createFileRoute("/_public/product/$productId")({
   validateSearch: productDetailSearchSchema,
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(

@@ -1,4 +1,26 @@
 import { z } from "zod";
+import type { Product } from "@/features/products/types/product.types";
+
+export type WishlistProduct = Pick<
+  Product,
+  | "name"
+  | "brandName"
+  | "brandId"
+  | "brandLogoUrl"
+  | "mediaUrls"
+  | "tags"
+  | "hasVariants"
+  | "avgRating"
+  | "reviewCount"
+  | "soldCount"
+  | "categoryId"
+  | "categoryPath"
+  | "categories"
+  | "createdAt"
+> & {
+  id: string; // wishlist item id
+  productId: string;
+};
 
 export interface WishlistCollection {
   id: string;
@@ -39,5 +61,11 @@ export type CollectionFormData = z.infer<typeof collectionFormSchema>;
 export interface AddItemToCollectionRequest {
   productId: string;
   variantId: string;
-  collectionIds: string[];
+  collectionIds?: string[];
+}
+
+export interface RemoveItemFromWishlistRequest {
+  productId: string;
+  variantId: string;
+  collectionId?: string;
 }

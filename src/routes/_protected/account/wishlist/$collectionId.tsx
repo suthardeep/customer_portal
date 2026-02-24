@@ -4,9 +4,9 @@ import Spinner from "@/components/compound/spinner/Spinner";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import { ProductCard } from "@/features/products/components/ProductCard";
-import { ProductCardSkeleton } from "@/features/products/components/ProductCardSkeleton";
 import { DeleteCollectionDialog } from "@/features/wishlist/components/DeleteCollectionDialog";
 import { EditCollectionDialog } from "@/features/wishlist/components/EditCollectionDialog";
+import CollectionDetailSkeleton from "@/features/wishlist/components/skeletons/CollectionDetailSkeleton";
 import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
 import { useToggle } from "@/hooks/useToggle";
 import { useInfiniteQuery, useSuspenseQuery } from "@tanstack/react-query";
@@ -30,19 +30,6 @@ export const Route = createFileRoute(
   component: CollectionDetailComponent,
 });
 
-function CollectionDetailSkeleton() {
-  return (
-    <div className="space-y-6">
-      <div className="shimmer h-8 w-64 rounded" />
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <ProductCardSkeleton key={index} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function CollectionDetailComponent() {
   const { collectionId } = Route.useParams();
   const navigate = useNavigate();
@@ -54,7 +41,7 @@ function CollectionDetailComponent() {
   );
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(wishlistQueries.collectionProductsInfinite(collectionId));
+    useInfiniteQuery(wishlistQueries.collectionProductsInfinite("ALL"));
 
   // Intersection Observer for infinite scroll
   const [loadMoreRef, entry] = useIntersectionObserver({ threshold: 0.5 });
@@ -65,7 +52,9 @@ function CollectionDetailComponent() {
 
   // Flatten pages into single array
   const products = data?.pages.flatMap((page) => page.data) ?? [];
+
   const hasProducts = (collection?.itemCount ?? 0) > 0;
+  console.log(products, "products");
 
   if (isLoading) {
     return <CollectionDetailSkeleton />;
@@ -106,7 +95,15 @@ function CollectionDetailComponent() {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {products.map((product) => {
               if (!product?.name) return;
-              return <ProductCard key={product?.id} product={product} />;
+              return (
+                <Link
+                  to="/product/product/$productId"
+                  params={{ productId: product?.productId }}
+                  key={product?.id}
+                >
+                  <ProductCard product={product} disableDetailPageRedirection />
+                </Link>
+              );
             })}
           </div>
 
