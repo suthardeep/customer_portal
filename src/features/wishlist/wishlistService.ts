@@ -82,7 +82,7 @@ export const updateWishlistCollection = createServerFn({ method: "POST" })
     const { id, ...body } = data;
     const token = getToken();
     return apiRequest(`/v1/wishlist/collections/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       body,
       token,
     });

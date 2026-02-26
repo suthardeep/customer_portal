@@ -41,7 +41,7 @@ function CollectionDetailComponent() {
   );
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(wishlistQueries.collectionProductsInfinite("ALL"));
+    useInfiniteQuery(wishlistQueries.collectionProductsInfinite(collectionId));
 
   // Intersection Observer for infinite scroll
   const [loadMoreRef, entry] = useIntersectionObserver({ threshold: 0.5 });
@@ -54,7 +54,6 @@ function CollectionDetailComponent() {
   const products = data?.pages.flatMap((page) => page.data) ?? [];
 
   const hasProducts = (collection?.itemCount ?? 0) > 0;
-  console.log(products, "products");
 
   if (isLoading) {
     return <CollectionDetailSkeleton />;
@@ -97,7 +96,7 @@ function CollectionDetailComponent() {
               if (!product?.name) return;
               return (
                 <Link
-                  to="/product/product/$productId"
+                  to="/product/$productId"
                   params={{ productId: product?.productId }}
                   key={product?.id}
                 >

@@ -1,4 +1,4 @@
-import { showErrorToasts, toast } from "@/components/toast";
+import { showErrorToasts } from "@/components/toast";
 import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import type {
@@ -24,7 +24,6 @@ export const useCreateCollectionMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: wishlistKeys.all });
-      toast.success("Collection created successfully");
     },
     onError: (error) => {
       showErrorToasts(error);
@@ -40,7 +39,6 @@ export const useUpdateCollectionMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: wishlistKeys.all });
-      toast.success("Collection updated successfully");
     },
     onError: (error) => {
       showErrorToasts(error);
@@ -56,7 +54,6 @@ export const useDeleteCollectionMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: wishlistKeys.all });
-      toast.success("Collection deleted successfully");
     },
     onError: (error) => {
       showErrorToasts(error);
@@ -73,6 +70,9 @@ export const useAddItemToCollectionMutation = () => {
     onSuccess: (_, payload) => {
       queryClient.invalidateQueries({
         queryKey: wishlistKeys.collectionsByProduct(payload.productId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: wishlistKeys.collections({ currentPage: 1, pageSize: 20 }),
       });
       queryClient.invalidateQueries({
         queryKey: wishlistKeys.collectionProducts("ALL", { pageSize: 100 }),

@@ -10,6 +10,9 @@ export function QuickActionCards() {
           key={card.to}
           to={card.to}
           className="flex flex-col items-center gap-2 rounded-lg bg-n-100 p-4 transition-colors hover:bg-n-300/70 border border-n-400"
+          activeProps={{
+            className: "bg-p-50! border-p-500",
+          }}
         >
           <Icon name={card.icon} size="lg" className="text-p-900" />
           <span className="text-sm font-medium text-p-900">{card.label}</span>

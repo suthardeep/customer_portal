@@ -2,12 +2,15 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/base/icon/Icon";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { authQueries } from "@/features/auth/authQueries";
+import { useToggle } from "@/hooks/useToggle";
 import { ProfileHeaderSkeleton } from "./ProfileHeaderSkeleton";
 import { Suspense } from "react";
 import { getInitials } from "@/utils/stringHelpers";
+import EditProfileDialog from "./EditProfileDialog";
 
 function ProfileHeaderContent() {
   const { data: user } = useSuspenseQuery(authQueries.profile());
+  const editDialog = useToggle();
 
   const isVerified = user.phoneVerified || user.emailVerified;
   const displayName = user.fullName || "User";
@@ -43,7 +46,10 @@ function ProfileHeaderContent() {
         variant="ghost"
         color="neutral"
         aria-label="Edit profile"
+        onClick={editDialog.open}
       />
+
+      <EditProfileDialog isOpen={editDialog.isOpen} onClose={editDialog.close} />
     </div>
   );
 }

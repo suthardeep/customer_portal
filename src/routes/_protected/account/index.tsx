@@ -1,9 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@/components/base/button/Button";
+import FallbackView from "@/components/empty-states/FallbackView";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/account/")({
-  component: RouteComponent,
+  component: () => (
+    <FallbackView
+      title="You should not be here"
+      footer={
+        <Link to="/account/my-orders">
+          {" "}
+          <Button>Go to my orders</Button>
+        </Link>
+      }
+    />
+  ),
+  beforeLoad: () => {
+    throw redirect({ to: "/account/my-orders" });
+  },
 });
-
-function RouteComponent() {
-  return <div>Hello "/_protected/account/"!</div>;
-}

@@ -13,6 +13,7 @@ import WishlistCollectionTile from "./WishlistCollectionTile";
 import ProductAddToWishlistSheetSkeleton from "./skeletons/ProductAddToWishlistSheetSkeleton";
 import { cn } from "@/utils/cssHelpers";
 import { Button } from "@/components/base/button/Button";
+import { CreateCollectionDialog } from "@/features/wishlist/components/CreateCollectionDialog";
 
 interface ProductAddToWishlistSheet {
   productId: string;
@@ -26,6 +27,8 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
   props,
 ) => {
   const { isOpen, onClose, productId, variantId, productName } = props;
+  const createDialog = useToggle();
+
   const wishlistCollectionQuery = useQuery(wishlistQueries.collections());
   const addToWishlistMutation = useAddItemToCollectionMutation();
   const wishlistItems = useQuery(
@@ -85,7 +88,7 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
       >
         <div className="flex items-center justify-between pb-2! px-3! pt-2!">
           <p className="font-semibold">Collections</p>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={createDialog.open}>
             New Collections
           </Button>
         </div>
@@ -130,6 +133,10 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
         isOpen={removeDialog.isOpen}
         onClose={removeDialog.close}
         onSuccess={onClose}
+      />
+      <CreateCollectionDialog
+        isOpen={createDialog.isOpen}
+        onClose={createDialog.close}
       />
     </>
   );

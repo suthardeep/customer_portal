@@ -4,6 +4,8 @@ export interface User {
   phone: string;
   email?: string;
   fullName?: string;
+  profileImageUrl?: string;
+  dateOfBirth?: string;
   platforms: string[];
   phoneVerified: boolean;
   emailVerified: boolean;

@@ -14,7 +14,9 @@ export function AavakCoinsChip({ coins }: AavakCoinsChipProps) {
       size="sm"
       className="inline-flex items-center gap-1.5"
     >
-      <Image src="/aavak-coin-v1.png" alt="coin" eager className="size-4" />
+      <div className="size-4">
+        <Image src="/aavak-coin-v1.png" alt="coin" eager />
+      </div>
       <span className="text-nowrap text-s-900">Earn {coins}</span>
     </Chip>
   );

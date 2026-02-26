@@ -1,23 +1,48 @@
 import HorizontalScrollSection from "@/components/compound/HorizontalScrollSection";
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
+import FallbackView from "@/components/empty-states/FallbackView";
 import { categoryQueries } from "@/features/categories/categoryQueries";
 import { CategoryCard } from "@/features/categories/components/CategoryCard";
 import { CategoryDetailSkeleton } from "@/features/categories/components/skeletons/CategoryDetailSkeleton";
+import type { CategoryTreeNode } from "@/features/categories/types/types";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { ProductCardSkeleton } from "@/features/products/components/ProductCardSkeleton";
 import { productQueries } from "@/features/products/productQueries";
 import { useQueries, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, redirect } from "@tanstack/react-router";
+import { z } from "zod";
+
+const categorySearchSchema = z.object({
+  subCategoryId: z.string().optional(),
+});
 
 export const Route = createFileRoute("/_public/categories/$categoryId")({
+  validateSearch: categorySearchSchema,
+  beforeLoad: async ({ search, params, context }) => {
+    if (!search.subCategoryId) {
+      const tree = await context.queryClient.ensureQueryData(
+        categoryQueries.categoryTree(params.categoryId),
+      );
+      if (tree.children.length > 0) {
+        throw redirect({
+          to: "/categories/$categoryId",
+          params: { categoryId: params.categoryId },
+          search: { subCategoryId: tree.children[0].id },
+          replace: true,
+        });
+      }
+    }
+  },
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
-      categoryQueries.detail(params.categoryId),
+      categoryQueries.categoryTree(params.categoryId),
     );
   },
   pendingComponent: CategoryDetailSkeleton,
   component: CategoryDetailComponent,
-  errorComponent: (err) => <div>Err - {err.error.message} </div>,
+  errorComponent: (err) => (
+    <FallbackView title={err.error.message ?? "Unable to fetch category"} />
+  ),
   staticData: {
     showCategorySubNav: true,
   },
@@ -25,14 +50,26 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
 
 function CategoryDetailComponent() {
   const { categoryId } = Route.useParams();
+  const { subCategoryId } = Route.useSearch();
 
-  const { data } = useSuspenseQuery(categoryQueries.detail(categoryId));
-  const { subCategories } = data;
+  const { data } = useSuspenseQuery(categoryQueries.categoryTree(categoryId));
+  const { children: subCategories } = data;
 
-  const productQueriesResults = useQueries({
-    queries: subCategories.map((subcategory) =>
+  const selectedSub: CategoryTreeNode =
+    subCategories.find((s) => s.id === subCategoryId) ?? subCategories[0];
+
+  const childCategories = selectedSub?.children ?? [];
+
+  const sections = selectedSub
+    ? childCategories.length > 0
+      ? childCategories.map((c) => ({ id: c.id, name: c.name }))
+      : [{ id: selectedSub.id, name: selectedSub.name }]
+    : [];
+
+  const productResults = useQueries({
+    queries: sections.map((section) =>
       productQueries.list({
-        categoryId: subcategory.id,
+        categoryId: section.id,
         pageSize: PRODUCTS_PER_SUBCATEGORY,
         currentPage: 1,
       }),
@@ -44,24 +81,35 @@ function CategoryDetailComponent() {
       {/* Subcategory cards */}
       {subCategories.length > 0 && (
         <div className="mb-8 flex gap-4 overflow-x-auto pb-2 no-scrollbar">
-          {subCategories?.map((category) => (
-            <CategoryCard key={category?.id} category={category} />
+          {subCategories.map((category) => (
+            <Link
+              key={category.id}
+              to="/categories/$categoryId"
+              params={{ categoryId }}
+              search={{ subCategoryId: category.id }}
+              replace
+            >
+              <CategoryCard
+                category={{ ...category, image: category.image ?? undefined }}
+                isSelected={category.id === subCategoryId}
+              />
+            </Link>
           ))}
         </div>
       )}
 
-      {subCategories.map((subcategory, index) => {
-        const query = productQueriesResults[index];
+      {/* Products grouped by selected sub category and its children */}
+      {sections.map((section, index) => {
+        const query = productResults[index];
         const hasNoProducts = query?.data?.meta?.totalRows === 0;
         const hasMultiplePages = (query?.data?.meta?.totalPages ?? 0) > 1;
-        if (hasNoProducts) return;
-        console.log(query?.data?.data);
+        if (hasNoProducts) return null;
 
         return (
           <HorizontalScrollSection
-            key={subcategory.id}
-            title={subcategory.name}
-            seeAllLink={`/categories/${subcategory.id}/products`}
+            key={section.id}
+            title={section.name}
+            seeAllLink={`/categories/products/${section.id}`}
             className="mb-8"
             hideSeeAll={!hasMultiplePages}
           >

@@ -26,10 +26,10 @@ export default function Header() {
 
   const handleAccountClick = () => {
     if (isAuthenticated) {
-      navigate({ to: "/account" });
+      navigate({ to: "/account/my-orders" });
     } else {
       loginDialog.open({
-        onSuccess: () => navigate({ to: "/account" }),
+        onSuccess: () => navigate({ to: "/account/my-orders" }),
       });
     }
   };
@@ -56,6 +56,7 @@ export default function Header() {
     {
       label: "Cart",
       icon: <Icon name="ShoppingCart" size="lg" className={iconClassName} />,
+      link: "/cart",
     },
     {
       label: getAccountLabel(),

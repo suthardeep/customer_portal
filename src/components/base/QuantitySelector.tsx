@@ -31,34 +31,29 @@ export function QuantitySelector({
   const isIncrementDisabled = disabled || value >= max;
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 bg-p-900 rounded-md">
       <IconButton
         icon="Remove"
         size="sm"
-        variant="outline"
+        variant="ghost"
         color="neutral"
         onClick={handleDecrement}
         disabled={isDecrementDisabled}
         aria-label="Decrease quantity"
+        className="bg-transparent!"
+        iconClassName="text-white"
       />
-
-      <input
-        type="text"
-        value={value}
-        readOnly
-        disabled={disabled}
-        className="w-12 text-center font-medium text-n-900 bg-transparent border-none focus:outline-none"
-        aria-label="Quantity"
-      />
-
+      <p className="text-white font-medium">{value}</p>
       <IconButton
         icon="Add"
         size="sm"
-        variant="outline"
+        variant="ghost"
         color="neutral"
         onClick={handleIncrement}
         disabled={isIncrementDisabled}
         aria-label="Increase quantity"
+        className="bg-transparent!"
+        iconClassName="text-white"
       />
     </div>
   );

@@ -33,6 +33,7 @@ export function Popover({
             "data-[state=closed]:animate-popover-hide",
             // Z-index
             "z-50",
+            "min-w-36 p-1",
             // User overrides
             className,
           )}

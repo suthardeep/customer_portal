@@ -16,7 +16,10 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
     props;
   const imageCount = collection?.itemImages?.length ?? 0;
   const hasImages = imageCount > 0;
-  const displayImages = imageCount > 2 ? collection.itemImages.slice(0, 4) : collection.itemImages?.slice(0, imageCount);
+  const displayImages =
+    imageCount > 2
+      ? collection.itemImages.slice(0, 4)
+      : collection.itemImages?.slice(0, imageCount);
   const gridCols = imageCount === 1 ? "grid-cols-1" : "grid-cols-2";
 
   const handleClick = () => {
@@ -34,13 +37,13 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
     >
       <div className="size-10 rounded-lg overflow-hidden">
         {hasImages ? (
-          <div className={`grid ${gridCols}`}>
+          <div className={`grid ${gridCols} h-full gap-px bg-white`}>
             {displayImages.map((image, index) => (
               <Image
                 key={index}
                 alt={`${collection.name} item ${index + 1}`}
                 src={image}
-                className="aspect-square object-cover"
+                className="w-full h-full object-cover"
               />
             ))}
           </div>
@@ -71,7 +74,7 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
             color="neutral"
             iconClassName={
               alreadyHasThisProduct
-                ? "bg-p-100 rounded-full text-p-500 p-1"
+                ? "bg-p-500 rounded-full text-white p-1"
                 : ""
             }
           />

@@ -9,7 +9,7 @@ const CategoriesTabNav = () => {
   const categoryQuery = useQuery(
     categoryQueries.tree({
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 100,
     }),
   );
   const categoryResponse = categoryQuery.data;

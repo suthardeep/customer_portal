@@ -38,7 +38,7 @@ function WishlistCollectionsComponent() {
       <AccountPageHeader title="My Wishlist" />
 
       {hasCollections ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {/* Create New Collection Card (First) */}
           <CreateCollectionCard onClick={createDialog.open} />
           <AllCollectionsCard />

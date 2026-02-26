@@ -4,7 +4,6 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { authQueries } from "@/features/auth/authQueries";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Toaster } from "sonner";
 
@@ -15,6 +14,8 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles/styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
+import { authQueries } from "@/features/auth/authQueries";
+import { cartQueries } from "@/features/cart/cartQueries";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -43,6 +44,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
 
   shellComponent: RootDocument,
+  loader: ({ context }) => {
+    context.queryClient.prefetchQuery(authQueries.profile());
+    context.queryClient.prefetchQuery(cartQueries.detail());
+  },
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {

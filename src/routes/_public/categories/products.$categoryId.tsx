@@ -1,4 +1,5 @@
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
+import FallbackView from "@/components/empty-states/FallbackView";
 import { categoryQueries } from "@/features/categories/categoryQueries";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { ProductListSkeleton } from "@/features/products/components/ProductListSkeleton";
@@ -7,13 +8,16 @@ import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_public/categories/$categoryId/products",
+  "/_public/categories/products/$categoryId",
 )({
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
       categoryQueries.detail(params.categoryId),
     );
   },
+  errorComponent: (e) => (
+    <FallbackView title={e?.error?.message || "Unable to fetch category"} />
+  ),
   pendingComponent: ProductListSkeleton,
   component: ProductListComponent,
   staticData: {
@@ -27,6 +31,7 @@ function ProductListComponent() {
   const { data: categoryData } = useSuspenseQuery(
     categoryQueries.detail(categoryId),
   );
+
   const productQuery = useQuery(
     productQueries.list({
       categoryId,
@@ -37,8 +42,7 @@ function ProductListComponent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6">{categoryData.category.name}</h1>
-
+      <h6 className="mb-6 font-semibold">{categoryData.category.name}</h6>
       <QueryStateHandler
         query={productQuery}
         isEmpty={productQuery?.data?.meta?.totalRows === 0}

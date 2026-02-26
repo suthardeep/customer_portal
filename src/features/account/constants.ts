@@ -4,12 +4,12 @@ export const QUICK_ACTION_CARDS: QuickActionCard[] = [
   {
     label: "My order",
     icon: "ShoppingCart",
-    to: "/account/orders",
+    to: "/account/my-orders",
   },
   {
     label: "Wallet",
     icon: "Wallet",
-    to: "/account/wallet",
+    to: "/",
   },
 ];
 
@@ -18,9 +18,9 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     title: "Account",
     items: [
       {
-        label: "Address",
+        label: "My Address",
         icon: "Location",
-        to: "/account/addresses",
+        to: "/account/my-address",
       },
       {
         label: "My wishlist",
@@ -30,7 +30,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Subscription",
         icon: "Bell",
-        to: "/account/subscription",
+        to: "/",
       },
     ],
   },
@@ -40,17 +40,17 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Studio",
         icon: "VideoCameraSpark",
-        to: "/account/studio",
+        to: "/",
       },
       {
         label: "Become a Seller",
         icon: "Store",
-        to: "/account/seller",
+        to: "/",
       },
       {
         label: "Referral link",
         icon: "Link",
-        to: "/account/referral",
+        to: "/",
       },
     ],
   },
@@ -60,7 +60,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Coupons",
         icon: "Coupon",
-        to: "/account/coupons",
+        to: "/",
       },
     ],
   },
@@ -70,12 +70,12 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Support",
         icon: "Support",
-        to: "/account/support",
+        to: "/",
       },
       {
         label: "Feedback & Suggestion",
         icon: "Feedback",
-        to: "/account/feedback",
+        to: "/",
       },
     ],
   },

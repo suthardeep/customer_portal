@@ -6,10 +6,11 @@ interface AccountPageHeaderProps {
   title: string;
   className?: string;
   hideBackButton?: boolean;
+  trailingTitleComponent?: React.ReactNode;
 }
 
 const AccountPageHeader: React.FC<AccountPageHeaderProps> = (props) => {
-  const { title, className, hideBackButton } = props;
+  const { title, className, hideBackButton, trailingTitleComponent } = props;
   const router = useRouter();
   const canGoBack = useCanGoBack();
 
@@ -25,7 +26,8 @@ const AccountPageHeader: React.FC<AccountPageHeaderProps> = (props) => {
           className="mt-0.5"
         />
       )}
-      <h5 className="font-semibold"> {title} </h5>
+      <h5 className="font-semibold mr-auto"> {title} </h5>
+      {trailingTitleComponent && trailingTitleComponent}
     </div>
   );
 };

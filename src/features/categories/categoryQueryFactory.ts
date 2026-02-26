@@ -4,4 +4,5 @@ export const categoryKeys = {
   all: ['categories'] as const,
   tree: (params: PaginationQueryParams) => [...categoryKeys.all, 'tree', params] as const,
   detail: (id: string) => ['category', id] as const,
+  categoryTree: (id: string) => ['category', id, 'tree'] as const,
 };

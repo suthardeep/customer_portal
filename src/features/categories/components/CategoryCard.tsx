@@ -4,15 +4,21 @@ import { Image } from "@/components/base/Image";
 import { cn } from "@/utils/cssHelpers";
 
 interface CategoryCardProps {
-  category: Category;
+  category: Pick<Category, "name" | "image">;
   imgClassName?: string;
+  isSelected?: boolean;
 }
 
-export function CategoryCard({ category, imgClassName }: CategoryCardProps) {
+export function CategoryCard({
+  category,
+  imgClassName,
+  isSelected,
+}: CategoryCardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shrink-0 w-32 md:w-40",
+        "flex flex-col overflow-hidden rounded-lg border-2  bg-white shrink-0 w-32 md:w-40",
+        isSelected ? "border-p-400 shadow-md" : "border-gray-100",
       )}
     >
       <div className="relative aspect-square overflow-hidden">

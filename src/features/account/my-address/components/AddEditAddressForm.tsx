@@ -1,0 +1,202 @@
+import { Button } from "@/components/base/button/Button";
+import { Checkbox } from "@/components/base/checkbox/Checkbox";
+import ErrorText from "@/components/base/ErrorText";
+import { Input } from "@/components/base/input/Input";
+import { TabSelector } from "@/components/base/TabSelector";
+import { ADDRESS_TYPE_ITEMS } from "@/features/account/my-address/constants";
+import { AddressTypeEnum } from "@/features/account/my-address/enums";
+import { addressFormSchema } from "@/features/account/my-address/schemas/addressFormSchema";
+import type { AddressFormData } from "@/features/account/my-address/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm, useWatch } from "react-hook-form";
+
+interface AddEditAddressFormProps {
+  mode: "add" | "edit";
+  defaultValues?: Partial<AddressFormData>;
+  onSubmit: (formData: AddressFormData) => void;
+  isMutating?: boolean;
+  className?: string;
+  onCancel?: () => void;
+  onSuccess?: () => void;
+}
+
+const AddEditAddressForm = ({
+  mode,
+  defaultValues,
+  onSubmit,
+  isMutating = false,
+  className,
+  onCancel,
+  onSuccess,
+}: AddEditAddressFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<AddressFormData>({
+    resolver: zodResolver(addressFormSchema),
+    defaultValues: {
+      fullName: "",
+      phone: "",
+      addressLine1: "",
+      addressLine2: "",
+      landmark: "",
+      pincode: "",
+      city: "",
+      state: "",
+      addressType: AddressTypeEnum.HOME,
+      otherAddressLabel: "",
+      isDefault: false,
+      ...defaultValues,
+    },
+  });
+
+  const addressType = useWatch({ control, name: "addressType" });
+
+  const handleFormSubmit = (data: AddressFormData) => {
+    onSubmit(data);
+    onSuccess?.();
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className={`${className ?? ""}`}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 max-h-[50dvh] md:max-h-fit overflow-y-auto no-scrollbar">
+        <Input
+          {...register("fullName")}
+          label="Full Name"
+          placeholder="Enter Full name"
+          error={errors.fullName?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("phone")}
+          label="Mobile Number"
+          placeholder="Enter Mobile number"
+          type="number"
+          inputMode="numeric"
+          maxLength={10}
+          error={errors.phone?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("addressLine1")}
+          label="Address Line 1"
+          placeholder="Enter Address Line 1"
+          error={errors.addressLine1?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("addressLine2")}
+          label="Address Line 2"
+          placeholder="Enter Address Line 2"
+          error={errors.addressLine2?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("landmark")}
+          label="Landmark"
+          placeholder="Enter Landmark"
+          error={errors.landmark?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("pincode")}
+          label="Pincode"
+          placeholder="123456"
+          type="tel"
+          inputMode="numeric"
+          maxLength={6}
+          error={errors.pincode?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("city")}
+          label="City"
+          placeholder="Enter City name"
+          error={errors.city?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <Input
+          {...register("state")}
+          label="State"
+          placeholder="Enter State name"
+          error={errors.state?.message}
+          disabled={isMutating}
+          fullWidth
+        />
+
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-n-800">Address Type</p>
+          <Controller
+            name="addressType"
+            control={control}
+            render={({ field }) => (
+              <TabSelector
+                items={ADDRESS_TYPE_ITEMS}
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
+          {errors.addressType && (
+            <ErrorText>{errors.addressType.message}</ErrorText>
+          )}
+        </div>
+
+        {addressType === AddressTypeEnum.OTHER && (
+          <Input
+            {...register("otherAddressLabel")}
+            label="Address Label"
+            placeholder="e.g. Parents, Gym, Studio"
+            error={errors.otherAddressLabel?.message}
+            disabled={isMutating}
+            fullWidth
+          />
+        )}
+
+        <Checkbox
+          {...register("isDefault")}
+          label="Set as default address"
+          disabled={isMutating}
+        />
+      </div>
+      <div className="flex gap-3 pt-2">
+        {onCancel && (
+          <Button
+            type="button"
+            variant="outline"
+            color="neutral"
+            fullWidth
+            disabled={isMutating}
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+        )}
+        <Button type="submit" fullWidth isLoading={isMutating}>
+          {mode === "add" ? "Add" : "Save"}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default AddEditAddressForm;

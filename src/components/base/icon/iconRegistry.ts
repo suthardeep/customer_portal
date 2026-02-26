@@ -3,10 +3,12 @@ import {
   Alert01Icon,
   AlertCircleIcon,
   ArrowDown01Icon,
+  Coins01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
   ArrowUp01Icon,
   Award01Icon,
+  Briefcase01Icon,
   Cancel01Icon,
   Cash02Icon,
   CustomerService01Icon,
@@ -17,12 +19,14 @@ import {
   FavouriteIcon,
   FlashIcon,
   FolderOpenIcon,
+  Home01Icon,
   Image01Icon,
   ImageNotFound01Icon,
   InformationCircleIcon,
   Link01Icon,
   Location01Icon,
   MessageMultiple02Icon,
+  MoreVerticalIcon,
   Notification01Icon,
   PackageRemoveIcon,
   PencilEdit01Icon,
@@ -105,7 +109,13 @@ export const iconRegistry = {
   AddCircle: AddCircleIcon,
   RemoveCircle: RemoveCircleIcon,
   Trash: Delete02Icon,
-  VideoCameraSpark: VideoCameraAiIcon
+  VideoCameraSpark: VideoCameraAiIcon,
+  // Cart icons
+  Coins: Coins01Icon,
+  // Address icons
+  Home: Home01Icon,
+  Briefcase: Briefcase01Icon,
+  MoreVertical: MoreVerticalIcon,
 } as const;
 
 
