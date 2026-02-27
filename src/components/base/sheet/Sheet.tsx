@@ -1,7 +1,6 @@
 import { cn } from "@/utils/cssHelpers";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import type { ReactNode } from "react";
-import { Drawer } from "vaul";
+import { useEffect, useState, type ReactNode } from "react";
+import { DialogProps, Drawer } from "vaul";
 import { Button } from "../button/Button";
 import type { ButtonProps } from "../button/button.types";
 import { IconButton } from "../icon-button/IconButton";
@@ -22,8 +21,17 @@ const Sheet: React.FC<SheetProps> = (props) => {
     hideCloseIcon = false,
   } = props;
 
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const direction = directionProp ?? (isMobile ? "bottom" : "right");
+  const [sheetDirection, setSheetDirection] = useState<DirectionType>("bottom");
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    if (mq.matches) {
+      setSheetDirection("bottom");
+    } else {
+      setSheetDirection("right");
+    }
+  }, []);
+
+  const direction = directionProp ?? sheetDirection;
   const isBottom = direction === "bottom";
 
   return (
@@ -56,7 +64,7 @@ const Sheet: React.FC<SheetProps> = (props) => {
 
           <div
             className={cn(
-              "flex shrink-0 items-center gap-1 border-b border-b-n-500",
+              "flex shrink-0 items-center gap-1 border-b border-b-n-400",
               PADDING_CLASS,
             )}
           >
@@ -173,3 +181,5 @@ export interface SheetProps {
   trailingTitleComponent?: ReactNode;
   hideCloseIcon?: boolean;
 }
+
+type DirectionType = DialogProps["direction"];

@@ -6,6 +6,7 @@ import { useSendOtpMutation } from "@/features/login/loginMutations";
 import type { LoginFormData } from "@/features/login/types/types";
 import { useState } from "react";
 import { IconButton } from "@/components/base/icon-button/IconButton";
+import ErrorText from "@/components/base/ErrorText";
 
 export const LoginDialog = () => {
   const isOpen = useLoginDialogStore((state) => state.isOpen);
@@ -64,6 +65,7 @@ export const LoginDialog = () => {
       }
       size="sm"
       customContent
+      disableBackdropClose
     >
       <div className="p-8 relative">
         {currentStep === "phone" ? (
@@ -72,11 +74,7 @@ export const LoginDialog = () => {
               onSubmit={handlePhoneSubmit}
               isLoading={sendOtpMutation.isPending}
             />
-            {sendOtpError && (
-              <p className="text-center text-sm text-danger-500">
-                {sendOtpError}
-              </p>
-            )}
+            {sendOtpError && <ErrorText withBgCard>{sendOtpError}</ErrorText>}
           </div>
         ) : (
           <VerifyOtpForm

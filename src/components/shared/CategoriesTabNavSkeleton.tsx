@@ -4,7 +4,7 @@ const CategoriesTabNavSkeleton = () => {
       {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className="shimmer h-6 w-20 rounded-full"
+          className="shimmer h-7.25 min-w-56 w-20 rounded-full"
         />
       ))}
     </div>

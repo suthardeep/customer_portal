@@ -67,6 +67,11 @@ export async function apiRequest<T>(
     requestHeaders.Authorization = `Bearer ${token}`;
   }
 
+  console.log(`[API Request] ${method} ${url}`, {
+    headers: requestHeaders,
+    body: body ?? null,
+  });
+
   const response = await fetch(url, {
     method,
     headers: requestHeaders,

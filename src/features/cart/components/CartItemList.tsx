@@ -5,6 +5,7 @@ import {
   useDeleteCartItemMutation,
   useUpdateCartItemMutation,
 } from "../cartMutations";
+import { ClearCartButton } from "./ClearCartButton";
 import type { CartItem } from "../types/types";
 import { CartItemCard } from "./CartItemCard";
 
@@ -15,7 +16,6 @@ interface CartItemListProps {
 export function CartItemList({ items }: CartItemListProps) {
   const updateMutation = useUpdateCartItemMutation();
   const deleteMutation = useDeleteCartItemMutation();
-
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const selectAllRef = useRef<HTMLInputElement>(null);
 
@@ -93,9 +93,10 @@ export function CartItemList({ items }: CartItemListProps) {
             onClick={handleBulkRemove}
             disabled={isAnyPending}
           >
-            Remove
+            Remove Selected
           </Button>
         )}
+        <ClearCartButton />
       </div>
 
       {items.map((item) => (

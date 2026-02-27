@@ -113,7 +113,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
           className={cn(
             "fixed left-1/2 top-1/2 z-101",
             "flex flex-col rounded-2xl border bg-n-50 shadow-xl/5 overflow-hidden",
-            "border-n-300",
+            "border-n-300 outline-none",
             "data-[state=open]:animate-content-show data-[state=closed]:animate-content-hide",
             SIZE_MAP[size],
           )}

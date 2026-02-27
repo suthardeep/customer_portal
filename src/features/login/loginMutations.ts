@@ -18,9 +18,8 @@ export const useVerifyOtpMutation = () => {
     mutationFn: async (data: VerifyOtpRequest): Promise<User> => {
       return verifyOtp({ data });
     },
-    onSuccess: () => {
-      // Invalidate profile to trigger fresh fetch
-      queryClient.refetchQueries({ queryKey: authKeys.profile() });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: authKeys.profile() });
     },
   });
 };

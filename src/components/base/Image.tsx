@@ -1,4 +1,4 @@
-import { forwardRef, useState, useCallback, useEffect } from "react";
+import { forwardRef, useState, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/utils/cssHelpers";
 
 interface ImageProps extends Omit<
@@ -29,12 +29,21 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
   ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [currentSrc, setCurrentSrc] = useState(src || fallbackSrc);
+    const imgRef = useRef<HTMLImageElement>(null);
 
     // Reset state when src changes
     useEffect(() => {
       setCurrentSrc(src || fallbackSrc);
       setIsLoading(true);
     }, [src, fallbackSrc]);
+
+    // If the browser already has the image cached, onLoad won't fire.
+    // Check img.complete after each render to catch this case.
+    useEffect(() => {
+      if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+        setIsLoading(false);
+      }
+    });
 
     const handleLoad = useCallback(() => {
       setIsLoading(false);
@@ -59,7 +68,11 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
           />
         )}
         <img
-          ref={ref}
+          ref={(node) => {
+            imgRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) ref.current = node;
+          }}
           src={currentSrc}
           alt={alt}
           loading={eager ? "eager" : "lazy"}

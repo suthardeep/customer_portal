@@ -1,14 +1,15 @@
 import { Icon } from "@/components/base/icon/Icon";
+import { CartCountBadge } from "@/features/cart/components/CartCountBadge";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 import { cn } from "@/utils/cssHelpers";
 import { Link, useMatches, useNavigate } from "@tanstack/react-router";
 import { Suspense, type ReactNode } from "react";
-import CategoriesTabNav from "./CategoriesTabNav";
-import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
 import { AavakFinTechLogo } from "../compound/logo/AavakFinTechLogo";
 import { AavakProtectLogo } from "../compound/logo/AavakProtectLogo";
 import { Logo } from "../compound/logo/Logo";
+import CategoriesTabNav from "./CategoriesTabNav";
+import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
 
 export default function Header() {
   const loginDialog = useLoginDialog();
@@ -55,7 +56,12 @@ export default function Header() {
     },
     {
       label: "Cart",
-      icon: <Icon name="ShoppingCart" size="lg" className={iconClassName} />,
+      icon: (
+        <div className="relative">
+          <Icon name="ShoppingCart" size="lg" className={iconClassName} />
+          <CartCountBadge />
+        </div>
+      ),
       link: "/cart",
     },
     {

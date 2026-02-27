@@ -33,9 +33,11 @@
     "source.organizeImports.biome": "explicit"
   },
   "typescript.preferences.autoImportFileExcludePatterns": [
-    "node_modules/@uidotdev/*"
+    "node_modules/@uidotdev/*",
+    "node_modules/sonner/*"
   ],
   "javascript.preferences.autoImportFileExcludePatterns": [
-    "node_modules/@uidotdev/*"
+    "node_modules/@uidotdev/*",
+    "node_modules/sonner/*"
   ]
 }

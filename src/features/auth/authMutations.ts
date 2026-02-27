@@ -26,7 +26,7 @@ export const useLogoutMutation = () => {
 
   return useMutation({
     mutationFn: () => logout(),
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.clear();
       router.navigate({ to: "/" });
     },

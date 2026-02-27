@@ -1,5 +1,6 @@
 import { Button } from "@/components/base/button/Button";
 import FallbackView from "@/components/empty-states/FallbackView";
+import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { OffersList } from "@/features/products/components/OffersList";
 import { ProductBadges } from "@/features/products/components/ProductBadges";
@@ -43,7 +44,7 @@ export const Route = createFileRoute("/_public/product/$productId")({
 
 function ProductDetailComponent() {
   const { productId } = Route.useParams();
-  const { variantId } = Route.useSearch();
+  const { variantId, quantity } = Route.useSearch();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId));
 
   const selectedVariant: ProductVariant | undefined = (() => {
@@ -66,14 +67,6 @@ function ProductDetailComponent() {
   const galleryImages = selectedVariant?.mediaUrls?.length
     ? selectedVariant.mediaUrls
     : (product.mediaUrls ?? []);
-
-  const handleAddToCart = () => {
-    console.log("Add to cart - Coming soon");
-  };
-
-  const handleBuyNow = () => {
-    console.log("Buy now - Coming soon");
-  };
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -107,27 +100,12 @@ function ProductDetailComponent() {
               />
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
-                <Button
-                  variant="filled"
-                  color="primary"
-                  size="lg"
-                  onClick={handleAddToCart}
-                  disabled={isOutOfStock}
-                  fullWidth
-                >
-                  Add to Cart
-                </Button>
-                <Button
-                  color="secondary"
-                  size="lg"
-                  onClick={handleBuyNow}
-                  disabled={isOutOfStock}
-                  fullWidth
-                >
-                  Buy Now
-                </Button>
-              </div>
+              <ProductActionButtons
+                variantId={selectedVariant?.id}
+                quantity={quantity}
+                disabled={isOutOfStock}
+                max={selectedVariant?.quantity}
+              />
               <Button variant="outline" className="mt-2" fullWidth>
                 Create Affiliate
               </Button>

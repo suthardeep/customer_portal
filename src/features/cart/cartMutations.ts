@@ -1,7 +1,12 @@
-import { showErrorToasts } from "@/components/toast";
+import { showErrorToasts, toast } from "@/components/toast";
 import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
-import { addCartItem, clearCart, deleteCartItem, updateCartItem } from "./cartService";
+import {
+  addCartItem,
+  clearCart,
+  deleteCartItem,
+  updateCartItem,
+} from "./cartService";
 import { cartKeys } from "./cartQueryFactory";
 import type {
   AddCartItemRequest,
@@ -16,6 +21,7 @@ export const useAddCartItemMutation = () => {
       return response.data;
     },
     onSuccess: () => {
+      toast.success("Item added to cart");
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
     },
     onError: (error) => {

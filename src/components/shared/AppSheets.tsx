@@ -1,6 +1,5 @@
 import ProductAddToWishlistSheet from "@/features/products/components/wishlist/ProductAddToWishlistSheet";
 import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
-import { ClientOnly } from "@tanstack/react-router";
 
 export function AppSheets() {
   const isOpen = useWishlistSheetStore((state) => state.isOpen);
@@ -8,7 +7,7 @@ export function AppSheets() {
   const close = useWishlistSheetStore((state) => state.close);
 
   return (
-    <ClientOnly>
+    <>
       <ProductAddToWishlistSheet
         isOpen={isOpen}
         onClose={close}
@@ -17,6 +16,6 @@ export function AppSheets() {
         productName={payload?.productName ?? ""}
       />
       {/* Future sheets: each pulls from its own feature store */}
-    </ClientOnly>
+    </>
   );
 }

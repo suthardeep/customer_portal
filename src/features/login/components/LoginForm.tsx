@@ -45,8 +45,13 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
         fullWidth
       />
 
-      <Button type="submit" fullWidth disabled={isLoading}>
-        {isLoading ? "Sending OTP..." : "Continue"}
+      <Button
+        type="submit"
+        fullWidth
+        disabled={isLoading}
+        isLoading={isLoading}
+      >
+        Continue
       </Button>
     </form>
   );

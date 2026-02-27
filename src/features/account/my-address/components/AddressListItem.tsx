@@ -4,16 +4,9 @@ import MenuItem from "@/components/base/MenuItem";
 import { Popover } from "@/components/base/popover/Popover";
 import { useToggle } from "@/hooks/useToggle";
 import type { Address } from "../types/types";
-import { AddressTypeEnum } from "../enums";
 import { formatAddress } from "../utils";
-import type { IconName } from "@/components/base/icon/iconRegistry";
 import { Chip } from "@/components/base/chip/Chip";
-
-const ADDRESS_TYPE_CONFIG: Record<string, { icon: IconName; label: string }> = {
-  [AddressTypeEnum.HOME]: { icon: "Home", label: "Home" },
-  [AddressTypeEnum.WORK]: { icon: "Briefcase", label: "Work" },
-  [AddressTypeEnum.OTHER]: { icon: "Location", label: "Other" },
-};
+import { ADDRESS_TYPE_CONFIG } from "../constants";
 
 interface AddressListItemProps {
   address: Address;
