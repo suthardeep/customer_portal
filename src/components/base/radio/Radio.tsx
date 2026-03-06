@@ -1,6 +1,7 @@
 import { forwardRef, useId } from "react";
 import { cn } from "@/utils/cssHelpers";
 import type { RadioProps } from "./radio.types";
+import Label from "../Label";
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   (
@@ -51,7 +52,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
         </div>
 
         {label && (
-          <label
+          <Label
             htmlFor={radioId}
             className={cn(
               "cursor-pointer text-sm text-n-800",
@@ -59,7 +60,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             )}
           >
             {label}
-          </label>
+          </Label>
         )}
       </div>
     );

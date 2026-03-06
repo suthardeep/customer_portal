@@ -2,6 +2,7 @@ import { forwardRef, useId } from "react";
 import { Icon } from "@/components/base/icon/Icon";
 import { cn } from "@/utils/cssHelpers";
 import type { CheckboxProps } from "./checkbox.types";
+import Label from "../Label";
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
@@ -34,9 +35,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             disabled={disabled}
             className={cn(
-            "peer absolute inset-0 cursor-pointer opacity-0 disabled:cursor-not-allowed",
-            className,
-          )}
+              "peer absolute inset-0 cursor-pointer opacity-0 disabled:cursor-not-allowed",
+              className,
+            )}
             {...rest}
           />
           {/* Custom visual box */}
@@ -58,7 +59,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         </div>
 
         {label && (
-          <label
+          <Label
             htmlFor={checkboxId}
             className={cn(
               "cursor-pointer text-sm text-n-800",
@@ -66,7 +67,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             )}
           >
             {label}
-          </label>
+          </Label>
         )}
       </div>
     );

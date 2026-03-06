@@ -56,7 +56,7 @@ function RouteComponent() {
   };
 
   return (
-    <div>
+    <div className="account-root">
       <AccountPageHeader
         title="My Address"
         trailingTitleComponent={

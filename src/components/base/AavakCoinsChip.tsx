@@ -3,9 +3,10 @@ import { Image } from "@/components/base/Image";
 
 interface AavakCoinsChipProps {
   coins: number | undefined;
+  label?: string;
 }
 
-export function AavakCoinsChip({ coins }: AavakCoinsChipProps) {
+export function AavakCoinsChip({ coins, label = "" }: AavakCoinsChipProps) {
   if (!coins || coins === 0) return;
   return (
     <Chip
@@ -17,7 +18,9 @@ export function AavakCoinsChip({ coins }: AavakCoinsChipProps) {
       <div className="size-4">
         <Image src="/aavak-coin-v1.png" alt="coin" eager />
       </div>
-      <span className="text-nowrap text-s-900">Earn {coins}</span>
+      <span className="text-nowrap text-s-900">
+        {label || "Earn"} {coins}
+      </span>
     </Chip>
   );
 }

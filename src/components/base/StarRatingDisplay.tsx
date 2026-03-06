@@ -18,7 +18,7 @@ const customSizeClass = {
   lg: "size-6", // 24px override for lg
 };
 
-export function StarRating({
+export function StarRatingDisplay({
   rating,
   reviewCount,
   size = "md",

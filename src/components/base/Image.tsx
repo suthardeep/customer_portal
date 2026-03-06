@@ -27,14 +27,18 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
     },
     ref,
   ) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [currentSrc, setCurrentSrc] = useState(src || fallbackSrc);
     const imgRef = useRef<HTMLImageElement>(null);
 
     // Reset state when src changes
+    const prevSrcRef = useRef(src);
     useEffect(() => {
-      setCurrentSrc(src || fallbackSrc);
-      setIsLoading(true);
+      if (src !== prevSrcRef.current) {
+        prevSrcRef.current = src;
+        setCurrentSrc(src || fallbackSrc);
+        setIsLoading(true);
+      }
     }, [src, fallbackSrc]);
 
     // If the browser already has the image cached, onLoad won't fire.

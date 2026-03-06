@@ -3,6 +3,7 @@ import { Icon } from "@/components/base/icon/Icon";
 import type { IconSize } from "@/components/base/icon/icon.types";
 import { cn } from "@/utils/cssHelpers";
 import type { InputProps, InputSize } from "./input.types";
+import Label from "../Label";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -21,6 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       type = "text",
       disabled = false,
       id: providedId,
+      required,
       ...restProps
     },
     ref,
@@ -60,12 +62,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={cn(fullWidth ? "w-full" : "w-fit", wrapperClassName)}>
         {/* Label */}
         {label && (
-          <label
-            htmlFor={inputId}
-            className={cn(labelStyles, labelSizeStyles[size], labelClassName)}
-          >
-            {label}
-          </label>
+          <div className="flex items-center gap-0.5">
+            <Label
+              htmlFor={inputId}
+              className={cn(labelStyles, labelSizeStyles[size], labelClassName)}
+            >
+              {label}
+            </Label>
+            {required && <span className="text-danger-500 ml-0.5">*</span>}
+          </div>
         )}
 
         {/* Input container with absolute positioned elements */}
@@ -221,7 +226,7 @@ const iconSizeToPreset: Record<InputSize, IconSize> = {
 };
 
 // Label styles
-const labelStyles = "mb-1.5 block font-medium text-n-850";
+const labelStyles = "mb-1.5 block font-medium";
 
 const labelSizeStyles: Record<InputSize, string> = {
   xs: "text-xs",

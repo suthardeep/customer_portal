@@ -10,6 +10,7 @@ import { AavakProtectLogo } from "../compound/logo/AavakProtectLogo";
 import { Logo } from "../compound/logo/Logo";
 import CategoriesTabNav from "./CategoriesTabNav";
 import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
+import { HeaderWallet } from "./HeaderWallet";
 
 export default function Header() {
   const loginDialog = useLoginDialog();
@@ -27,10 +28,11 @@ export default function Header() {
 
   const handleAccountClick = () => {
     if (isAuthenticated) {
-      navigate({ to: "/account/my-orders" });
+      navigate({ to: "/account/my-orders", search: { currentPage: 1 } });
     } else {
       loginDialog.open({
-        onSuccess: () => navigate({ to: "/account/my-orders" }),
+        onSuccess: () =>
+          navigate({ to: "/account/my-orders", search: { currentPage: 1 } }),
       });
     }
   };
@@ -39,7 +41,7 @@ export default function Header() {
     if (isLoading) {
       return "...";
     } else if (isAuthenticated) {
-      return user?.fullName || user?.phone || "Account";
+      return user?.fullName?.split(" ")[0] || user?.phone || "Account";
     } else {
       return "Login";
     }
@@ -86,6 +88,7 @@ export default function Header() {
             <Logo className="w-32" />
           </Link>
           <div className="flex items-center gap-4">
+            <HeaderWallet />
             {NAV_ITEMS.map((item) => {
               const content = (
                 <div

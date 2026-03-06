@@ -1,14 +1,12 @@
+import type { SVGProps } from "react";
 import type { IconName } from "./iconRegistry";
 
 export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-export interface IconProps {
+export interface IconProps extends Pick<SVGProps<SVGSVGElement>, "onClick" | "aria-label" | "role"> {
   name: IconName;
   size?: IconSize;
   className?: string;
-  onClick?: () => void;
-  "aria-label"?: string;
-  role?: string;
   strokeWidth?: number;
 }
 

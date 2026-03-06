@@ -2,14 +2,14 @@ import type { QuickActionCard, SidebarSection } from "./types/types";
 
 export const QUICK_ACTION_CARDS: QuickActionCard[] = [
   {
-    label: "My order",
+    label: "My orders",
     icon: "ShoppingCart",
     to: "/account/my-orders",
   },
   {
     label: "Wallet",
     icon: "Wallet",
-    to: "/",
+    to: "/account/wallet",
   },
 ];
 

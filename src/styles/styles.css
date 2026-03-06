@@ -22,6 +22,7 @@ code {
   .fall {
     @apply flex items-center justify-center;
   }
+
 }
 
 

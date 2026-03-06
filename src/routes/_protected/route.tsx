@@ -1,5 +1,6 @@
 import Header from "@/components/shared/Header";
 import { authQueries } from "@/features/auth/authQueries";
+import { reviewQueries } from "@/features/reviews/reviewsQueries";
 import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
@@ -32,6 +33,8 @@ export const Route = createFileRoute("/_protected")({
         pageSize: 100,
       }),
     );
+    context.queryClient.prefetchQuery(authQueries.profile());
+    context.queryClient.prefetchQuery(reviewQueries.myReviews());
   },
 });
 

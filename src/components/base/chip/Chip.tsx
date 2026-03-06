@@ -24,7 +24,7 @@ export function Chip({
 
 const sizeStyles: Record<ChipSize, string> = {
   sm: "py-1 px-1.5 text-xs",
-  md: "p-2 text-sm",
+  md: "px-2 py-1.5 text-sm",
   lg: "p-3 text-base",
 };
 
@@ -38,7 +38,7 @@ const variantStyles: Record<ChipVariant, Record<ChipColor, string>> = {
   },
   outline: {
     primary: "border border-p-300 text-p-700",
-    secondary: "border border-s-300 text-s-700",
+    secondary: "border border-(--s-300) text-s-700",
     success: "border border-success-300 text-success-700",
     danger: "border border-danger-300 text-danger-700",
     neutral: "border border-n-300 text-n-800",

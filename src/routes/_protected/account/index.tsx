@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_protected/account/")({
     <FallbackView
       title="You should not be here"
       footer={
-        <Link to="/account/my-orders">
+        <Link to="/account/my-orders" search={{ page: 1 }}>
           {" "}
           <Button>Go to my orders</Button>
         </Link>
@@ -15,6 +15,6 @@ export const Route = createFileRoute("/_protected/account/")({
     />
   ),
   beforeLoad: () => {
-    throw redirect({ to: "/account/my-orders" });
+    throw redirect({ to: "/account/my-orders", search: { page: 1 } });
   },
 });

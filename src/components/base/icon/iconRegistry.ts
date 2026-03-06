@@ -13,8 +13,17 @@ import {
   Cash02Icon,
   CustomerService01Icon,
   Delete02Icon,
+  DeliveryDelay01Icon,
+  Calendar03Icon,
   DeliveryReturn01Icon,
+  DeliverySent01Icon,
+  DeliveryTracking01Icon,
   DeliveryTruck01Icon,
+  Package01Icon,
+  PackageAdd01Icon,
+  Package03Icon,
+  PackageDelivered01Icon,
+  PackageOpenIcon,
   Edit02Icon,
   FavouriteIcon,
   FlashIcon,
@@ -22,7 +31,7 @@ import {
   Home01Icon,
   Image01Icon,
   ImageNotFound01Icon,
-  InformationCircleIcon,
+  ImageUpload01Icon,
   Link01Icon,
   Location01Icon,
   MessageMultiple02Icon,
@@ -42,14 +51,16 @@ import {
   StarIcon,
   Store01Icon,
   Store02Icon,
+  InformationCircleFreeIcons,
   Tick01Icon,
   Tick02Icon,
   Coupon02Icon,
+  CreditCardIcon,
   UserIcon,
   ViewIcon,
   ViewOffIcon,
   Wallet02Icon,
-  VideoCameraAiIcon
+  VideoCameraAiIcon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -59,6 +70,7 @@ export const iconRegistry = {
   ChevronUp: ArrowUp01Icon,
   ChevronRight: ArrowRight01Icon,
   ChevronLeft: ArrowLeft01Icon,
+  CreditCard: CreditCardIcon,
   // Dialog icons
   X: Cancel01Icon,
   // Input icons
@@ -69,6 +81,7 @@ export const iconRegistry = {
   Search: Search01Icon,
   FolderOpen: FolderOpenIcon,
   AlertCircle: AlertCircleIcon,
+  Info: InformationCircleFreeIcons,
   // ProductCard icons
   Heart: FavouriteIcon,
   Add: Add01Icon,
@@ -86,8 +99,18 @@ export const iconRegistry = {
   CheckCircle: Tick01Icon,
   Truck: DeliveryTruck01Icon,
   DeliveryReturn: DeliveryReturn01Icon,
+  // Order status icons
+  Package: Package01Icon,
+  PackageAdd: PackageAdd01Icon,
+  PackagePacked: Package03Icon,
+  DeliverySent: DeliverySent01Icon,
+  DeliveryTracking: DeliveryTracking01Icon,
+  PackageDelivered: PackageDelivered01Icon,
+  DeliveryDelay: DeliveryDelay01Icon,
+  PackageOpen: PackageOpenIcon,
   Cash: Cash02Icon,
   ShieldBlockchain: ShieldBlockchainIcon,
+  Calendar: Calendar03Icon,
   ImageNotFound: ImageNotFound01Icon,
   // Header navigation icons
   ShoppingCart: ShoppingBasket02Icon,
@@ -102,7 +125,6 @@ export const iconRegistry = {
   Support: CustomerService01Icon,
   Feedback: MessageMultiple02Icon,
   // Toast icons
-  Info: InformationCircleIcon,
   Warning: Alert01Icon,
   // Wishlist icons
   Image: Image01Icon,
@@ -110,6 +132,8 @@ export const iconRegistry = {
   RemoveCircle: RemoveCircleIcon,
   Trash: Delete02Icon,
   VideoCameraSpark: VideoCameraAiIcon,
+  // Review icons
+  ImageUpload: ImageUpload01Icon,
   // Cart icons
   Coins: Coins01Icon,
   // Address icons
@@ -117,6 +141,5 @@ export const iconRegistry = {
   Briefcase: Briefcase01Icon,
   MoreVertical: MoreVerticalIcon,
 } as const;
-
 
 export type IconName = keyof typeof iconRegistry;

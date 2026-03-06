@@ -40,6 +40,13 @@ export function ProductCard({
   const isWishlisted = wishlistItems?.data?.data?.some(
     (item) => item?.productId === product?.id,
   );
+  console.log(
+    wishlistItems?.data?.data,
+    "prid",
+    product?.id,
+    "val",
+    isWishlisted,
+  );
 
   const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
 
@@ -117,7 +124,7 @@ export function ProductCard({
 
         {/* Brand Name */}
         {product.brandName && (
-          <span className="text-n-700">{product.brandName}</span>
+          <span className="text-n-900">{product.brandName}</span>
         )}
 
         {/* Product Name */}

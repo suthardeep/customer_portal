@@ -1,4 +1,4 @@
-import { StarRating } from "@/components/base/StarRating";
+import { StarRatingDisplay } from "@/components/base/StarRatingDisplay";
 import type { ProductVariant } from "../types";
 import type { ProductDetail } from "../types/types";
 import { PriceDisplay } from "./PriceDisplay";
@@ -34,8 +34,8 @@ export function ProductDetailHeader({
 
       {/* Rating and Reviews */}
       {product.avgRating !== undefined && (
-        <StarRating
-          rating={parseFloat(product.avgRating)}
+        <StarRatingDisplay
+          rating={product.avgRating}
           reviewCount={product.reviewCount}
           size="sm"
         />

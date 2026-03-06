@@ -10,6 +10,10 @@ export function formatCurrency(
   currency: string = "INR",
   locale: string = "en-IN",
 ): string {
+  if (isNaN(amount)) {
+    return "-";
+  }
+
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,

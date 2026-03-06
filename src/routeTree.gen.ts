@@ -20,11 +20,14 @@ import { Route as PublicCategoriesIndexRouteImport } from './routes/_public/cate
 import { Route as ProtectedAccountIndexRouteImport } from './routes/_protected/account/index'
 import { Route as PublicProductProductIdRouteImport } from './routes/_public/product/$productId'
 import { Route as PublicCategoriesCategoryIdRouteImport } from './routes/_public/categories/$categoryId'
-import { Route as ProtectedAccountMyOrdersRouteImport } from './routes/_protected/account/my-orders'
+import { Route as ProtectedAccountWalletRouteImport } from './routes/_protected/account/wallet'
 import { Route as ProtectedAccountMyAddressRouteImport } from './routes/_protected/account/my-address'
 import { Route as ProtectedAccountWishlistIndexRouteImport } from './routes/_protected/account/wishlist/index'
+import { Route as ProtectedAccountMyOrdersIndexRouteImport } from './routes/_protected/account/my-orders/index'
 import { Route as PublicCategoriesProductsCategoryIdRouteImport } from './routes/_public/categories/products.$categoryId'
 import { Route as ProtectedAccountWishlistCollectionIdRouteImport } from './routes/_protected/account/wishlist/$collectionId'
+import { Route as ProtectedAccountMyOrdersOrderItemIdRouteImport } from './routes/_protected/account/my-orders/$orderItemId'
+import { Route as ProtectedAccountMyOrdersReturnOrderItemIdRouteImport } from './routes/_protected/account/my-orders/return.$orderItemId'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
@@ -80,12 +83,11 @@ const PublicCategoriesCategoryIdRoute =
     path: '/categories/$categoryId',
     getParentRoute: () => PublicRouteRoute,
   } as any)
-const ProtectedAccountMyOrdersRoute =
-  ProtectedAccountMyOrdersRouteImport.update({
-    id: '/my-orders',
-    path: '/my-orders',
-    getParentRoute: () => ProtectedAccountRouteRoute,
-  } as any)
+const ProtectedAccountWalletRoute = ProtectedAccountWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => ProtectedAccountRouteRoute,
+} as any)
 const ProtectedAccountMyAddressRoute =
   ProtectedAccountMyAddressRouteImport.update({
     id: '/my-address',
@@ -96,6 +98,12 @@ const ProtectedAccountWishlistIndexRoute =
   ProtectedAccountWishlistIndexRouteImport.update({
     id: '/wishlist/',
     path: '/wishlist/',
+    getParentRoute: () => ProtectedAccountRouteRoute,
+  } as any)
+const ProtectedAccountMyOrdersIndexRoute =
+  ProtectedAccountMyOrdersIndexRouteImport.update({
+    id: '/my-orders/',
+    path: '/my-orders/',
     getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
 const PublicCategoriesProductsCategoryIdRoute =
@@ -110,6 +118,18 @@ const ProtectedAccountWishlistCollectionIdRoute =
     path: '/wishlist/$collectionId',
     getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
+const ProtectedAccountMyOrdersOrderItemIdRoute =
+  ProtectedAccountMyOrdersOrderItemIdRouteImport.update({
+    id: '/my-orders/$orderItemId',
+    path: '/my-orders/$orderItemId',
+    getParentRoute: () => ProtectedAccountRouteRoute,
+  } as any)
+const ProtectedAccountMyOrdersReturnOrderItemIdRoute =
+  ProtectedAccountMyOrdersReturnOrderItemIdRouteImport.update({
+    id: '/my-orders/return/$orderItemId',
+    path: '/my-orders/return/$orderItemId',
+    getParentRoute: () => ProtectedAccountRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -118,14 +138,17 @@ export interface FileRoutesByFullPath {
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/cart': typeof PublicCartRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
-  '/account/my-orders': typeof ProtectedAccountMyOrdersRoute
+  '/account/wallet': typeof ProtectedAccountWalletRoute
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/product/$productId': typeof PublicProductProductIdRoute
   '/account/': typeof ProtectedAccountIndexRoute
   '/categories/': typeof PublicCategoriesIndexRoute
+  '/account/my-orders/$orderItemId': typeof ProtectedAccountMyOrdersOrderItemIdRoute
   '/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
+  '/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
   '/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
+  '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
@@ -133,14 +156,17 @@ export interface FileRoutesByTo {
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/cart': typeof PublicCartRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
-  '/account/my-orders': typeof ProtectedAccountMyOrdersRoute
+  '/account/wallet': typeof ProtectedAccountWalletRoute
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/product/$productId': typeof PublicProductProductIdRoute
   '/account': typeof ProtectedAccountIndexRoute
   '/categories': typeof PublicCategoriesIndexRoute
+  '/account/my-orders/$orderItemId': typeof ProtectedAccountMyOrdersOrderItemIdRoute
   '/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
+  '/account/my-orders': typeof ProtectedAccountMyOrdersIndexRoute
   '/account/wishlist': typeof ProtectedAccountWishlistIndexRoute
+  '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,14 +178,17 @@ export interface FileRoutesById {
   '/_public/cart': typeof PublicCartRoute
   '/_public/': typeof PublicIndexRoute
   '/_protected/account/my-address': typeof ProtectedAccountMyAddressRoute
-  '/_protected/account/my-orders': typeof ProtectedAccountMyOrdersRoute
+  '/_protected/account/wallet': typeof ProtectedAccountWalletRoute
   '/_public/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/_public/product/$productId': typeof PublicProductProductIdRoute
   '/_protected/account/': typeof ProtectedAccountIndexRoute
   '/_public/categories/': typeof PublicCategoriesIndexRoute
+  '/_protected/account/my-orders/$orderItemId': typeof ProtectedAccountMyOrdersOrderItemIdRoute
   '/_protected/account/wishlist/$collectionId': typeof ProtectedAccountWishlistCollectionIdRoute
   '/_public/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
+  '/_protected/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
   '/_protected/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
+  '/_protected/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -170,14 +199,17 @@ export interface FileRouteTypes {
     | '/verify-otp'
     | '/cart'
     | '/account/my-address'
-    | '/account/my-orders'
+    | '/account/wallet'
     | '/categories/$categoryId'
     | '/product/$productId'
     | '/account/'
     | '/categories/'
+    | '/account/my-orders/$orderItemId'
     | '/account/wishlist/$collectionId'
     | '/categories/products/$categoryId'
+    | '/account/my-orders/'
     | '/account/wishlist/'
+    | '/account/my-orders/return/$orderItemId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -185,14 +217,17 @@ export interface FileRouteTypes {
     | '/verify-otp'
     | '/cart'
     | '/account/my-address'
-    | '/account/my-orders'
+    | '/account/wallet'
     | '/categories/$categoryId'
     | '/product/$productId'
     | '/account'
     | '/categories'
+    | '/account/my-orders/$orderItemId'
     | '/account/wishlist/$collectionId'
     | '/categories/products/$categoryId'
+    | '/account/my-orders'
     | '/account/wishlist'
+    | '/account/my-orders/return/$orderItemId'
   id:
     | '__root__'
     | '/_protected'
@@ -203,14 +238,17 @@ export interface FileRouteTypes {
     | '/_public/cart'
     | '/_public/'
     | '/_protected/account/my-address'
-    | '/_protected/account/my-orders'
+    | '/_protected/account/wallet'
     | '/_public/categories/$categoryId'
     | '/_public/product/$productId'
     | '/_protected/account/'
     | '/_public/categories/'
+    | '/_protected/account/my-orders/$orderItemId'
     | '/_protected/account/wishlist/$collectionId'
     | '/_public/categories/products/$categoryId'
+    | '/_protected/account/my-orders/'
     | '/_protected/account/wishlist/'
+    | '/_protected/account/my-orders/return/$orderItemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -299,11 +337,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicCategoriesCategoryIdRouteImport
       parentRoute: typeof PublicRouteRoute
     }
-    '/_protected/account/my-orders': {
-      id: '/_protected/account/my-orders'
-      path: '/my-orders'
-      fullPath: '/account/my-orders'
-      preLoaderRoute: typeof ProtectedAccountMyOrdersRouteImport
+    '/_protected/account/wallet': {
+      id: '/_protected/account/wallet'
+      path: '/wallet'
+      fullPath: '/account/wallet'
+      preLoaderRoute: typeof ProtectedAccountWalletRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
     '/_protected/account/my-address': {
@@ -320,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAccountWishlistIndexRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
+    '/_protected/account/my-orders/': {
+      id: '/_protected/account/my-orders/'
+      path: '/my-orders'
+      fullPath: '/account/my-orders/'
+      preLoaderRoute: typeof ProtectedAccountMyOrdersIndexRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
     '/_public/categories/products/$categoryId': {
       id: '/_public/categories/products/$categoryId'
       path: '/categories/products/$categoryId'
@@ -334,24 +379,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAccountWishlistCollectionIdRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
+    '/_protected/account/my-orders/$orderItemId': {
+      id: '/_protected/account/my-orders/$orderItemId'
+      path: '/my-orders/$orderItemId'
+      fullPath: '/account/my-orders/$orderItemId'
+      preLoaderRoute: typeof ProtectedAccountMyOrdersOrderItemIdRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
+    '/_protected/account/my-orders/return/$orderItemId': {
+      id: '/_protected/account/my-orders/return/$orderItemId'
+      path: '/my-orders/return/$orderItemId'
+      fullPath: '/account/my-orders/return/$orderItemId'
+      preLoaderRoute: typeof ProtectedAccountMyOrdersReturnOrderItemIdRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
   }
 }
 
 interface ProtectedAccountRouteRouteChildren {
   ProtectedAccountMyAddressRoute: typeof ProtectedAccountMyAddressRoute
-  ProtectedAccountMyOrdersRoute: typeof ProtectedAccountMyOrdersRoute
+  ProtectedAccountWalletRoute: typeof ProtectedAccountWalletRoute
   ProtectedAccountIndexRoute: typeof ProtectedAccountIndexRoute
+  ProtectedAccountMyOrdersOrderItemIdRoute: typeof ProtectedAccountMyOrdersOrderItemIdRoute
   ProtectedAccountWishlistCollectionIdRoute: typeof ProtectedAccountWishlistCollectionIdRoute
+  ProtectedAccountMyOrdersIndexRoute: typeof ProtectedAccountMyOrdersIndexRoute
   ProtectedAccountWishlistIndexRoute: typeof ProtectedAccountWishlistIndexRoute
+  ProtectedAccountMyOrdersReturnOrderItemIdRoute: typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
 }
 
 const ProtectedAccountRouteRouteChildren: ProtectedAccountRouteRouteChildren = {
   ProtectedAccountMyAddressRoute: ProtectedAccountMyAddressRoute,
-  ProtectedAccountMyOrdersRoute: ProtectedAccountMyOrdersRoute,
+  ProtectedAccountWalletRoute: ProtectedAccountWalletRoute,
   ProtectedAccountIndexRoute: ProtectedAccountIndexRoute,
+  ProtectedAccountMyOrdersOrderItemIdRoute:
+    ProtectedAccountMyOrdersOrderItemIdRoute,
   ProtectedAccountWishlistCollectionIdRoute:
     ProtectedAccountWishlistCollectionIdRoute,
+  ProtectedAccountMyOrdersIndexRoute: ProtectedAccountMyOrdersIndexRoute,
   ProtectedAccountWishlistIndexRoute: ProtectedAccountWishlistIndexRoute,
+  ProtectedAccountMyOrdersReturnOrderItemIdRoute:
+    ProtectedAccountMyOrdersReturnOrderItemIdRoute,
 }
 
 const ProtectedAccountRouteRouteWithChildren =

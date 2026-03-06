@@ -4,6 +4,7 @@ import Spinner from "@/components/compound/spinner/Spinner";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import { ProductCard } from "@/features/products/components/ProductCard";
+import type { Product } from "@/features/products/types";
 import { DeleteCollectionDialog } from "@/features/wishlist/components/DeleteCollectionDialog";
 import { EditCollectionDialog } from "@/features/wishlist/components/EditCollectionDialog";
 import CollectionDetailSkeleton from "@/features/wishlist/components/skeletons/CollectionDetailSkeleton";
@@ -100,7 +101,10 @@ function CollectionDetailComponent() {
                   params={{ productId: product?.productId }}
                   key={product?.id}
                 >
-                  <ProductCard product={product} disableDetailPageRedirection />
+                  <ProductCard
+                    product={product as unknown as Product}
+                    disableDetailPageRedirection
+                  />
                 </Link>
               );
             })}

@@ -1,4 +1,4 @@
-import { showErrorToasts, toast } from "@/components/toast";
+import { showErrorToasts } from "@/components/toast";
 import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import { addressKeys } from "./addressQueryFactory";

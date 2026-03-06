@@ -39,5 +39,6 @@
   "javascript.preferences.autoImportFileExcludePatterns": [
     "node_modules/@uidotdev/*",
     "node_modules/sonner/*"
-  ]
+  ],
+  "cSpell.words": ["Aavak"]
 }

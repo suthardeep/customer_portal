@@ -23,7 +23,7 @@ export function prettyDate(
     showDate = true,
     showDay = false,
     showTime = false,
-    showYear = false,
+    showYear = true,
     fallback = "",
     disableRelativeDates = false,
   } = options;
