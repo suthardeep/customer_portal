@@ -1,6 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 
 export type InputSize = "xs" | "sm" | "md" | "lg";
+export type InputVariant = "default" | "underline";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -24,6 +25,9 @@ export interface InputProps
 
   /** Input size variant */
   size?: InputSize;
+
+  /** Input visual variant */
+  variant?: InputVariant;
 
   /** Makes input full width of container */
   fullWidth?: boolean;

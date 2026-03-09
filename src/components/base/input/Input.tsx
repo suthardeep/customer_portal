@@ -2,7 +2,7 @@ import { forwardRef, useId, useState } from "react";
 import { Icon } from "@/components/base/icon/Icon";
 import type { IconSize } from "@/components/base/icon/icon.types";
 import { cn } from "@/utils/cssHelpers";
-import type { InputProps, InputSize } from "./input.types";
+import type { InputProps, InputSize, InputVariant } from "./input.types";
 import Label from "../Label";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -15,6 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       leftElement,
       togglePassword = false,
       size = "md",
+      variant = "default",
       fullWidth = false,
       wrapperClassName,
       className,
@@ -50,9 +51,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     // Compose input classes
     const inputClasses = cn(
       baseInputStyles,
+      variantStyles[variant],
       sizeStyles[size],
-      hasError ? stateStyles.error : stateStyles.default,
-      disabled && stateStyles.disabled,
+      hasError
+        ? variantStateStyles[variant].error
+        : variantStateStyles[variant].default,
+      disabled && variantStateStyles[variant].disabled,
       leftElement && leftPaddingStyles[size],
       hasRightContent && rightPaddingStyles[size],
       className,
@@ -170,12 +174,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 
+// Variant styles
+const variantStyles = {
+  default: "rounded-xl border bg-n-50 disabled:bg-n-200",
+  underline:
+    "rounded-none border-0 border-b bg-transparent disabled:bg-transparent",
+};
+
+// Variant-specific state styles (border + ring per state)
+const variantStateStyles: Record<
+  InputVariant,
+  Record<"default" | "error" | "disabled", string>
+> = {
+  default: {
+    default:
+      "border-n-500 focus:border-n-600 focus:ring-2 focus:ring-offset-0 focus:ring-n-500/20",
+    error:
+      "border-danger-500 focus:border-danger-500 focus:ring-2 focus:ring-offset-0 focus:ring-danger-500/20",
+    disabled: "border-n-300",
+  },
+  underline: {
+    default: "border-n-500 focus:border-n-600",
+    error: "border-danger-500 focus:border-danger-500",
+    disabled: "border-n-300",
+  },
+};
+
 // Base input styles
 const baseInputStyles =
-  "w-full rounded-xl border bg-n-50 text-n-925 placeholder:text-n-600 " +
+  "w-full text-n-925 placeholder:text-n-600 " +
   "transition-[border-color,box-shadow] duration-150 ease-out " +
-  "focus:outline-none focus:ring-2 focus:ring-offset-0 " +
-  "disabled:cursor-not-allowed disabled:bg-n-200 disabled:text-n-700";
+  "focus:outline-none " +
+  "disabled:cursor-not-allowed disabled:text-n-700";
 
 // Size styles
 const sizeStyles: Record<InputSize, string> = {
@@ -244,11 +274,4 @@ const helperSizeStyles: Record<InputSize, string> = {
   sm: "text-xs",
   md: "text-sm",
   lg: "text-sm",
-};
-
-// State-based border/ring styles
-const stateStyles = {
-  default: "border-n-500 focus:border-n-600 focus:ring-n-500/20",
-  error: "border-danger-500 focus:border-danger-500 focus:ring-danger-500/20",
-  disabled: "border-n-300",
 };

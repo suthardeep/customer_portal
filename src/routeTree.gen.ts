@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicSearchRouteImport } from './routes/_public/search'
 import { Route as PublicCartRouteImport } from './routes/_public/cart'
 import { Route as AuthVerifyOtpRouteImport } from './routes/_auth/verify-otp'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -40,6 +41,11 @@ const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicSearchRoute = PublicSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => PublicRouteRoute,
 } as any)
 const PublicCartRoute = PublicCartRouteImport.update({
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/cart': typeof PublicCartRoute
+  '/search': typeof PublicSearchRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
   '/account/wallet': typeof ProtectedAccountWalletRoute
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/verify-otp': typeof AuthVerifyOtpRoute
   '/cart': typeof PublicCartRoute
+  '/search': typeof PublicSearchRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
   '/account/wallet': typeof ProtectedAccountWalletRoute
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/verify-otp': typeof AuthVerifyOtpRoute
   '/_public/cart': typeof PublicCartRoute
+  '/_public/search': typeof PublicSearchRoute
   '/_public/': typeof PublicIndexRoute
   '/_protected/account/my-address': typeof ProtectedAccountMyAddressRoute
   '/_protected/account/wallet': typeof ProtectedAccountWalletRoute
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/verify-otp'
     | '/cart'
+    | '/search'
     | '/account/my-address'
     | '/account/wallet'
     | '/categories/$categoryId'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/verify-otp'
     | '/cart'
+    | '/search'
     | '/account/my-address'
     | '/account/wallet'
     | '/categories/$categoryId'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/verify-otp'
     | '/_public/cart'
+    | '/_public/search'
     | '/_public/'
     | '/_protected/account/my-address'
     | '/_protected/account/wallet'
@@ -279,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/search': {
+      id: '/_public/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof PublicSearchRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_public/cart': {
@@ -440,6 +459,7 @@ const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
 
 interface PublicRouteRouteChildren {
   PublicCartRoute: typeof PublicCartRoute
+  PublicSearchRoute: typeof PublicSearchRoute
   PublicIndexRoute: typeof PublicIndexRoute
   PublicCategoriesCategoryIdRoute: typeof PublicCategoriesCategoryIdRoute
   PublicProductProductIdRoute: typeof PublicProductProductIdRoute
@@ -449,6 +469,7 @@ interface PublicRouteRouteChildren {
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicCartRoute: PublicCartRoute,
+  PublicSearchRoute: PublicSearchRoute,
   PublicIndexRoute: PublicIndexRoute,
   PublicCategoriesCategoryIdRoute: PublicCategoriesCategoryIdRoute,
   PublicProductProductIdRoute: PublicProductProductIdRoute,

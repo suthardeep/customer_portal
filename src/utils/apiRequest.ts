@@ -63,7 +63,7 @@ export async function apiRequest<T>(
   };
 
   // Add auth header if token provided
-  if (token) {
+  if (token || false) {
     requestHeaders.Authorization = `Bearer ${token}`;
   }
 

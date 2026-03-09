@@ -23,3 +23,15 @@ export interface Review {
 }
 
 export type MyReviewsResponse = BaseApiResponse<PaginatedResponse<Review>>;
+
+export interface ReviewStats {
+  averageRating: number;
+  totalReviews: number;
+  ratingDistribution: Record<"1" | "2" | "3" | "4" | "5", number>;
+}
+
+export interface ProductReviewsParams {
+  productId: string;
+  currentPage?: number;
+  pageSize?: number;
+}

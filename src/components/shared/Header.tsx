@@ -11,11 +11,14 @@ import { Logo } from "../compound/logo/Logo";
 import CategoriesTabNav from "./CategoriesTabNav";
 import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
 import { HeaderWallet } from "./HeaderWallet";
+import { useToggle } from "@/hooks/useToggle";
+import SearchSheet from "./search/SearchSheet";
 
 export default function Header() {
   const loginDialog = useLoginDialog();
   const { user, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const searchSheet = useToggle();
   const showCategorySubNav = useMatches({
     select: (matches) => matches.some((m) => m.staticData?.showCategorySubNav),
   });
@@ -51,6 +54,7 @@ export default function Header() {
     {
       label: "Search",
       icon: <Icon name="Search" size="lg" className={iconClassName} />,
+      onClick: searchSheet.open,
     },
     {
       label: "Sell Now",
@@ -134,6 +138,7 @@ export default function Header() {
           <CategoriesTabNav />
         </Suspense>
       )}
+      <SearchSheet isOpen={searchSheet.isOpen} onClose={searchSheet.close} />
     </div>
   );
 }

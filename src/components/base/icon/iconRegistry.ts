@@ -11,6 +11,7 @@ import {
   Briefcase01Icon,
   Cancel01Icon,
   Cash02Icon,
+  ChartUpIcon,
   CustomerService01Icon,
   Delete02Icon,
   DeliveryDelay01Icon,
@@ -134,6 +135,8 @@ export const iconRegistry = {
   VideoCameraSpark: VideoCameraAiIcon,
   // Review icons
   ImageUpload: ImageUpload01Icon,
+  // Search icons
+  TrendingUp: ChartUpIcon,
   // Cart icons
   Coins: Coins01Icon,
   // Address icons

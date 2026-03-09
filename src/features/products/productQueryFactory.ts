@@ -1,4 +1,4 @@
-import type { ProductQueryParams } from "./types";
+import type { ProductQueryParams, SimilarProductsParams } from "./types";
 
 export const productKeys = {
   all: ["products"] as const,
@@ -7,6 +7,12 @@ export const productKeys = {
   listInfinite: (params: Omit<ProductQueryParams, "currentPage">) =>
     [...productKeys.all, "infinite", params] as const,
   detail: (id: string) => [...productKeys.all, "detail", id] as const,
-  related: (id: string, limit: number) =>
-    [...productKeys.all, "related", id, limit] as const,
+  similar: (id: string, params?: Pick<SimilarProductsParams, "currentPage" | "pageSize">) =>
+    [...productKeys.all, "similar", id, params] as const,
+  similarInfinite: (id: string) =>
+    [...productKeys.all, "similar-infinite", id] as const,
+  autocomplete: (q: string) =>
+    [...productKeys.all, "autocomplete", q] as const,
+  searchSuggestions: () =>
+    [...productKeys.all, "search-suggestions"] as const,
 };

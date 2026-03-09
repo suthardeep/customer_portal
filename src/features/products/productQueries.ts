@@ -1,7 +1,19 @@
 import { queryOptions, infiniteQueryOptions } from "@tanstack/react-query";
-import { getProductList, getProductById, getRelatedProducts } from "./productService";
+import {
+  getProductList,
+  getProductById,
+  getSimilarProducts,
+  getAutocomplete,
+  getSearchSuggestions,
+} from "./productService";
 import { productKeys } from "./productQueryFactory";
-import type { ProductQueryParams } from "./types";
+import type {
+  AutocompleteParams,
+  AutocompleteSuggestionsResponse,
+  ProductQueryParams,
+  SearchSuggestionsResponse,
+  SimilarProductsParams,
+} from "./types";
 
 export const productQueries = {
   list: (params: ProductQueryParams) =>
@@ -36,12 +48,45 @@ export const productQueries = {
       },
     }),
 
-  related: (productId: string, limit: number = 4) =>
+  similar: (params: SimilarProductsParams) =>
     queryOptions({
-      queryKey: productKeys.related(productId, limit),
+      queryKey: productKeys.similar(params.productId, {
+        currentPage: params.currentPage,
+        pageSize: params.pageSize,
+      }),
       queryFn: async () => {
-        const response = await getRelatedProducts({ data: { productId, limit } });
+        const response = await getSimilarProducts({ data: params });
         return response.data;
+      },
+    }),
+
+  similarInfinite: (productId: string, pageSize = 10) =>
+    infiniteQueryOptions({
+      queryKey: productKeys.similarInfinite(productId),
+      queryFn: async ({ pageParam }) => {
+        const response = await getSimilarProducts({
+          data: { productId, currentPage: pageParam, pageSize },
+        });
+        return response.data;
+      },
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) =>
+        lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
+    }),
+
+  autocomplete: (params: AutocompleteParams) =>
+    queryOptions({
+      queryKey: productKeys.autocomplete(params.q),
+      queryFn: async (): Promise<AutocompleteSuggestionsResponse> => {
+        return getAutocomplete({ data: params });
+      },
+    }),
+
+  searchSuggestions: () =>
+    queryOptions({
+      queryKey: productKeys.searchSuggestions(),
+      queryFn: async (): Promise<SearchSuggestionsResponse> => {
+        return getSearchSuggestions();
       },
     }),
 };

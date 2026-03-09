@@ -25,6 +25,14 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  server: {
+    proxy: {
+      "/v1": {
+        target: process.env.API_BASE_URL || "http://localhost:4000",
+        changeOrigin: true,
+      },
+    },
+  },
 });
 
 export default config;

@@ -3,7 +3,7 @@ import type { PaginationQueryParams } from "@/types/general.types";
 import { apiRequest } from "@/utils/apiRequest";
 import { getToken } from "@/utils/getToken";
 import { createServerFn } from "@tanstack/react-start";
-import type { CreateReviewRequest, Review } from "./types/types";
+import type { CreateReviewRequest, ProductReviewsParams, Review, ReviewStats } from "./types/types";
 
 export const createReview = createServerFn({ method: "POST" })
   .inputValidator((data: CreateReviewRequest) => data)
@@ -25,5 +25,20 @@ export const getMyReviews = createServerFn({ method: "GET" })
         params: data,
         token,
       });
+    },
+  );
+
+export const getProductReviewStats = createServerFn({ method: "GET" })
+  .inputValidator((data: string) => data)
+  .handler(async ({ data: productId }): Promise<BaseApiResponse<ReviewStats>> => {
+    return apiRequest(`/v1/products/public/${productId}/reviews/stats`);
+  });
+
+export const getProductReviews = createServerFn({ method: "GET" })
+  .inputValidator((data: ProductReviewsParams) => data)
+  .handler(
+    async ({ data }): Promise<BaseApiResponse<PaginatedResponse<Review>>> => {
+      const { productId, ...params } = data;
+      return apiRequest(`/v1/products/public/${productId}/reviews`, { params });
     },
   );

@@ -1,7 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { apiRequest } from "@/utils/apiRequest";
 import { getToken } from "@/utils/getToken";
-import type { ProductQueryParams, ProductListResponse } from "./types";
+import type {
+  AutocompleteParams,
+  AutocompleteSuggestionsResponse,
+  ProductListResponse,
+  ProductQueryParams,
+  SearchSuggestionsResponse,
+  SimilarProductsParams,
+} from "./types";
 import type { ProductDetailResponse } from "./types/types";
 
 export const getProductList = createServerFn({ method: "GET" })
@@ -26,10 +33,29 @@ export const getProductById = createServerFn({ method: "GET" })
     );
   });
 
-// Get related products - TBD (endpoint not provided yet)
-export const getRelatedProducts = createServerFn({ method: "GET" })
-  .inputValidator((data: { productId: string; limit?: number }) => data)
-  .handler(async () => {
-    // TODO: Update with actual endpoint when available
-    return { success: true, data: [], message: "Related products endpoint not yet implemented" };
+export const getSimilarProducts = createServerFn({ method: "GET" })
+  .inputValidator((data: SimilarProductsParams) => data)
+  .handler(async ({ data }): Promise<ProductListResponse> => {
+    const { productId, ...params } = data;
+    return apiRequest<ProductListResponse>(
+      `/v1/products/public/similar/${productId}`,
+      { params },
+    );
   });
+
+export const getAutocomplete = createServerFn({ method: "GET" })
+  .inputValidator((data: AutocompleteParams) => data)
+  .handler(async ({ data }): Promise<AutocompleteSuggestionsResponse> => {
+    return apiRequest<AutocompleteSuggestionsResponse>(
+      "/v1/products/public/autocomplete",
+      { params: data },
+    );
+  });
+
+export const getSearchSuggestions = createServerFn({ method: "GET" }).handler(
+  async (): Promise<SearchSuggestionsResponse> => {
+    return apiRequest<SearchSuggestionsResponse>(
+      "/v1/products/public/search-suggestions",
+    );
+  },
+);

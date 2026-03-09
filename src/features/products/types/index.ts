@@ -1,7 +1,4 @@
-import type {
-  BaseApiResponse,
-  PaginatedResponse,
-} from "@/types/baseApi.types";
+import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
 import type { GeneralQueryParams } from "@/types/general.types";
 import type { Product } from "./product.types";
 
@@ -38,3 +35,25 @@ export interface ProductQueryParams extends GeneralQueryParams {
 }
 
 export type ProductListResponse = BaseApiResponse<PaginatedResponse<Product>>;
+
+export interface AutocompleteParams {
+  q: string;
+}
+
+export type AutocompleteSuggestionsResponse = BaseApiResponse<{
+  suggestions: string[];
+}>;
+
+export type SearchSuggestion = {
+  keyword: string;
+  productImage: string;
+  productId: string;
+};
+
+export type SearchSuggestionsResponse = BaseApiResponse<{
+  suggestions: SearchSuggestion[];
+}>;
+
+export type SimilarProductsParams = {
+  productId: string;
+} & Pick<GeneralQueryParams, "currentPage" | "pageSize">;
