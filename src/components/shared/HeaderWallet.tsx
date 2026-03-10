@@ -1,16 +1,24 @@
 import { Image } from "@/components/base/Image";
 import { walletQueries } from "@/features/account/wallet/walletQueries";
+import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 
-export function HeaderWallet() {
+interface HeaderWalletProps {
+  className?: string;
+}
+
+export function HeaderWallet({ className }: HeaderWalletProps) {
   const { data: balance, isLoading } = useQuery(walletQueries.balance());
 
   return (
     <Link
       to="/account/wallet"
-      className="fall flex-col gap-1.5 justify-between group cursor-pointer min-w-10"
+      className={cn(
+        "fall flex-col gap-1.5 justify-between group cursor-pointer min-w-10",
+        className,
+      )}
     >
       <div className="size-6 rounded-full overflow-hidden">
         <Image src="/aavak-coin-v1.png" alt="Aavak Coins" eager />

@@ -52,7 +52,11 @@ export function CartItemList({ items }: CartItemListProps) {
   };
 
   const handleQuantityChange = (id: string, quantity: number) => {
-    updateMutation.mutate({ id, quantity });
+    if (quantity === 0) {
+      handleDelete(id);
+    } else {
+      updateMutation.mutate({ id, quantity });
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -74,7 +78,7 @@ export function CartItemList({ items }: CartItemListProps) {
   return (
     <div className="flex flex-col gap-3">
       {/* Selection header */}
-      <div className="flex items-center gap-2 rounded-xl border border-n-400 bg-n-50 px-4 py-3 min-h-[54px]">
+      <div className="flex items-center gap-2 rounded-xl border border-n-400 bg-n-50 px-4 py-3 min-h-13.5">
         <Checkbox
           ref={selectAllRef}
           checked={allSelected}

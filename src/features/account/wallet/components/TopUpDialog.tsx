@@ -176,13 +176,14 @@ export function TopUpDialog({ isOpen, onClose }: TopUpDialogProps) {
               </button>
             ))}
           </div>
-          <div className="flex justify-end pt-1">
+          <div className="flex mt-4">
             <Button
               type="submit"
               variant="filled"
               color="primary"
               isLoading={isLoading}
               disabled={isLoading}
+              fullWidth
             >
               {getButtonLabel()}
             </Button>

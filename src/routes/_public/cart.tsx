@@ -6,7 +6,6 @@ import { CartItemList } from "@/features/cart/components/CartItemList";
 import { CartSummary } from "@/features/cart/components/CartSummary";
 import CartSkeleton from "@/features/cart/components/skeletons/CartSkeleton";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
-import { MOCK_DELIVERY_INFO } from "@/features/products/constants";
 import { RecentlyViewedSection } from "@/features/user-activities/components/RecentlyViewedSection";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -32,13 +31,14 @@ function CartComponent() {
   const { isAuthenticated } = useAuth();
 
   const hasItems = cart.items.length > 0;
+  console.log(cart);
 
   return (
     <div className="flex flex-col gap-6 p-4">
       {hasItems && (
         <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_400px] lg:items-start">
           <div className="flex flex-col gap-3">
-            <DeliveryInfo delivery={MOCK_DELIVERY_INFO} />
+            <DeliveryInfo />
             <CartItemList items={cart.items} />
           </div>
           <CartSummary cart={cart} />

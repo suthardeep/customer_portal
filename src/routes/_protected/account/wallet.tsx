@@ -21,9 +21,9 @@ function RouteComponent() {
   const { data } = useSuspenseQuery(walletQueries.balance());
   return (
     <div className="p-0!">
-      <div className="p-6">
+      <div className="lg:p-6">
         <AccountPageHeader title="Aavak Balance" />
-        <div className="fall gap-3 mt-5">
+        <div className="fall gap-3 mt-8">
           <div className="size-10">
             <Image
               src="/aavak-coin-v1.png"
@@ -45,7 +45,7 @@ function RouteComponent() {
         </div>
       </div>
       <Divider />
-      <div className="p-6">
+      <div className="lg:p-6">
         <div className="flex items-center justify-between mb-4">
           <h6 className="font-semibold">Transaction History</h6>
         </div>

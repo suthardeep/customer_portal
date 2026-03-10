@@ -10,6 +10,8 @@ interface ProductActionButtonsProps {
   quantity: number;
   disabled?: boolean;
   max?: number;
+  currentPrice?: number;
+  originalPrice?: number;
 }
 
 export function ProductActionButtons({
@@ -23,34 +25,33 @@ export function ProductActionButtons({
 
   const cartItem = cart?.items.find((item) => item.variantId === variantId);
 
-  if (cartItem) {
-    return (
-      <QuantitySelector
-        value={cartItem.quantity}
-        max={max}
-        disabled={disabled}
-        onChange={(newQty) =>
-          updateCartItemMutation.mutate({ id: cartItem.id, quantity: newQty })
-        }
-      />
-    );
-  }
-
   return (
-    <div className="flex gap-3">
-      <AddToCartButton
-        variantId={variantId}
-        quantity={quantity}
-        disabled={disabled}
-      />
-      <Button
-        color="secondary"
-        size="lg"
-        disabled={disabled}
-        fullWidth
-      >
-        Buy Now
-      </Button>
+    <div className="flex gap-3 fixed bottom-0 left-0 right-0 p-4 lg:relative bg-white z-10 border-t border-t-n-500 lg:border-transparent lg:p-0">
+      {disabled ? (
+        <Button disabled fullWidth>
+          Out of Stock
+        </Button>
+      ) : cartItem ? (
+        <QuantitySelector
+          value={cartItem.quantity}
+          max={max}
+          disabled={disabled}
+          onChange={(newQty) =>
+            updateCartItemMutation.mutate({ id: cartItem.id, quantity: newQty })
+          }
+        />
+      ) : (
+        <>
+          <AddToCartButton
+            variantId={variantId}
+            quantity={quantity}
+            disabled={disabled}
+          />
+          <Button color="secondary" size="lg" disabled={disabled} fullWidth>
+            Buy Now
+          </Button>
+        </>
+      )}
     </div>
   );
 }

@@ -42,6 +42,7 @@ export const getRouter = () => {
 declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
     showCategorySubNav?: boolean;
+    showBottomBar?: boolean;
     maxWidth?: "max-w-7xl" | "max-w-8xl";
   }
 }

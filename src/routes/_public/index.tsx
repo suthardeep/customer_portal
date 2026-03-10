@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/_public/")({
   component: App,
-  staticData: { showCategorySubNav: true },
+  staticData: { showCategorySubNav: true, showBottomBar: true },
 });
 
 function App() {

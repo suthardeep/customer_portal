@@ -1,42 +1,35 @@
-import { prettyDate } from "@/utils/formatDateTime";
 import { useToggle } from "@/hooks/useToggle";
 import AddressSelectorSheet from "@/features/account/my-address/components/AddressSelectorSheet";
-import type { DeliveryInfo as DeliveryInfoType } from "../types/types";
+import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
+import type { Address } from "@/features/account/my-address/types/types";
 import { Button } from "@/components/base/button/Button";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { formatAddress } from "@/utils/formatAddress";
 
-interface DeliveryInfoProps {
-  delivery?: DeliveryInfoType;
-}
-
-export function DeliveryInfo({ delivery }: DeliveryInfoProps) {
+export function DeliveryInfo() {
   const sheet = useToggle();
   const { isAuthenticated, isLoading } = useAuth();
+  const { activeAddress, selectSavedAddress } = useSelectedAddressStore();
+
+  const handleSelect = (address: Address) => {
+    selectSavedAddress(address);
+    sheet.close();
+  };
 
   if (isLoading) {
     return <div className="shimmer rounded-xl w-full h-20.5" />;
   }
 
-  if (!delivery || !isAuthenticated) return null;
-
-  const deliveryDateFormatted = prettyDate(delivery.estimatedDate, {
-    showDate: true,
-    showDay: true,
-    disableRelativeDates: true,
-  });
+  if (!isAuthenticated) return null;
 
   return (
     <>
       <div className="rounded-xl border border-(--s-200) bg-s-50 p-3">
-        {/* Delivery Date */}
-        <p className="font-semibold text-n-950">
-          Delivery by {deliveryDateFormatted}
-        </p>
-
-        {/* Location + Change */}
-        <div className="flex items-center justify-between pt-1 font-medium">
+        <div className="flex items-center justify-between font-medium">
           <p className="text-n-850">
-            to {delivery.location.pinCode}, {delivery.location.city}
+            {activeAddress
+              ? `Deliver to ${formatAddress(activeAddress)}`
+              : "Select a delivery address"}
           </p>
           <Button
             variant="ghost"
@@ -44,7 +37,7 @@ export function DeliveryInfo({ delivery }: DeliveryInfoProps) {
             className="font-semibold text-s-700 hover:text-s-800 transition-colors text-sm"
             onClick={sheet.open}
           >
-            Change
+            {activeAddress ? "Change" : "Select"}
           </Button>
         </div>
       </div>
@@ -52,8 +45,8 @@ export function DeliveryInfo({ delivery }: DeliveryInfoProps) {
       <AddressSelectorSheet
         isOpen={sheet.isOpen}
         onClose={sheet.close}
-        selectedAddressId={null}
-        onSelect={sheet.close}
+        selectedAddressId={activeAddress?.id ?? null}
+        onSelect={handleSelect}
       />
     </>
   );

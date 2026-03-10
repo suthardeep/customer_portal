@@ -40,13 +40,6 @@ export function ProductCard({
   const isWishlisted = wishlistItems?.data?.data?.some(
     (item) => item?.productId === product?.id,
   );
-  console.log(
-    wishlistItems?.data?.data,
-    "prid",
-    product?.id,
-    "val",
-    isWishlisted,
-  );
 
   const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
 

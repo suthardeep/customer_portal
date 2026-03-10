@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   Alert01Icon,
+  Menu01Icon,
   AlertCircleIcon,
   ArrowDown01Icon,
   Coins01Icon,
@@ -49,6 +50,7 @@ import {
   ShoppingBag01Icon,
   ShoppingBasket02Icon,
   StarHalfIcon,
+  DiscoverCircleIcon,
   StarIcon,
   Store01Icon,
   Store02Icon,
@@ -88,6 +90,7 @@ export const iconRegistry = {
   Add: Add01Icon,
   Remove: Remove01Icon,
   PackageRemove: PackageRemoveIcon,
+  Explore: DiscoverCircleIcon,
   // Product detail page icons
   Star: StarIcon,
   StarHalf: StarHalfIcon,
@@ -139,6 +142,8 @@ export const iconRegistry = {
   TrendingUp: ChartUpIcon,
   // Cart icons
   Coins: Coins01Icon,
+  // Menu drawer
+  Menu: Menu01Icon,
   // Address icons
   Home: Home01Icon,
   Briefcase: Briefcase01Icon,

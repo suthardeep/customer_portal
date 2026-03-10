@@ -9,13 +9,13 @@ export function QuickActionCards() {
         <Link
           key={card.to}
           to={card.to}
-          className="flex flex-col items-center gap-2 rounded-lg bg-n-100 p-4 transition-colors hover:bg-n-300/70 border border-n-400"
+          className="flex flex-col items-center gap-2 rounded-lg bg-n-100 p-4 text-n-900 transition-colors hover:bg-n-300/70 border border-n-400"
           activeProps={{
-            className: "bg-p-50! border-p-500",
+            className: "bg-p-50! border-p-500 text-p-900",
           }}
         >
-          <Icon name={card.icon} size="lg" className="text-p-900" />
-          <span className="text-sm font-medium text-p-900">{card.label}</span>
+          <Icon name={card.icon} size="lg" className="text-inherit" />
+          <span className="text-sm font-medium ">{card.label}</span>
         </Link>
       ))}
     </div>

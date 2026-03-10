@@ -1,20 +1,9 @@
-import { ProfileHeader } from "./ProfileHeader";
-import { QuickActionCards } from "./QuickActionCards";
-import { SidebarSection } from "./SidebarSection";
-import { SIDEBAR_SECTIONS } from "../constants";
-import { LogoutButton } from "@/features/auth/components/LogoutButton";
+import { AccountSidebarContent } from "./AccountSidebarContent";
 
 export function AccountSidebar() {
   return (
-    <aside className="w-96 space-y-5 rounded-xl bg-white p-6 border border-n-400">
-      <ProfileHeader />
-      <QuickActionCards />
-      <div className="space-y-5">
-        {SIDEBAR_SECTIONS.map((section) => (
-          <SidebarSection key={section.title} section={section} />
-        ))}
-        <LogoutButton size="sm" fullWidth variant="ghost" color="danger" />
-      </div>
+    <aside className="w-96 space-y-5 rounded-xl bg-white p-6 border border-n-400 hidden lg:block">
+      <AccountSidebarContent />
     </aside>
   );
 }

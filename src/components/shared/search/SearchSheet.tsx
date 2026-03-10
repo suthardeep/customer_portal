@@ -1,6 +1,5 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import Sheet from "@/components/base/sheet/Sheet";
-import { useNavigate } from "@tanstack/react-router";
 import SearchAutocomplete from "./SearchAutocomplete";
 import SearchInput from "./SearchInput";
 import SearchSuggestions from "./SearchSuggestions";
@@ -12,13 +11,6 @@ interface SearchSheetProps {
 }
 
 const SearchSheet: React.FC<SearchSheetProps> = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
-
-  const navigateToSearch = (q: string) => {
-    navigate({ to: "/search", search: { q } });
-    onClose();
-  };
-
   return (
     <Sheet
       onClose={onClose}
@@ -39,8 +31,8 @@ const SearchSheet: React.FC<SearchSheetProps> = ({ isOpen, onClose }) => {
           />
         </div>
         <div className="px-4 flex flex-col lg:flex-row gap-6 mt-6">
-          <SearchAutocomplete onSelect={navigateToSearch} />
-          <SearchSuggestions onSelect={navigateToSearch} />
+          <SearchAutocomplete onClose={onClose} />
+          <SearchSuggestions onClose={onClose} />
           <SearchTrending onSelect={onClose} />
         </div>
       </div>

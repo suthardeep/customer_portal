@@ -1,19 +1,17 @@
 import { Button } from "@/components/base/button/Button";
 import FallbackView from "@/components/empty-states/FallbackView";
-import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { OffersList } from "@/features/products/components/OffersList";
+import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
 import { ProductBadges } from "@/features/products/components/ProductBadges";
 import { ProductBreadcrumb } from "@/features/products/components/ProductBreadcrumb";
 import { ProductDetailHeader } from "@/features/products/components/ProductDetailHeader";
 import { ProductImageGallery } from "@/features/products/components/ProductImageGallery";
-import { ProductQuantitySelector } from "@/features/products/components/ProductQuantitySelector";
 import { ProductTabs } from "@/features/products/components/ProductTabs";
 import { ProductTopBar } from "@/features/products/components/ProductTopBar";
 import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
 import {
-  MOCK_DELIVERY_INFO,
   MOCK_PRODUCT_FEATURES,
   MOCK_PRODUCT_OFFERS,
 } from "@/features/products/constants";
@@ -50,7 +48,9 @@ function ProductDetailComponent() {
   const selectedVariant: ProductVariant | undefined = (() => {
     if (!product.variants?.length) return undefined;
     if (variantId) {
-      return product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+      return (
+        product.variants.find((v) => v.id === variantId) ?? product.variants[0]
+      );
     }
     return product.variants[0];
   })();
@@ -60,7 +60,6 @@ function ProductDetailComponent() {
     : false;
 
   // Use mock data for features not yet available from API
-  const delivery = product.delivery || MOCK_DELIVERY_INFO;
   const features = product.features || MOCK_PRODUCT_FEATURES;
   const offers = product.offers || MOCK_PRODUCT_OFFERS;
 
@@ -69,16 +68,16 @@ function ProductDetailComponent() {
     : (product.mediaUrls ?? []);
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 pt-6 pb-28 lg:pb-6">
       {/* Breadcrumb */}
       <ProductBreadcrumb product={product} />
 
       {/* Main Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-3 items-start mt-6">
         <div>
           {/* Left: Image Gallery */}
           <ProductImageGallery images={galleryImages} />
-          <div className="mt-8">
+          <div className="mt-8 hidden lg:block">
             <ProductTabs
               highlights={product.highlights}
               specifications={product.specifications}
@@ -111,8 +110,7 @@ function ProductDetailComponent() {
               </Button>
             </div>
             <div className="w-full space-y-3">
-              <DeliveryInfo delivery={delivery} />
-              <ProductQuantitySelector max={selectedVariant?.quantity} />
+              <DeliveryInfo />
               <ProductBadges features={features} />
             </div>
           </div>
