@@ -48,6 +48,7 @@ function OrderDetailComponent() {
       <MyOrdersCard
         order={{ ...order, amount: order.totalPrice }}
         enableRating
+        allowRedirectToProductPage
       />
 
       <div className="rounded-xl border border-n-400 bg-n-50 p-4">
@@ -99,14 +100,7 @@ function OrderDetailComponent() {
           )}
         </div>
       )}
-      <Link
-        to="/account/my-orders/return/$orderItemId"
-        params={{ orderItemId }}
-      >
-        <Button variant="outline" color="neutral" fullWidth>
-          Return Order
-        </Button>
-      </Link>
+
       <MyOrdersTrackingDialog
         isOpen={trackingDialog.isOpen}
         onClose={trackingDialog.close}

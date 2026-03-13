@@ -10,7 +10,7 @@ import { reviewQueries } from "@/features/reviews/reviewsQueries";
 import { useToggle } from "@/hooks/useToggle";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { prettyDate } from "@/utils/formatDateTime";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { PAYMENT_METHOD_LABEL } from "../constants";
@@ -20,18 +20,20 @@ import MyOrderCardHeader from "./MyOrderCardHeader";
 interface MyOrdersCardProps {
   order: OrderItem;
   enableRating?: boolean;
+  allowRedirectToProductPage?: boolean;
 }
 
 export function MyOrdersCard({
   order,
   enableRating = false,
+  allowRedirectToProductPage = false,
 }: MyOrdersCardProps) {
   const reviewSheet = useToggle();
+  const navigate = useNavigate();
   const [triggerRating, setTriggerRating] = useState(0);
   const createReviewMutation = useCreateReviewMutation();
   const { data: myReviewsData } = useQuery(reviewQueries.myReviews());
   const myReviews = myReviewsData?.data ?? [];
-  console.log(myReviews, "myReviews");
 
   const existingReview = Array.isArray(myReviews)
     ? myReviews.find((r) => r.productId === order.orderItemId)
@@ -47,6 +49,16 @@ export function MyOrdersCard({
     reviewSheet.close();
   };
 
+  const handleProductClick = (e: React.MouseEvent) => {
+    if (allowRedirectToProductPage) {
+      e.preventDefault();
+      navigate({
+        to: "/product/$productId",
+        params: { productId: order.orderItemId },
+      });
+    }
+  };
+
   return (
     <Link
       to="/account/my-orders/$orderItemId"
@@ -55,7 +67,7 @@ export function MyOrdersCard({
     >
       <MyOrderCardHeader order={order} />
       <Divider />
-      <div className="px-4 py-3 flex gap-4">
+      <div className="px-4 py-3 flex gap-4" onClick={handleProductClick}>
         <div className="size-24 shrink-0 overflow-hidden">
           <Image
             src={order.productImage}
@@ -94,11 +106,8 @@ export function MyOrdersCard({
         </div>
       </div>
       {enableRating && (
-        <div className="p-2 pt-0 w-full">
-          <div
-            className="w-full rounded-xl bg-p-50 px-4 py-3 flex items-center gap-4"
-            onClick={(e) => e.preventDefault()}
-          >
+        <div className="p-2 pt-0 w-full" onClick={(e) => e.preventDefault()}>
+          <div className="w-full rounded-xl bg-p-50 px-4 py-3 flex items-center gap-4">
             <p className="text-n-900 font-medium">
               {existingReview ? "Your rating" : "Rate your experience"}
             </p>

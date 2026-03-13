@@ -1,5 +1,5 @@
 import { Button } from "@/components/base/button/Button";
-import FallbackView from "@/components/empty-states/FallbackView";
+import { ProductNotFound } from "@/features/products/components/ProductNotFound";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { OffersList } from "@/features/products/components/OffersList";
 import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
@@ -35,9 +35,7 @@ export const Route = createFileRoute("/_public/product/$productId")({
   },
   pendingComponent: ProductDetailSkeleton,
   component: ProductDetailComponent,
-  errorComponent: (err) => (
-    <FallbackView title={err?.error?.message || "Something went wrong"} />
-  ),
+  errorComponent: () => <ProductNotFound />,
 });
 
 function ProductDetailComponent() {

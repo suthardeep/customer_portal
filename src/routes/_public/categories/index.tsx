@@ -38,7 +38,7 @@ function CategoriesIndexComponent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6">Browse Categories</h1>
+      <h5 className="mb-6">Browse Categories</h5>
       <CategoryGrid categories={categories} />
     </div>
   );
