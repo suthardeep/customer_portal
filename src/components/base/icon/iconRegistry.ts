@@ -1,6 +1,9 @@
 import {
   Add01Icon,
+  AddSquareIcon,
   Alert01Icon,
+  Analytics01Icon,
+  Bookmark02Icon,
   Menu01Icon,
   AlertCircleIcon,
   ArrowDown01Icon,
@@ -10,6 +13,7 @@ import {
   ArrowUp01Icon,
   Award01Icon,
   Briefcase01Icon,
+  Megaphone02Icon,
   Cancel01Icon,
   Cash02Icon,
   ChartUpIcon,
@@ -17,6 +21,7 @@ import {
   Delete02Icon,
   DeliveryDelay01Icon,
   Calendar03Icon,
+  ThumbsUpIcon,
   DeliveryReturn01Icon,
   DeliverySent01Icon,
   DeliveryTracking01Icon,
@@ -32,6 +37,8 @@ import {
   FolderOpenIcon,
   Home01Icon,
   Image01Icon,
+  Image02Icon,
+  PlayListIcon,
   ImageNotFound01Icon,
   ImageUpload01Icon,
   Link01Icon,
@@ -64,6 +71,8 @@ import {
   ViewOffIcon,
   Wallet02Icon,
   VideoCameraAiIcon,
+  InstagramIcon,
+  YoutubeIcon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -102,6 +111,7 @@ export const iconRegistry = {
   Location: Location01Icon,
   CheckCircle: Tick01Icon,
   Truck: DeliveryTruck01Icon,
+  MegaPhone: Megaphone02Icon,
   DeliveryReturn: DeliveryReturn01Icon,
   // Order status icons
   Package: Package01Icon,
@@ -140,6 +150,7 @@ export const iconRegistry = {
   ImageUpload: ImageUpload01Icon,
   // Search icons
   TrendingUp: ChartUpIcon,
+  ThumbsUp: ThumbsUpIcon,
   // Cart icons
   Coins: Coins01Icon,
   // Menu drawer
@@ -148,6 +159,15 @@ export const iconRegistry = {
   Home: Home01Icon,
   Briefcase: Briefcase01Icon,
   MoreVertical: MoreVerticalIcon,
+  // Spotlight sidebar icons
+  AddSquare: AddSquareIcon,
+  PlayList: PlayListIcon,
+  Bookmark: Bookmark02Icon,
+  Analytics: Analytics01Icon,
+  MyPost: Image02Icon,
+  // Social icons
+  Instagram: InstagramIcon,
+  Youtube: YoutubeIcon,
 } as const;
 
 export type IconName = keyof typeof iconRegistry;

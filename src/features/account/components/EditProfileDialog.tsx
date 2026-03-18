@@ -20,6 +20,7 @@ const EditProfileDialog = ({ isOpen, onClose }: EditProfileDialogProps) => {
       fullName: data.fullName,
       ...(data.email ? { email: data.email } : {}),
       ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth } : {}),
+      ...(data.profileImageUrl ? { profileImageUrl: data.profileImageUrl } : {}),
     };
     updateMutation.mutate(payload, { onSuccess: onClose });
   };

@@ -1,13 +1,30 @@
-export interface MediaUploadResponse {
+import { BaseApiResponse } from "@/types/baseApi.types";
+import type { ButtonProps } from "@/components/base/button/button.types";
+
+export type MediaUploadResponse = BaseApiResponse<{
   id: string;
-  url: string;
+  originalName: string;
+  fileName: string;
+  s3Url: string;
+  mimeType: string;
+  fileSize: number;
   type: string;
   group: string;
-  fileSize: number;
-  mimeType: string;
-}
+  platformType: string;
+  uploadedBy: string;
+  uploaderType: string;
+  processingStatus: string | null;
+  duration: number | null;
+  width: number | null;
+  height: number | null;
+  variants: unknown | null;
+  thumbnailUrls: unknown | null;
+  parentMediaFileId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}>;
 
-export interface MediaUploaderProps {
+export type MediaUploaderProps = {
   /** Passed as `group` field in FormData to the upload API */
   group: string;
   /** Called with the uploaded image URL on successful upload */
@@ -22,4 +39,8 @@ export interface MediaUploaderProps {
   placeholderClassName?: string;
   /** className applied to the uploaded/preview image element */
   imageClassName?: string;
-}
+  /** Pre-existing image URL to show instead of the placeholder */
+  defaultImage?: string;
+  uploadVariant?: "button" | "image-placeholder";
+  buttonText?: string;
+} & Pick<ButtonProps, "disabled" | "isLoading" | "size" | "variant">;

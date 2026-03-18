@@ -31,6 +31,10 @@ export function MenuDrawer() {
     drawer.close();
     navigate({ to: "/cart" });
   };
+  const handleSpotlightClick = () => {
+    drawer.close();
+    navigate({ to: "/spotlight" });
+  };
 
   const accountLabel = isAuthenticated
     ? user?.fullName?.split(" ")[0] || user?.phone || "Account"
@@ -92,7 +96,12 @@ export function MenuDrawer() {
                 navigate({ to: "/account/wallet" });
               }}
             />
-            <DrawerItem icon="Store" label="Sell Now" />
+            <DrawerItem
+              icon="Store"
+              label="Sell Now"
+              onClick={handleSpotlightClick}
+            />
+            <DrawerItem icon="VideoCameraSpark" label="Spotlight" />
             <button className="flex items-center gap-3 py-3.5 px-1 w-full text-left group">
               <AavakFinTechLogo />
               <p className="font-medium text-n-900 group-hover:text-p-600">

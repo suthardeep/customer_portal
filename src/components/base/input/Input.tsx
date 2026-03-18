@@ -191,7 +191,7 @@ const variantStateStyles: Record<
       "border-n-500 focus:border-n-600 focus:ring-2 focus:ring-offset-0 focus:ring-n-500/20",
     error:
       "border-danger-500 focus:border-danger-500 focus:ring-2 focus:ring-offset-0 focus:ring-danger-500/20",
-    disabled: "border-n-300",
+    disabled: "border-n-500",
   },
   underline: {
     default: "border-n-500 focus:border-n-600",

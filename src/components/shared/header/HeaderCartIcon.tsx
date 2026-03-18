@@ -25,7 +25,7 @@ export function HeaderCartIcon({ className, isMobile = false }: Props) {
       <Icon
         name="ShoppingCart"
         size="lg"
-        className={cn("text-inherit", iconClassName)}
+        className={cn("text-inherit!", iconClassName)}
       />
       <CartCountBadge />
       <p className="text-[13px] text-inherit font-medium">Cart</p>

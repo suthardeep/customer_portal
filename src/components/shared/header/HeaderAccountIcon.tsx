@@ -51,7 +51,10 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
             <Image
               src={user.profileImageUrl}
               alt={"my-profile-image"}
-              className="rounded-full object-cover shrink-0 border border-n-500"
+              className={cn(
+                "rounded-full object-cover shrink-0 border",
+                isActive ? "text-p-600" : "border-n-500",
+              )}
             />
           </div>
         ) : (

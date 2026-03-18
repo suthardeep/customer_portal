@@ -13,6 +13,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { useInfiniteQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { useEffect } from "react";
 
 export const Route = createFileRoute(
   "/_protected/account/wishlist/$collectionId",
@@ -47,9 +48,11 @@ function CollectionDetailComponent() {
   // Intersection Observer for infinite scroll
   const [loadMoreRef, entry] = useIntersectionObserver({ threshold: 0.5 });
 
-  if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
-    fetchNextPage();
-  }
+  useEffect(() => {
+    if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [entry?.isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Flatten pages into single array
   const products = data?.pages.flatMap((page) => page.data) ?? [];

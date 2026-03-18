@@ -15,6 +15,7 @@ import { HeaderSellNowIcon } from "./HeaderSellNowIcon";
 import { MenuDrawer } from "./MenuDrawer";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { AavakLogoIcon } from "@/components/compound/logo/AavakLogoIcon";
+import { HeaderSpotlightIcon } from "./HeaderSpotlightIcon";
 
 export default function Header() {
   const showCategorySubNav = useMatches({
@@ -49,6 +50,7 @@ export default function Header() {
             <HeaderSellNowIcon className="hidden lg:flex" />
             <HeaderCartIcon className="hidden lg:flex" />
             <HeaderAccountIcon className="hidden lg:flex" />
+            <HeaderSpotlightIcon className="hidden lg:flex" />
             <HeaderFintechIcon className="hidden lg:flex" />
             <HeaderProtectIcon className="hidden lg:flex" />
             <div className="lg:hidden space-x-2">

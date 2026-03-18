@@ -6,6 +6,7 @@ import * as Sentry from "@sentry/tanstackstart-react";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import RouteErrorComponent from "./components/empty-states/RouteErrorComponent";
 
 // Create a new router instance
 export const getRouter = () => {
@@ -14,6 +15,7 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     defaultStaleTime: 5 * 60 * 1000,
+    defaultErrorComponent: RouteErrorComponent,
     context: {
       ...rqContext,
     },
@@ -29,7 +31,7 @@ export const getRouter = () => {
   if (!router.isServer) {
     Sentry.init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
-      enabled: import.meta.env.PROD,
+      // enabled: import.meta.env.PROD,
       integrations: [],
       tracesSampleRate: 1.0,
       sendDefaultPii: true,

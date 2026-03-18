@@ -125,7 +125,7 @@ const sizeStyles: Record<TextareaSize, string> = {
   lg: "px-4 py-3 text-lg",
 };
 
-const labelStyles = "mb-1.5 block font-medium text-n-50";
+const labelStyles = "mb-1.5 block font-medium";
 
 const labelSizeStyles: Record<TextareaSize, string> = {
   sm: "text-sm",

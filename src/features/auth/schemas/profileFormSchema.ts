@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const profileFormSchema = z.object({
+  profileImageUrl: z.string().optional(),
   fullName: z.string().min(1, "Full name is required"),
   email: z
     .string()

@@ -14,28 +14,16 @@ export const Route = createFileRoute("/_auth/verify-otp")({
 });
 
 function VerifyOtpRouteComponent() {
-  const { phone, isNewUser, redirectTo } = Route.useSearch();
+  const { phone, redirectTo } = Route.useSearch();
   const navigate = useNavigate();
   const routeToNavigate = redirectTo || "/categories";
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
-      <div className="w-full max-w-sm space-y-6">
-        <div>
-          <h4>Verify OTP</h4>
-          <p className="text-n-600">Enter the OTP sent to +91 {phone}</p>
-        </div>
-        <p className="text-sm text-n-500">
-          {isNewUser
-            ? "Welcome! Complete your registration after verification."
-            : "Welcome back!"}
-        </p>
-
-        <VerifyOtpForm
-          phone={phone}
-          onSuccess={() => navigate({ to: routeToNavigate })}
-        />
-      </div>
+      <VerifyOtpForm
+        phone={phone}
+        onSuccess={() => navigate({ to: routeToNavigate })}
+      />
     </div>
   );
 }

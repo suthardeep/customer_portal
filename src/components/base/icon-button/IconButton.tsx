@@ -62,7 +62,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
               <Icon
                 name={icon}
                 size={iconSizeToPreset[size]}
-                className={cn(iconClassName)}
+                className={cn("text-current", iconClassName)}
                 strokeWidth={strokeWidth}
               />
             </div>
@@ -137,11 +137,11 @@ const variantStyles: Record<
 > = {
   filled: {
     primary:
-      "bg-p-500 text-white hover:bg-p-600 active:bg-p-700 focus-visible:ring-p-500 disabled:bg-p-300 disabled:cursor-not-allowed",
+      "bg-p-100 text-p-700 hover:bg-p-300 active:bg-p-700 active:text-white focus-visible:ring-p-500 disabled:bg-p-300 disabled:cursor-not-allowed",
     secondary:
       "bg-s-500 text-white hover:bg-s-600 active:bg-s-700 focus-visible:ring-s-500 disabled:bg-s-300 disabled:cursor-not-allowed",
     neutral:
-      "bg-n-700 text-white hover:bg-n-800 active:bg-n-900 focus-visible:ring-n-700 disabled:bg-n-400 disabled:cursor-not-allowed",
+      "bg-n-700 text-n-950 hover:bg-n-800 active:bg-n-900 active:text-white focus-visible:ring-n-700 disabled:bg-n-400 disabled:cursor-not-allowed",
     success:
       "bg-success-500 text-white hover:bg-success-600 active:bg-success-700 focus-visible:ring-success-500 disabled:bg-success-300 disabled:cursor-not-allowed",
     danger:
