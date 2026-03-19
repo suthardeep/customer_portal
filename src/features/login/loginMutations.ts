@@ -1,8 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/queryClient';
-import { authKeys } from '@/features/auth/authQueryFactory';
-import { sendOtp, verifyOtp } from './loginService';
-import type { SendOtpRequest, SendOtpResponse, VerifyOtpRequest, User } from './types/types';
+import { authKeys } from "@/features/auth/authQueryFactory";
+import { queryClient } from "@/queryClient";
+import { useMutation } from "@tanstack/react-query";
+import { spotlightKeys } from "../spotlight/spotlightQueryFactory";
+import { sendOtp, verifyOtp } from "./loginService";
+import type {
+  SendOtpRequest,
+  SendOtpResponse,
+  User,
+  VerifyOtpRequest,
+} from "./types/types";
+import { walletKeys } from "../account/wallet/walletQueryFactory";
 
 export const useSendOtpMutation = () => {
   return useMutation({
@@ -20,6 +27,10 @@ export const useVerifyOtpMutation = () => {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: authKeys.profile() });
+      await queryClient.invalidateQueries({ queryKey: walletKeys.balance() });
+      await queryClient.invalidateQueries({
+        queryKey: spotlightKeys.profile(),
+      });
     },
   });
 };

@@ -1,5 +1,6 @@
 import {
   createFileRoute,
+  Link,
   useCanGoBack,
   useRouter,
 } from "@tanstack/react-router";
@@ -67,7 +68,14 @@ function RouteComponent() {
             />
           </div>
           <div>
-            <p className="text-n-900 font-medium"> {post.creator.fullName} </p>
+            <Link
+              to="/spotlight/users/$userId"
+              params={{ userId: post.creator.id }}
+              className="text-n-900 font-medium hover:underline"
+            >
+              {" "}
+              {post.creator.fullName}{" "}
+            </Link>
             <p className="text-n-800">{post.caption}</p>
           </div>
         </div>

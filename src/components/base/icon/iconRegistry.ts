@@ -67,6 +67,7 @@ import {
   Coupon02Icon,
   CreditCardIcon,
   UserIcon,
+  Clock01Icon,
   ViewIcon,
   ViewOffIcon,
   Wallet02Icon,
@@ -115,6 +116,7 @@ export const iconRegistry = {
   DeliveryReturn: DeliveryReturn01Icon,
   // Order status icons
   Package: Package01Icon,
+  Clock: Clock01Icon,
   PackageAdd: PackageAdd01Icon,
   PackagePacked: Package03Icon,
   DeliverySent: DeliverySent01Icon,

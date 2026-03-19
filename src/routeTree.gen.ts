@@ -22,23 +22,26 @@ import { Route as ProtectedAccountRouteRouteImport } from './routes/_protected/a
 import { Route as PublicSpotlightIndexRouteImport } from './routes/_public/spotlight/index'
 import { Route as PublicCategoriesIndexRouteImport } from './routes/_public/categories/index'
 import { Route as ProtectedAccountIndexRouteImport } from './routes/_protected/account/index'
-import { Route as PublicSpotlightCampaignsRouteImport } from './routes/_public/spotlight/campaigns'
 import { Route as PublicSpotlightBuyClipsRouteImport } from './routes/_public/spotlight/buy-clips'
 import { Route as PublicProductProductIdRouteImport } from './routes/_public/product/$productId'
 import { Route as PublicCategoriesCategoryIdRouteImport } from './routes/_public/categories/$categoryId'
 import { Route as ProtectedAccountWalletRouteImport } from './routes/_protected/account/wallet'
 import { Route as ProtectedAccountMyAddressRouteImport } from './routes/_protected/account/my-address'
 import { Route as PublicSpotlightProtectedRouteRouteImport } from './routes/_public/spotlight/_protected/route'
+import { Route as PublicSpotlightCampaignsIndexRouteImport } from './routes/_public/spotlight/campaigns/index'
 import { Route as ProtectedAccountWishlistIndexRouteImport } from './routes/_protected/account/wishlist/index'
 import { Route as ProtectedAccountMyOrdersIndexRouteImport } from './routes/_protected/account/my-orders/index'
+import { Route as PublicSpotlightUsersUserIdRouteImport } from './routes/_public/spotlight/users.$userId'
 import { Route as PublicSpotlightShortsIdRouteImport } from './routes/_public/spotlight/shorts.$id'
-import { Route as PublicSpotlightProtectedMyPostsRouteImport } from './routes/_public/spotlight/_protected/my-posts'
+import { Route as PublicSpotlightCampaignsCampaignIdRouteImport } from './routes/_public/spotlight/campaigns/$campaignId'
 import { Route as PublicSpotlightProtectedEditProfileRouteImport } from './routes/_public/spotlight/_protected/edit-profile'
 import { Route as PublicSpotlightProtectedBookmarksRouteImport } from './routes/_public/spotlight/_protected/bookmarks'
 import { Route as PublicSpotlightProtectedAnalyticsRouteImport } from './routes/_public/spotlight/_protected/analytics'
 import { Route as PublicCategoriesProductsCategoryIdRouteImport } from './routes/_public/categories/products.$categoryId'
 import { Route as ProtectedAccountWishlistCollectionIdRouteImport } from './routes/_protected/account/wishlist/$collectionId'
 import { Route as ProtectedAccountMyOrdersOrderItemIdRouteImport } from './routes/_protected/account/my-orders/$orderItemId'
+import { Route as PublicSpotlightProtectedMyPostsIndexRouteImport } from './routes/_public/spotlight/_protected/my-posts/index'
+import { Route as PublicSpotlightProtectedMyPostsPostIdRouteImport } from './routes/_public/spotlight/_protected/my-posts/$postId'
 import { Route as ProtectedAccountMyOrdersReturnOrderItemIdRouteImport } from './routes/_protected/account/my-orders/return.$orderItemId'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
@@ -103,12 +106,6 @@ const ProtectedAccountIndexRoute = ProtectedAccountIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProtectedAccountRouteRoute,
 } as any)
-const PublicSpotlightCampaignsRoute =
-  PublicSpotlightCampaignsRouteImport.update({
-    id: '/campaigns',
-    path: '/campaigns',
-    getParentRoute: () => PublicSpotlightRouteRoute,
-  } as any)
 const PublicSpotlightBuyClipsRoute = PublicSpotlightBuyClipsRouteImport.update({
   id: '/buy-clips',
   path: '/buy-clips',
@@ -141,6 +138,12 @@ const PublicSpotlightProtectedRouteRoute =
     id: '/_protected',
     getParentRoute: () => PublicSpotlightRouteRoute,
   } as any)
+const PublicSpotlightCampaignsIndexRoute =
+  PublicSpotlightCampaignsIndexRouteImport.update({
+    id: '/campaigns/',
+    path: '/campaigns/',
+    getParentRoute: () => PublicSpotlightRouteRoute,
+  } as any)
 const ProtectedAccountWishlistIndexRoute =
   ProtectedAccountWishlistIndexRouteImport.update({
     id: '/wishlist/',
@@ -153,16 +156,22 @@ const ProtectedAccountMyOrdersIndexRoute =
     path: '/my-orders/',
     getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
+const PublicSpotlightUsersUserIdRoute =
+  PublicSpotlightUsersUserIdRouteImport.update({
+    id: '/users/$userId',
+    path: '/users/$userId',
+    getParentRoute: () => PublicSpotlightRouteRoute,
+  } as any)
 const PublicSpotlightShortsIdRoute = PublicSpotlightShortsIdRouteImport.update({
   id: '/shorts/$id',
   path: '/shorts/$id',
   getParentRoute: () => PublicSpotlightRouteRoute,
 } as any)
-const PublicSpotlightProtectedMyPostsRoute =
-  PublicSpotlightProtectedMyPostsRouteImport.update({
-    id: '/my-posts',
-    path: '/my-posts',
-    getParentRoute: () => PublicSpotlightProtectedRouteRoute,
+const PublicSpotlightCampaignsCampaignIdRoute =
+  PublicSpotlightCampaignsCampaignIdRouteImport.update({
+    id: '/campaigns/$campaignId',
+    path: '/campaigns/$campaignId',
+    getParentRoute: () => PublicSpotlightRouteRoute,
   } as any)
 const PublicSpotlightProtectedEditProfileRoute =
   PublicSpotlightProtectedEditProfileRouteImport.update({
@@ -200,6 +209,18 @@ const ProtectedAccountMyOrdersOrderItemIdRoute =
     path: '/my-orders/$orderItemId',
     getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
+const PublicSpotlightProtectedMyPostsIndexRoute =
+  PublicSpotlightProtectedMyPostsIndexRouteImport.update({
+    id: '/my-posts/',
+    path: '/my-posts/',
+    getParentRoute: () => PublicSpotlightProtectedRouteRoute,
+  } as any)
+const PublicSpotlightProtectedMyPostsPostIdRoute =
+  PublicSpotlightProtectedMyPostsPostIdRouteImport.update({
+    id: '/my-posts/$postId',
+    path: '/my-posts/$postId',
+    getParentRoute: () => PublicSpotlightProtectedRouteRoute,
+  } as any)
 const ProtectedAccountMyOrdersReturnOrderItemIdRoute =
   ProtectedAccountMyOrdersReturnOrderItemIdRouteImport.update({
     id: '/my-orders/return/$orderItemId',
@@ -220,7 +241,6 @@ export interface FileRoutesByFullPath {
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/product/$productId': typeof PublicProductProductIdRoute
   '/spotlight/buy-clips': typeof PublicSpotlightBuyClipsRoute
-  '/spotlight/campaigns': typeof PublicSpotlightCampaignsRoute
   '/account/': typeof ProtectedAccountIndexRoute
   '/categories/': typeof PublicCategoriesIndexRoute
   '/spotlight/': typeof PublicSpotlightIndexRoute
@@ -230,11 +250,15 @@ export interface FileRoutesByFullPath {
   '/spotlight/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/spotlight/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
   '/spotlight/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
-  '/spotlight/my-posts': typeof PublicSpotlightProtectedMyPostsRoute
+  '/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
+  '/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
   '/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
+  '/spotlight/campaigns/': typeof PublicSpotlightCampaignsIndexRoute
   '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
+  '/spotlight/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/spotlight/my-posts/': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
@@ -248,7 +272,6 @@ export interface FileRoutesByTo {
   '/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/product/$productId': typeof PublicProductProductIdRoute
   '/spotlight/buy-clips': typeof PublicSpotlightBuyClipsRoute
-  '/spotlight/campaigns': typeof PublicSpotlightCampaignsRoute
   '/account': typeof ProtectedAccountIndexRoute
   '/categories': typeof PublicCategoriesIndexRoute
   '/account/my-orders/$orderItemId': typeof ProtectedAccountMyOrdersOrderItemIdRoute
@@ -257,11 +280,15 @@ export interface FileRoutesByTo {
   '/spotlight/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/spotlight/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
   '/spotlight/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
-  '/spotlight/my-posts': typeof PublicSpotlightProtectedMyPostsRoute
+  '/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
+  '/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/account/my-orders': typeof ProtectedAccountMyOrdersIndexRoute
   '/account/wishlist': typeof ProtectedAccountWishlistIndexRoute
+  '/spotlight/campaigns': typeof PublicSpotlightCampaignsIndexRoute
   '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
+  '/spotlight/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/spotlight/my-posts': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -281,7 +308,6 @@ export interface FileRoutesById {
   '/_public/categories/$categoryId': typeof PublicCategoriesCategoryIdRoute
   '/_public/product/$productId': typeof PublicProductProductIdRoute
   '/_public/spotlight/buy-clips': typeof PublicSpotlightBuyClipsRoute
-  '/_public/spotlight/campaigns': typeof PublicSpotlightCampaignsRoute
   '/_protected/account/': typeof ProtectedAccountIndexRoute
   '/_public/categories/': typeof PublicCategoriesIndexRoute
   '/_public/spotlight/': typeof PublicSpotlightIndexRoute
@@ -291,11 +317,15 @@ export interface FileRoutesById {
   '/_public/spotlight/_protected/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/_public/spotlight/_protected/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
   '/_public/spotlight/_protected/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
-  '/_public/spotlight/_protected/my-posts': typeof PublicSpotlightProtectedMyPostsRoute
+  '/_public/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/_public/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
+  '/_public/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/_protected/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
   '/_protected/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
+  '/_public/spotlight/campaigns/': typeof PublicSpotlightCampaignsIndexRoute
   '/_protected/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
+  '/_public/spotlight/_protected/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/_public/spotlight/_protected/my-posts/': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -312,7 +342,6 @@ export interface FileRouteTypes {
     | '/categories/$categoryId'
     | '/product/$productId'
     | '/spotlight/buy-clips'
-    | '/spotlight/campaigns'
     | '/account/'
     | '/categories/'
     | '/spotlight/'
@@ -322,11 +351,15 @@ export interface FileRouteTypes {
     | '/spotlight/analytics'
     | '/spotlight/bookmarks'
     | '/spotlight/edit-profile'
-    | '/spotlight/my-posts'
+    | '/spotlight/campaigns/$campaignId'
     | '/spotlight/shorts/$id'
+    | '/spotlight/users/$userId'
     | '/account/my-orders/'
     | '/account/wishlist/'
+    | '/spotlight/campaigns/'
     | '/account/my-orders/return/$orderItemId'
+    | '/spotlight/my-posts/$postId'
+    | '/spotlight/my-posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -340,7 +373,6 @@ export interface FileRouteTypes {
     | '/categories/$categoryId'
     | '/product/$productId'
     | '/spotlight/buy-clips'
-    | '/spotlight/campaigns'
     | '/account'
     | '/categories'
     | '/account/my-orders/$orderItemId'
@@ -349,11 +381,15 @@ export interface FileRouteTypes {
     | '/spotlight/analytics'
     | '/spotlight/bookmarks'
     | '/spotlight/edit-profile'
-    | '/spotlight/my-posts'
+    | '/spotlight/campaigns/$campaignId'
     | '/spotlight/shorts/$id'
+    | '/spotlight/users/$userId'
     | '/account/my-orders'
     | '/account/wishlist'
+    | '/spotlight/campaigns'
     | '/account/my-orders/return/$orderItemId'
+    | '/spotlight/my-posts/$postId'
+    | '/spotlight/my-posts'
   id:
     | '__root__'
     | '/_auth'
@@ -372,7 +408,6 @@ export interface FileRouteTypes {
     | '/_public/categories/$categoryId'
     | '/_public/product/$productId'
     | '/_public/spotlight/buy-clips'
-    | '/_public/spotlight/campaigns'
     | '/_protected/account/'
     | '/_public/categories/'
     | '/_public/spotlight/'
@@ -382,11 +417,15 @@ export interface FileRouteTypes {
     | '/_public/spotlight/_protected/analytics'
     | '/_public/spotlight/_protected/bookmarks'
     | '/_public/spotlight/_protected/edit-profile'
-    | '/_public/spotlight/_protected/my-posts'
+    | '/_public/spotlight/campaigns/$campaignId'
     | '/_public/spotlight/shorts/$id'
+    | '/_public/spotlight/users/$userId'
     | '/_protected/account/my-orders/'
     | '/_protected/account/wishlist/'
+    | '/_public/spotlight/campaigns/'
     | '/_protected/account/my-orders/return/$orderItemId'
+    | '/_public/spotlight/_protected/my-posts/$postId'
+    | '/_public/spotlight/_protected/my-posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -488,13 +527,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAccountIndexRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
-    '/_public/spotlight/campaigns': {
-      id: '/_public/spotlight/campaigns'
-      path: '/campaigns'
-      fullPath: '/spotlight/campaigns'
-      preLoaderRoute: typeof PublicSpotlightCampaignsRouteImport
-      parentRoute: typeof PublicSpotlightRouteRoute
-    }
     '/_public/spotlight/buy-clips': {
       id: '/_public/spotlight/buy-clips'
       path: '/buy-clips'
@@ -537,6 +569,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSpotlightProtectedRouteRouteImport
       parentRoute: typeof PublicSpotlightRouteRoute
     }
+    '/_public/spotlight/campaigns/': {
+      id: '/_public/spotlight/campaigns/'
+      path: '/campaigns'
+      fullPath: '/spotlight/campaigns/'
+      preLoaderRoute: typeof PublicSpotlightCampaignsIndexRouteImport
+      parentRoute: typeof PublicSpotlightRouteRoute
+    }
     '/_protected/account/wishlist/': {
       id: '/_protected/account/wishlist/'
       path: '/wishlist'
@@ -551,6 +590,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAccountMyOrdersIndexRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
+    '/_public/spotlight/users/$userId': {
+      id: '/_public/spotlight/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/spotlight/users/$userId'
+      preLoaderRoute: typeof PublicSpotlightUsersUserIdRouteImport
+      parentRoute: typeof PublicSpotlightRouteRoute
+    }
     '/_public/spotlight/shorts/$id': {
       id: '/_public/spotlight/shorts/$id'
       path: '/shorts/$id'
@@ -558,12 +604,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSpotlightShortsIdRouteImport
       parentRoute: typeof PublicSpotlightRouteRoute
     }
-    '/_public/spotlight/_protected/my-posts': {
-      id: '/_public/spotlight/_protected/my-posts'
-      path: '/my-posts'
-      fullPath: '/spotlight/my-posts'
-      preLoaderRoute: typeof PublicSpotlightProtectedMyPostsRouteImport
-      parentRoute: typeof PublicSpotlightProtectedRouteRoute
+    '/_public/spotlight/campaigns/$campaignId': {
+      id: '/_public/spotlight/campaigns/$campaignId'
+      path: '/campaigns/$campaignId'
+      fullPath: '/spotlight/campaigns/$campaignId'
+      preLoaderRoute: typeof PublicSpotlightCampaignsCampaignIdRouteImport
+      parentRoute: typeof PublicSpotlightRouteRoute
     }
     '/_public/spotlight/_protected/edit-profile': {
       id: '/_public/spotlight/_protected/edit-profile'
@@ -606,6 +652,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/my-orders/$orderItemId'
       preLoaderRoute: typeof ProtectedAccountMyOrdersOrderItemIdRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
+    }
+    '/_public/spotlight/_protected/my-posts/': {
+      id: '/_public/spotlight/_protected/my-posts/'
+      path: '/my-posts'
+      fullPath: '/spotlight/my-posts/'
+      preLoaderRoute: typeof PublicSpotlightProtectedMyPostsIndexRouteImport
+      parentRoute: typeof PublicSpotlightProtectedRouteRoute
+    }
+    '/_public/spotlight/_protected/my-posts/$postId': {
+      id: '/_public/spotlight/_protected/my-posts/$postId'
+      path: '/my-posts/$postId'
+      fullPath: '/spotlight/my-posts/$postId'
+      preLoaderRoute: typeof PublicSpotlightProtectedMyPostsPostIdRouteImport
+      parentRoute: typeof PublicSpotlightProtectedRouteRoute
     }
     '/_protected/account/my-orders/return/$orderItemId': {
       id: '/_protected/account/my-orders/return/$orderItemId'
@@ -677,7 +737,8 @@ interface PublicSpotlightProtectedRouteRouteChildren {
   PublicSpotlightProtectedAnalyticsRoute: typeof PublicSpotlightProtectedAnalyticsRoute
   PublicSpotlightProtectedBookmarksRoute: typeof PublicSpotlightProtectedBookmarksRoute
   PublicSpotlightProtectedEditProfileRoute: typeof PublicSpotlightProtectedEditProfileRoute
-  PublicSpotlightProtectedMyPostsRoute: typeof PublicSpotlightProtectedMyPostsRoute
+  PublicSpotlightProtectedMyPostsPostIdRoute: typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  PublicSpotlightProtectedMyPostsIndexRoute: typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 
 const PublicSpotlightProtectedRouteRouteChildren: PublicSpotlightProtectedRouteRouteChildren =
@@ -688,7 +749,10 @@ const PublicSpotlightProtectedRouteRouteChildren: PublicSpotlightProtectedRouteR
       PublicSpotlightProtectedBookmarksRoute,
     PublicSpotlightProtectedEditProfileRoute:
       PublicSpotlightProtectedEditProfileRoute,
-    PublicSpotlightProtectedMyPostsRoute: PublicSpotlightProtectedMyPostsRoute,
+    PublicSpotlightProtectedMyPostsPostIdRoute:
+      PublicSpotlightProtectedMyPostsPostIdRoute,
+    PublicSpotlightProtectedMyPostsIndexRoute:
+      PublicSpotlightProtectedMyPostsIndexRoute,
   }
 
 const PublicSpotlightProtectedRouteRouteWithChildren =
@@ -699,18 +763,23 @@ const PublicSpotlightProtectedRouteRouteWithChildren =
 interface PublicSpotlightRouteRouteChildren {
   PublicSpotlightProtectedRouteRoute: typeof PublicSpotlightProtectedRouteRouteWithChildren
   PublicSpotlightBuyClipsRoute: typeof PublicSpotlightBuyClipsRoute
-  PublicSpotlightCampaignsRoute: typeof PublicSpotlightCampaignsRoute
   PublicSpotlightIndexRoute: typeof PublicSpotlightIndexRoute
+  PublicSpotlightCampaignsCampaignIdRoute: typeof PublicSpotlightCampaignsCampaignIdRoute
   PublicSpotlightShortsIdRoute: typeof PublicSpotlightShortsIdRoute
+  PublicSpotlightUsersUserIdRoute: typeof PublicSpotlightUsersUserIdRoute
+  PublicSpotlightCampaignsIndexRoute: typeof PublicSpotlightCampaignsIndexRoute
 }
 
 const PublicSpotlightRouteRouteChildren: PublicSpotlightRouteRouteChildren = {
   PublicSpotlightProtectedRouteRoute:
     PublicSpotlightProtectedRouteRouteWithChildren,
   PublicSpotlightBuyClipsRoute: PublicSpotlightBuyClipsRoute,
-  PublicSpotlightCampaignsRoute: PublicSpotlightCampaignsRoute,
   PublicSpotlightIndexRoute: PublicSpotlightIndexRoute,
+  PublicSpotlightCampaignsCampaignIdRoute:
+    PublicSpotlightCampaignsCampaignIdRoute,
   PublicSpotlightShortsIdRoute: PublicSpotlightShortsIdRoute,
+  PublicSpotlightUsersUserIdRoute: PublicSpotlightUsersUserIdRoute,
+  PublicSpotlightCampaignsIndexRoute: PublicSpotlightCampaignsIndexRoute,
 }
 
 const PublicSpotlightRouteRouteWithChildren =

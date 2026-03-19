@@ -9,17 +9,19 @@ import SpotlightTypeIcon from "./SpotlightTypeIcon";
 interface SpotlightPostCardProps {
   post: FeedPost;
   showBookmark?: boolean;
+  disableRedirect?: boolean;
 }
 
 function SpotlightPostCard({
   post,
   showBookmark = false,
+  disableRedirect = false,
 }: SpotlightPostCardProps) {
   const aspectClass =
     post.type === UgcPostType.VIDEO ? "aspect-9/16" : "aspect-video";
 
-  return (
-    <Link className="group" to="/spotlight/shorts/$id" params={{ id: post.id }}>
+  const content = (
+    <>
       <div className="relative overflow-hidden rounded-xl">
         <Image
           src={post.media.thumbnail}
@@ -50,6 +52,16 @@ function SpotlightPostCard({
         <Icon name="Heart" strokeWidth={2} className="text-danger-500" />
         <span>{post.stats.likes}</span>
       </div>
+    </>
+  );
+
+  if (disableRedirect) {
+    return <div className="group">{content}</div>;
+  }
+
+  return (
+    <Link className="group" to="/spotlight/shorts/$id" params={{ id: post.id }}>
+      {content}
     </Link>
   );
 }

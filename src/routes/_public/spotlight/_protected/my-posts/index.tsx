@@ -1,23 +1,22 @@
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
 import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
-import { SpotlightPostCardSkeleton } from "@/features/spotlight/components/skeletons/SpotlightPostCardSkeleton";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useEffect } from "react";
 
-const LOAD_MORE_SKELETON_COUNT = 10;
-
-export const Route = createFileRoute("/_public/spotlight/_protected/my-posts")({
-  loader: async ({ context }) => {
-    await context.queryClient.ensureInfiniteQueryData(
-      spotlightQueries.myPosts(),
-    );
+export const Route = createFileRoute("/_public/spotlight/_protected/my-posts/")(
+  {
+    loader: async ({ context }) => {
+      await context.queryClient.ensureInfiniteQueryData(
+        spotlightQueries.myPosts(),
+      );
+    },
+    component: RouteComponent,
   },
-  component: RouteComponent,
-});
+);
 
 function RouteComponent() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -36,23 +35,19 @@ function RouteComponent() {
   return (
     <div>
       <AccountPageHeader title="My Posts" />
-      <SpotlightPostGrid className="mt-8">
+      <SpotlightPostGrid className="mt-8" isLoading={isFetchingNextPage}>
         {posts.map((post) => (
-          <SpotlightPostCard key={post.id} post={post} />
+          <Link
+            key={post.id}
+            to="/spotlight/my-posts/$postId"
+            params={{ postId: post.id }}
+          >
+            <SpotlightPostCard post={post} disableRedirect />
+          </Link>
         ))}
       </SpotlightPostGrid>
 
-      {hasNextPage && (
-        <div
-          ref={loadMoreRef}
-          className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-        >
-          {isFetchingNextPage &&
-            Array.from({ length: LOAD_MORE_SKELETON_COUNT }, (_, i) => (
-              <SpotlightPostCardSkeleton key={i} />
-            ))}
-        </div>
-      )}
+      {hasNextPage && <div ref={loadMoreRef} />}
     </div>
   );
 }

@@ -4,27 +4,27 @@ import type { CustomToastProps, ToastType } from "./toast.types";
 
 // Static data outside component
 const bgColorMap: Record<ToastType, string> = {
-  success: "bg-success-50 dark:bg-success-950",
-  error: "bg-danger-50 dark:bg-danger-950",
-  warning: "bg-orange-50 dark:bg-orange-950",
-  info: "bg-p-50 dark:bg-p-950",
-  default: "bg-n-50 dark:bg-n-800",
+  success: "bg-success-50",
+  error: "bg-danger-50",
+  warning: "bg-orange-50",
+  info: "bg-p-50",
+  default: "bg-n-50",
 };
 
 const textColorMap: Record<ToastType, string> = {
-  success: "text-success-800 dark:text-success-500",
-  error: "text-danger-800 dark:text-danger-300",
-  warning: "text-orange-600 dark:text-orange-300",
-  info: "text-p-600 dark:text-p-200",
-  default: "text-n-600 dark:text-n-300",
+  success: "text-success-800",
+  error: "text-danger-800",
+  warning: "text-orange-600",
+  info: "text-p-600",
+  default: "text-n-600",
 };
 
 const borderColorMap: Record<ToastType, string> = {
-  success: "border-success-400 dark:border-success-800",
-  error: "border-danger-200 dark:border-danger-900",
-  warning: "border-orange-200 dark:border-orange-900",
-  info: "border-p-200 dark:border-p-800",
-  default: "border-n-300 dark:border-n-400/50",
+  success: "border-success-400",
+  error: "border-danger-200",
+  warning: "border-orange-200",
+  info: "border-p-200",
+  default: "border-n-300",
 };
 
 const iconMap: Record<ToastType, React.ReactNode> = {
@@ -48,7 +48,7 @@ export function CustomToast({
   return (
     <div
       className={cn(
-        "w-full max-w-lg min-w-87.5 rounded-lg border px-3 py-2 shadow-2xs md:rounded-xl md:p-4 dark:shadow",
+        "w-full max-w-lg min-w-87.5 rounded-lg border px-3 py-2 shadow-lg md:rounded-xl md:p-3",
         bgColorMap[type],
         borderColorMap[type],
       )}
@@ -59,9 +59,7 @@ export function CustomToast({
           <p className={cn("font-medium md:text-base", textColorMap[type])}>
             {message}
           </p>
-          {description && (
-            <p className="dark:text-n-200 text-xs text-n-600">{description}</p>
-          )}
+          {description && <p className="text-xs text-n-600">{description}</p>}
         </div>
         {allowDismiss && (
           <div

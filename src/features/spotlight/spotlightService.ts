@@ -11,11 +11,16 @@ import type {
   MyPostsParams,
   MyPostsResponse,
   PostDetailResponse,
+  SpotlightProfile,
   SpotlightProfileResponse,
   UpdateSpotlightProfileRequest,
+  UserPostsResponse,
 } from "./types/types";
 import type { CreatorTiersResponse } from "./types/analytics.types";
-import type { BookmarkedPostsParams, BookmarkedPostsResponse } from "./types/index";
+import type {
+  BookmarkedPostsParams,
+  BookmarkedPostsResponse,
+} from "./types/index";
 
 export const getBookmarkedPosts = createServerFn({ method: "GET" })
   .inputValidator((data: BookmarkedPostsParams) => data)
@@ -63,9 +68,12 @@ export const getCreatorAnalytics = createServerFn({ method: "GET" }).handler(
   async (): Promise<CreatorAnalyticsResponse> => {
     const token = getToken();
 
-    return apiRequest<CreatorAnalyticsResponse>("/v1/ugc/creators/me/analytics", {
-      token,
-    });
+    return apiRequest<CreatorAnalyticsResponse>(
+      "/v1/ugc/creators/me/analytics",
+      {
+        token,
+      },
+    );
   },
 );
 
@@ -98,24 +106,71 @@ export const getMyPosts = createServerFn({ method: "GET" })
     });
   });
 
-export const toggleLike = createServerFn({ method: "POST" })
+export const getMyPostById = createServerFn({ method: "GET" })
   .inputValidator((data: string) => data)
-  .handler(async ({ data: postId }): Promise<BaseApiResponse<LikeToggleData>> => {
+  .handler(async ({ data: postId }): Promise<PostDetailResponse> => {
     const token = getToken();
 
-    return apiRequest<BaseApiResponse<LikeToggleData>>(
-      `/v1/ugc/posts/${postId}/like`,
-      { method: "POST", token },
-    );
+    return apiRequest<PostDetailResponse>(`/v1/ugc/posts/me/${postId}`, {
+      token,
+    });
   });
+
+export const getUserProfile = createServerFn({ method: "GET" })
+  .inputValidator((data: string) => data)
+  .handler(
+    async ({
+      data: customerId,
+    }): Promise<BaseApiResponse<SpotlightProfile>> => {
+      const token = getToken();
+
+      return apiRequest<BaseApiResponse<SpotlightProfile>>(
+        `/v1/ugc/creators/${customerId}`,
+        {
+          token,
+        },
+      );
+    },
+  );
+
+export const getUserPosts = createServerFn({ method: "GET" })
+  .inputValidator((data: { customerId: string } & MyPostsParams) => data)
+  .handler(
+    async ({ data: { customerId, ...params } }): Promise<UserPostsResponse> => {
+      const token = getToken();
+
+      return apiRequest<UserPostsResponse>(
+        `/v1/ugc/creators/${customerId}/posts`,
+        {
+          params,
+          token,
+        },
+      );
+    },
+  );
+
+export const toggleLike = createServerFn({ method: "POST" })
+  .inputValidator((data: string) => data)
+  .handler(
+    async ({ data: postId }): Promise<BaseApiResponse<LikeToggleData>> => {
+      const token = getToken();
+
+      return apiRequest<BaseApiResponse<LikeToggleData>>(
+        `/v1/ugc/posts/${postId}/like`,
+        { method: "POST", token },
+      );
+    },
+  );
 
 export const toggleBookmark = createServerFn({ method: "POST" })
   .inputValidator((data: string) => data)
-  .handler(async ({ data: postId }): Promise<BaseApiResponse<BookmarkToggleData>> => {
-    const token = getToken();
+  .handler(
+    async ({ data: postId }): Promise<BaseApiResponse<BookmarkToggleData>> => {
+      const token = getToken();
 
-    return apiRequest<BaseApiResponse<BookmarkToggleData>>(
-      `/v1/ugc/posts/${postId}/bookmark`,
-      { method: "POST", token },
-    );
-  });
+      return apiRequest<BaseApiResponse<BookmarkToggleData>>(
+        `/v1/ugc/posts/${postId}/bookmark`,
+        { method: "POST", token },
+      );
+    },
+  );

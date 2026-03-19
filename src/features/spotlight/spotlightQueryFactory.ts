@@ -7,4 +7,7 @@ export const spotlightKeys = {
   bookmarkedPosts: () => [...spotlightKeys.all, "bookmarked-posts"] as const,
   creatorTiers: () => [...spotlightKeys.all, "creator-tiers"] as const,
   myPosts: () => [...spotlightKeys.all, "my-posts"] as const,
+  myPostDetail: (id: string) => [...spotlightKeys.all, "my-post", id] as const,
+  userProfile: (userId: string) => [...spotlightKeys.all, "user-profile", userId] as const,
+  userPosts: (userId: string) => [...spotlightKeys.all, "user-posts", userId] as const,
 };

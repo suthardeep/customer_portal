@@ -33,14 +33,17 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
       </div>
 
       <Input
-        {...register("mobileNumber")}
+        {...register("mobileNumber", {
+          onChange: (e) => {
+            e.target.value = e.target.value.replace(/\D/g, "");
+          },
+        })}
         label="Mobile Number"
         placeholder="Enter 10-digit mobile number"
         leftElement={<span className="text-n-700">+91</span>}
         error={errors.mobileNumber?.message}
         type="tel"
         inputMode="numeric"
-        maxLength={10}
         disabled={isLoading}
         fullWidth
       />

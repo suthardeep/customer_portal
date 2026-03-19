@@ -1,14 +1,11 @@
 import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
 import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
 import SpotlightRouteHeader from "@/features/spotlight/components/SpotlightRouteHeader";
-import { SpotlightPostCardSkeleton } from "@/features/spotlight/components/skeletons/SpotlightPostCardSkeleton";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useEffect } from "react";
-
-const LOAD_MORE_SKELETON_COUNT = 10;
 
 export const Route = createFileRoute("/_public/spotlight/buy-clips")({
   loader: async ({ context }) => {
@@ -36,24 +33,13 @@ function RouteComponent() {
   return (
     <div>
       <SpotlightRouteHeader />
-
-      <SpotlightPostGrid className="mt-8">
+      <SpotlightPostGrid className="mt-8" isLoading={isFetchingNextPage}>
         {posts.map((post) => (
           <SpotlightPostCard key={post.id} post={post} />
         ))}
       </SpotlightPostGrid>
 
-      {hasNextPage && (
-        <div ref={loadMoreRef}>
-          {isFetchingNextPage && (
-            <SpotlightPostGrid>
-              {Array.from({ length: LOAD_MORE_SKELETON_COUNT }, (_, i) => (
-                <SpotlightPostCardSkeleton key={i} />
-              ))}
-            </SpotlightPostGrid>
-          )}
-        </div>
-      )}
+      {hasNextPage && <div ref={loadMoreRef} />}
     </div>
   );
 }

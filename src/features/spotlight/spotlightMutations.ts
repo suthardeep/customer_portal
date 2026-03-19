@@ -1,11 +1,14 @@
-import { showErrorToasts } from "@/components/toast";
+import { showErrorToasts, toast } from "@/components/toast";
 import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import { spotlightKeys } from "./spotlightQueryFactory";
-import { toggleBookmark, toggleLike, updateSpotlightProfile } from "./spotlightService";
+import {
+  toggleBookmark,
+  toggleLike,
+  updateSpotlightProfile,
+} from "./spotlightService";
 import type { PostDetail } from "./types/feed.types";
 import type { UpdateSpotlightProfileRequest } from "./types/types";
-
 
 export const useToggleLikeMutation = () => {
   return useMutation({
@@ -68,6 +71,7 @@ export const useUpdateSpotlightProfileMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: spotlightKeys.profile() });
+      toast.success("Profile updated successfully");
     },
     onError: (error) => {
       showErrorToasts(error);

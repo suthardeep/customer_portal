@@ -1,5 +1,5 @@
 import { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
-import { UgcPostType } from "./enums";
+import { PostStatus, UgcPostType } from "./enums";
 
 export interface FeedPostStats {
   views: number;
@@ -14,7 +14,7 @@ export interface FeedPostMediaDimensions {
 }
 
 export interface FeedPostMedia {
-  status: string;
+  status: PostStatus;
   thumbnail: string;
   playUrl: string;
   images: string[] | null;
@@ -32,7 +32,7 @@ export interface FeedPost {
   type: UgcPostType;
   caption: string;
   tags: string[];
-  status: string;
+  status: PostStatus;
   stats: FeedPostStats;
   media: FeedPostMedia;
   creator: FeedPostCreator;
@@ -60,7 +60,7 @@ export interface PostMediaVariant {
 }
 
 export interface PostMedia {
-  status: string;
+  status: PostStatus;
   thumbnail: string;
   playUrl: string;
   images: string[] | null;
@@ -109,10 +109,10 @@ export interface TaggedProduct {
 
 export interface PostDetail {
   id: string;
-  type: string;
+  type: UgcPostType;
   caption: string;
   tags: string[];
-  status: string;
+  status: PostStatus;
   stats: FeedPostStats;
   media: PostMedia;
   creator: FeedPostCreator;
@@ -130,6 +130,8 @@ export interface MyPostsParams {
 }
 
 export type MyPostsResponse = BaseApiResponse<PaginatedResponse<FeedPost>>;
+
+export type UserPostsResponse = BaseApiResponse<PaginatedResponse<FeedPost>>;
 
 export interface BookmarkToggleData {
   isBookmarked: boolean;

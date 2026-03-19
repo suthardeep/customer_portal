@@ -2,11 +2,12 @@ import { z } from "zod";
 import type { User } from "@/types/user.types";
 
 export const loginFormSchema = z.object({
-  mobileNumber:  z
-  .string()
-  .refine((val) => /^[6-9]\d{9}$/.test(val), {
-    message: "Mobile number must be exactly 10 digits and start with 6-9",
-  })
+  mobileNumber: z
+    .string()
+    .trim()
+    .refine((val) => /^[6-9]\d{9}$/.test(val), {
+      message: "Mobile number must be exactly 10 digits and start with 6-9",
+    })
 });
 
 export type LoginFormData = z.infer<typeof loginFormSchema>;
