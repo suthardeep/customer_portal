@@ -162,7 +162,7 @@ export function HlsVideoPlayer({
         loop
         playsInline
         autoPlay
-        className="size-full object-cover"
+        className="w-full object-cover"
         onTimeUpdate={handleTimeUpdate}
         onClick={handleVideoClick}
       />

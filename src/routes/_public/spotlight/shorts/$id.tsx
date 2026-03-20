@@ -10,6 +10,7 @@ import { Icon } from "@/components/base/icon";
 import { Image } from "@/components/base/Image";
 import { SpotlightTaggedProductsStack } from "@/features/spotlight/components/SpotlightTaggedProductsStack";
 import ShortActions from "@/features/spotlight/shorts/components/actions/ShortActions";
+import { ShortPlayer } from "@/features/spotlight/shorts/components/ShortPlayer";
 
 export const Route = createFileRoute("/_public/spotlight/shorts/$id")({
   loader: async ({ context, params }) => {
@@ -18,6 +19,9 @@ export const Route = createFileRoute("/_public/spotlight/shorts/$id")({
     );
   },
   component: RouteComponent,
+  staticData: {
+    hideHeader: "mobile",
+  },
 });
 
 function RouteComponent() {
@@ -27,8 +31,8 @@ function RouteComponent() {
   const canGoBack = useCanGoBack();
 
   return (
-    <div className="grid grid-cols-3 gap-4 items-start">
-      <div>
+    <div className="p-0 lg:p-6 grid lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+      <div className="hidden xl:flex flex-col justify-between h-full">
         {canGoBack && (
           <div
             className="flex w-fit items-center gap-1 hover:bg-n-300 p-1 rounded-lg cursor-pointer"
@@ -42,24 +46,21 @@ function RouteComponent() {
             <span className="text-n-900">Back</span>
           </div>
         )}
+        <SpotlightTaggedProductsStack products={post.taggedProducts} />
       </div>
 
-      <div className="aspect-9/16 max-h-[80vh] relative">
-        <video
-          src={post.media.playUrl}
-          poster={post.media.thumbnail}
-          controls={false}
-          className="size-full rounded-xl"
-        />
+      <div className="aspect-9/16 min-h-dvh lg:min-h-auto lg:max-h-[80vh] w-full h-full relative">
+        <ShortPlayer type={post.type} media={post.media} title={post.caption} />
         <ShortActions
           stats={post.stats}
           isBookmarked={post.isBookmarked}
           isLiked={post.isLiked}
           postId={post.id}
+          className="flex lg:hidden mb-20 mr-4"
         />
       </div>
-      <div className="flex flex-col justify-between h-full">
-        <div className="flex items-center gap-3">
+      <div className="flex-col justify-between h-full items-start hidden lg:flex">
+        <div className="flex items-center gap-3 mb-4">
           <div className="size-10">
             <Image
               src={post.creator.profileImage}
@@ -79,7 +80,13 @@ function RouteComponent() {
             <p className="text-n-800">{post.caption}</p>
           </div>
         </div>
-        <SpotlightTaggedProductsStack products={post.taggedProducts} />
+        <ShortActions
+          stats={post.stats}
+          isBookmarked={post.isBookmarked}
+          isLiked={post.isLiked}
+          postId={post.id}
+          className="hidden lg:flex ml-8 my-auto"
+        />
       </div>
     </div>
   );

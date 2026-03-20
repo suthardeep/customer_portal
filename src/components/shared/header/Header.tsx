@@ -21,15 +21,32 @@ export default function Header() {
   const showCategorySubNav = useMatches({
     select: (matches) => matches.some((m) => m.staticData?.showCategorySubNav),
   });
+  const hideHeader = useMatches({
+    select: (matches) => {
+      const match = matches.find((m) => m.staticData?.hideHeader);
+      return match?.staticData?.hideHeader as
+        | "all"
+        | "desktop"
+        | "mobile"
+        | undefined;
+    },
+  });
   const maxWidth = useMatches({
     select: (matches) => {
       const match = [...matches].reverse().find((m) => m.staticData?.maxWidth);
       return match?.staticData?.maxWidth as string | undefined;
     },
   });
-
+  if (hideHeader === "all") {
+    return null;
+  }
   return (
-    <div>
+    <div
+      className={cn(
+        hideHeader === "desktop" && "block lg:hidden",
+        hideHeader === "mobile" && "hidden lg:block",
+      )}
+    >
       <header className="border-b border-n-500">
         <div
           className={cn(

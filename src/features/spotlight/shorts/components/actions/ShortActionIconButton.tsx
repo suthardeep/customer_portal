@@ -22,7 +22,7 @@ const ShortActionIconButton: React.FC<ShortActionIconButtonProps> = (props) => {
     <div className={cn("flex flex-col gap-0.5 items-center", className)}>
       <div
         className={cn(
-          "size-10 fall rounded-full shadow-md border backdrop-blur-lg",
+          "size-10 fall rounded-full shadow-md lg:shadow-none border backdrop-blur-lg",
           highlight ? "bg-n-50 border-n-400" : "bg-black/30 border-transparent",
           onClick && "cursor-pointer",
         )}

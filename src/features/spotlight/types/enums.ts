@@ -9,3 +9,9 @@ export enum PostStatus {
   REJECTED = "rejected",
   ARCHIVED = "archived",
 }
+
+export enum MediaStatus {
+  READY = "ready",
+  PROCESSING = "processing",
+  FAILED = "failed",
+}

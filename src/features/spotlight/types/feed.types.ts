@@ -1,5 +1,5 @@
 import { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
-import { PostStatus, UgcPostType } from "./enums";
+import { MediaStatus, PostStatus, UgcPostType } from "./enums";
 
 export interface FeedPostStats {
   views: number;
@@ -14,7 +14,7 @@ export interface FeedPostMediaDimensions {
 }
 
 export interface FeedPostMedia {
-  status: PostStatus;
+  status: MediaStatus;
   thumbnail: string;
   playUrl: string;
   images: string[] | null;
@@ -60,7 +60,7 @@ export interface PostMediaVariant {
 }
 
 export interface PostMedia {
-  status: PostStatus;
+  status: MediaStatus;
   thumbnail: string;
   playUrl: string;
   hlsUrl: string;

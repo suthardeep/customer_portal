@@ -46,5 +46,6 @@ declare module "@tanstack/react-router" {
     showCategorySubNav?: boolean;
     showBottomBar?: boolean;
     maxWidth?: "max-w-7xl" | "max-w-8xl";
+    hideHeader?: "all" | "desktop" | "mobile";
   }
 }

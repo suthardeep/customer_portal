@@ -39,7 +39,7 @@ export const SPOTLIGHT_SIDEBAR_SECTIONS: SpotlightSidebarSection[] = [
       {
         label: "Shorts",
         icon: "PlayList",
-        to: "/",
+        to: "/spotlight/shorts",
       },
       {
         label: "Bookmarks",
