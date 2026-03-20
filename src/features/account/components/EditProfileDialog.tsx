@@ -13,14 +13,15 @@ interface EditProfileDialogProps {
 const EditProfileDialog = ({ isOpen, onClose }: EditProfileDialogProps) => {
   const { data: user } = useSuspenseQuery(authQueries.profile());
   const updateMutation = useUpdateProfileMutation();
-  console.log(user, "");
 
   const handleSubmit = (data: ProfileFormData) => {
     const payload = {
       fullName: data.fullName,
       ...(data.email ? { email: data.email } : {}),
       ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth } : {}),
-      ...(data.profileImageUrl ? { profileImageUrl: data.profileImageUrl } : {}),
+      ...(data.profileImageUrl
+        ? { profileImageUrl: data.profileImageUrl }
+        : {}),
     };
     updateMutation.mutate(payload, { onSuccess: onClose });
   };

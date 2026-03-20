@@ -35,6 +35,7 @@ import { Route as PublicSpotlightUsersUserIdRouteImport } from './routes/_public
 import { Route as PublicSpotlightShortsIdRouteImport } from './routes/_public/spotlight/shorts.$id'
 import { Route as PublicSpotlightCampaignsCampaignIdRouteImport } from './routes/_public/spotlight/campaigns/$campaignId'
 import { Route as PublicSpotlightProtectedEditProfileRouteImport } from './routes/_public/spotlight/_protected/edit-profile'
+import { Route as PublicSpotlightProtectedCreatePostRouteImport } from './routes/_public/spotlight/_protected/create-post'
 import { Route as PublicSpotlightProtectedBookmarksRouteImport } from './routes/_public/spotlight/_protected/bookmarks'
 import { Route as PublicSpotlightProtectedAnalyticsRouteImport } from './routes/_public/spotlight/_protected/analytics'
 import { Route as PublicCategoriesProductsCategoryIdRouteImport } from './routes/_public/categories/products.$categoryId'
@@ -179,6 +180,12 @@ const PublicSpotlightProtectedEditProfileRoute =
     path: '/edit-profile',
     getParentRoute: () => PublicSpotlightProtectedRouteRoute,
   } as any)
+const PublicSpotlightProtectedCreatePostRoute =
+  PublicSpotlightProtectedCreatePostRouteImport.update({
+    id: '/create-post',
+    path: '/create-post',
+    getParentRoute: () => PublicSpotlightProtectedRouteRoute,
+  } as any)
 const PublicSpotlightProtectedBookmarksRoute =
   PublicSpotlightProtectedBookmarksRouteImport.update({
     id: '/bookmarks',
@@ -249,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
   '/spotlight/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/spotlight/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
+  '/spotlight/create-post': typeof PublicSpotlightProtectedCreatePostRoute
   '/spotlight/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
   '/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
@@ -279,6 +287,7 @@ export interface FileRoutesByTo {
   '/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
   '/spotlight/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/spotlight/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
+  '/spotlight/create-post': typeof PublicSpotlightProtectedCreatePostRoute
   '/spotlight/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
   '/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
@@ -316,6 +325,7 @@ export interface FileRoutesById {
   '/_public/categories/products/$categoryId': typeof PublicCategoriesProductsCategoryIdRoute
   '/_public/spotlight/_protected/analytics': typeof PublicSpotlightProtectedAnalyticsRoute
   '/_public/spotlight/_protected/bookmarks': typeof PublicSpotlightProtectedBookmarksRoute
+  '/_public/spotlight/_protected/create-post': typeof PublicSpotlightProtectedCreatePostRoute
   '/_public/spotlight/_protected/edit-profile': typeof PublicSpotlightProtectedEditProfileRoute
   '/_public/spotlight/campaigns/$campaignId': typeof PublicSpotlightCampaignsCampaignIdRoute
   '/_public/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/categories/products/$categoryId'
     | '/spotlight/analytics'
     | '/spotlight/bookmarks'
+    | '/spotlight/create-post'
     | '/spotlight/edit-profile'
     | '/spotlight/campaigns/$campaignId'
     | '/spotlight/shorts/$id'
@@ -380,6 +391,7 @@ export interface FileRouteTypes {
     | '/categories/products/$categoryId'
     | '/spotlight/analytics'
     | '/spotlight/bookmarks'
+    | '/spotlight/create-post'
     | '/spotlight/edit-profile'
     | '/spotlight/campaigns/$campaignId'
     | '/spotlight/shorts/$id'
@@ -416,6 +428,7 @@ export interface FileRouteTypes {
     | '/_public/categories/products/$categoryId'
     | '/_public/spotlight/_protected/analytics'
     | '/_public/spotlight/_protected/bookmarks'
+    | '/_public/spotlight/_protected/create-post'
     | '/_public/spotlight/_protected/edit-profile'
     | '/_public/spotlight/campaigns/$campaignId'
     | '/_public/spotlight/shorts/$id'
@@ -618,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSpotlightProtectedEditProfileRouteImport
       parentRoute: typeof PublicSpotlightProtectedRouteRoute
     }
+    '/_public/spotlight/_protected/create-post': {
+      id: '/_public/spotlight/_protected/create-post'
+      path: '/create-post'
+      fullPath: '/spotlight/create-post'
+      preLoaderRoute: typeof PublicSpotlightProtectedCreatePostRouteImport
+      parentRoute: typeof PublicSpotlightProtectedRouteRoute
+    }
     '/_public/spotlight/_protected/bookmarks': {
       id: '/_public/spotlight/_protected/bookmarks'
       path: '/bookmarks'
@@ -736,6 +756,7 @@ const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
 interface PublicSpotlightProtectedRouteRouteChildren {
   PublicSpotlightProtectedAnalyticsRoute: typeof PublicSpotlightProtectedAnalyticsRoute
   PublicSpotlightProtectedBookmarksRoute: typeof PublicSpotlightProtectedBookmarksRoute
+  PublicSpotlightProtectedCreatePostRoute: typeof PublicSpotlightProtectedCreatePostRoute
   PublicSpotlightProtectedEditProfileRoute: typeof PublicSpotlightProtectedEditProfileRoute
   PublicSpotlightProtectedMyPostsPostIdRoute: typeof PublicSpotlightProtectedMyPostsPostIdRoute
   PublicSpotlightProtectedMyPostsIndexRoute: typeof PublicSpotlightProtectedMyPostsIndexRoute
@@ -747,6 +768,8 @@ const PublicSpotlightProtectedRouteRouteChildren: PublicSpotlightProtectedRouteR
       PublicSpotlightProtectedAnalyticsRoute,
     PublicSpotlightProtectedBookmarksRoute:
       PublicSpotlightProtectedBookmarksRoute,
+    PublicSpotlightProtectedCreatePostRoute:
+      PublicSpotlightProtectedCreatePostRoute,
     PublicSpotlightProtectedEditProfileRoute:
       PublicSpotlightProtectedEditProfileRoute,
     PublicSpotlightProtectedMyPostsPostIdRoute:

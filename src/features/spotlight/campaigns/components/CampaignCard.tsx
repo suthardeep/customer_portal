@@ -61,7 +61,7 @@ function CampaignCard({ campaign }: CampaignCardProps) {
               Base Compensation Tiers
             </span>
             <div
-              className={`grid divide-x divide-n-200 mt-6 ${activeTiers.length === 1 ? "grid-cols-1 justify-items-center" : activeTiers.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}
+              className={`grid divide-x divide-red-200 mt-6 ${activeTiers.length === 1 ? "grid-cols-1 justify-items-center" : activeTiers.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}
             >
               {activeTiers.map(([tierName, tier]) => (
                 <div

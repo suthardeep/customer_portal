@@ -4,6 +4,7 @@ import { getToken } from "@/utils/getToken";
 import type { BaseApiResponse } from "@/types/baseApi.types";
 import type {
   BookmarkToggleData,
+  CreateDirectPostRequest,
   CreatorAnalyticsResponse,
   FeedExploreParams,
   FeedExploreResponse,
@@ -149,6 +150,17 @@ export const getUserPosts = createServerFn({ method: "GET" })
     },
   );
 
+export const createPost = createServerFn({ method: "POST" })
+  .inputValidator((data: CreateDirectPostRequest) => data)
+  .handler(async ({ data }): Promise<BaseApiResponse<{ id: string }>> => {
+    const token = getToken();
+    return apiRequest<BaseApiResponse<{ id: string }>>("/v1/ugc/posts", {
+      method: "POST",
+      body: data,
+      token,
+    });
+  });
+
 export const toggleLike = createServerFn({ method: "POST" })
   .inputValidator((data: string) => data)
   .handler(
@@ -174,3 +186,14 @@ export const toggleBookmark = createServerFn({ method: "POST" })
       );
     },
   );
+
+export const recordPostView = createServerFn({ method: "POST" })
+  .inputValidator((data: string) => data)
+  .handler(async ({ data: postId }): Promise<BaseApiResponse<void>> => {
+    const token = getToken();
+
+    return apiRequest<BaseApiResponse<void>>(`/v1/ugc/posts/${postId}/view`, {
+      method: "POST",
+      token,
+    });
+  });

@@ -63,6 +63,7 @@ export interface PostMedia {
   status: PostStatus;
   thumbnail: string;
   playUrl: string;
+  hlsUrl: string;
   images: string[] | null;
   dimensions: FeedPostMediaDimensions;
   variants: PostMediaVariant[];
@@ -141,4 +142,14 @@ export interface BookmarkToggleData {
 export interface LikeToggleData {
   isLiked: boolean;
   likes: number;
+}
+
+export interface CreateDirectPostRequest {
+  type: UgcPostType;
+  videoFileId?: string;
+  imageFileIds?: string[];
+  images?: string[];
+  caption?: string;
+  tags?: string[];
+  productIds: string[];
 }

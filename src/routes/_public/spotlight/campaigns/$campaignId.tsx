@@ -51,7 +51,10 @@ function RouteComponent() {
         <CampaignRules rules={data.rules} />
         <CampaignGuidelineDownload guidelinePdfUrl={data.guidelinePdfUrl} />
       </div>
-      <CampaignJoinButton />
+      <CampaignJoinButton
+        campaignId={params.campaignId}
+        products={data.products}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { Button } from "@/components/base/button/Button";
 import { Chip } from "@/components/base/chip/Chip";
 import { Icon } from "@/components/base/icon";
-import { Image } from "@/components/base/Image";
+import { HlsVideoPlayer } from "@/features/spotlight/components/HlsVideoPlayer";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import { MyPostDetailSkeleton } from "@/features/spotlight/components/skeletons/MyPostDetailSkeleton";
 import { SpotlightTaggedProductsStack } from "@/features/spotlight/components/SpotlightTaggedProductsStack";
@@ -47,10 +47,11 @@ function RouteComponent() {
       <div className="flex flex-col md:flex-row gap-6 items-start">
         {/* Center — media */}
         <div className="aspect-9/16 w-full md:w-auto max-h-[70vh] overflow-hidden rounded-xl">
-          <Image
-            src={post.media.thumbnail}
+          <HlsVideoPlayer
+            hlsUrl={post.media.hlsUrl}
+            thumbnail={post.media.thumbnail}
             alt={post.caption}
-            className="size-full object-cover"
+            className="size-full"
           />
         </div>
 

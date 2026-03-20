@@ -34,7 +34,7 @@ export const SPOTLIGHT_SIDEBAR_SECTIONS: SpotlightSidebarSection[] = [
       {
         label: "Create Post",
         icon: "AddSquare",
-        to: "/",
+        to: "/spotlight/create-post",
       },
       {
         label: "Shorts",

@@ -3,11 +3,12 @@ import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import { spotlightKeys } from "./spotlightQueryFactory";
 import {
+  createPost,
   toggleBookmark,
   toggleLike,
   updateSpotlightProfile,
 } from "./spotlightService";
-import type { PostDetail } from "./types/feed.types";
+import type { CreateDirectPostRequest, PostDetail } from "./types/feed.types";
 import type { UpdateSpotlightProfileRequest } from "./types/types";
 
 export const useToggleLikeMutation = () => {
@@ -56,6 +57,21 @@ export const useToggleBookmarkMutation = () => {
       queryClient.invalidateQueries({
         queryKey: spotlightKeys.bookmarkedPosts(),
       });
+    },
+    onError: (error) => {
+      showErrorToasts(error);
+    },
+  });
+};
+
+export const useCreatePostMutation = () => {
+  return useMutation({
+    mutationFn: async (data: CreateDirectPostRequest) => {
+      const response = await createPost({ data });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: spotlightKeys.myPosts() });
     },
     onError: (error) => {
       showErrorToasts(error);

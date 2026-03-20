@@ -18,7 +18,7 @@ const ShortActions: React.FC<ShortActionsProps> = (props) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-y-4 absolute bottom-20 right-4",
+        "flex flex-col gap-y-4 absolute bottom-10 right-4",
         className,
       )}
     >

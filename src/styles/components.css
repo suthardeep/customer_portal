@@ -113,7 +113,14 @@
   }
 }
 
+@keyframes fade-out {
+  0% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(0.9); }
+}
+
 @theme inline {
+  --animate-fade-out: fade-out 800ms ease-out forwards;
   /* Dialog Animations */
   --animate-overlay-show: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   --animate-overlay-hide: overlay-hide 150ms cubic-bezier(0.16, 1, 0.3, 1);

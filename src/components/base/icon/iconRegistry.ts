@@ -74,6 +74,11 @@ import {
   VideoCameraAiIcon,
   InstagramIcon,
   YoutubeIcon,
+  PlayCircleIcon,
+  PauseIcon,
+  PlayIcon,
+  VolumeOffIcon,
+  VolumeUpIcon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -148,6 +153,11 @@ export const iconRegistry = {
   RemoveCircle: RemoveCircleIcon,
   Trash: Delete02Icon,
   VideoCameraSpark: VideoCameraAiIcon,
+  Play: PlayCircleIcon,
+  PlayFill: PlayIcon,
+  Pause: PauseIcon,
+  VolumeOff: VolumeOffIcon,
+  VolumeUp: VolumeUpIcon,
   // Review icons
   ImageUpload: ImageUpload01Icon,
   // Search icons
