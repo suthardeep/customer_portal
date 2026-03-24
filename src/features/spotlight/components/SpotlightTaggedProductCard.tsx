@@ -24,14 +24,14 @@ export function SpotlightTaggedProductCard({
 
   return (
     <Link to="/product/$productId" params={{ productId: product.id }}>
-      <div className="flex overflow-hidden rounded-lg border border-n-300 bg-white">
+      <div className="flex overflow-hidden rounded-lg border border-n-400 bg-white">
         {/* Image */}
-        <div className="relative aspect-square size-24 shrink-0 overflow-hidden">
+        <div className="relative aspect-square size-22 shrink-0 overflow-hidden">
           <Image src={imageUrl ?? ""} alt={product.name} className="size-24" />
         </div>
 
         {/* Content */}
-        <div className="flex flex-1 flex-col gap-1.5 p-2">
+        <div className="flex flex-1 flex-col gap-1.5 py-1 px-2">
           <p className="line-clamp-1 font-medium text-n-900">{product.name}</p>
           <div className="flex items-center justify-between gap-1">
             <span className="text-n-800">{product.brandName}</span>

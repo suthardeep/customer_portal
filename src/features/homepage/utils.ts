@@ -26,7 +26,10 @@ const GRADIENT_DIRECTION_MAP: Record<GradientDirectionEnum, string> = {
   [GradientDirectionEnum.TO_LEFT]: "to left",
 };
 
-export function getTextStyle(decoration: TextDecoration): CSSProperties {
+export function getTextStyle(
+  decoration: TextDecoration | null | undefined,
+): CSSProperties | undefined {
+  if (!decoration) return undefined;
   return {
     color: decoration.color,
     fontSize: `${decoration.size}px`,

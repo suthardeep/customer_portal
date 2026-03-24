@@ -1,6 +1,15 @@
 export type ChipVariant = "filled" | "outline";
-export type ChipColor = "primary" | "secondary" | "success" | "danger" | "neutral" | "blue" | "skyblue" | "purple" | "orange";
-export type ChipSize = "sm" | "md" | "lg";
+export type ChipColor =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "danger"
+  | "neutral"
+  | "blue"
+  | "skyblue"
+  | "purple"
+  | "orange";
+export type ChipSize = "xs" | "sm" | "md" | "lg";
 
 export interface ChipProps {
   children: React.ReactNode;

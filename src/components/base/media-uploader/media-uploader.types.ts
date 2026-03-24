@@ -25,8 +25,6 @@ export type MediaUploadResponse = BaseApiResponse<{
 }>;
 
 export type MediaUploaderProps = {
-  /** Passed as `group` field in FormData to the upload API */
-  group: string;
   /** Called with the uploaded image URL on successful upload */
   onUpload: (url: string) => void;
   /** Called when the user clears an already-uploaded image */

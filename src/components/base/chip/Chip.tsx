@@ -11,7 +11,7 @@ export function Chip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full font-medium max-w-fit",
+        "inline-flex items-center gap-1 rounded-full font-semibold max-w-fit",
         sizeStyles[size],
         variantStyles[variant][color],
         className,
@@ -23,6 +23,7 @@ export function Chip({
 }
 
 const sizeStyles: Record<ChipSize, string> = {
+  xs: "py-0.5 px-1.5 text-xs",
   sm: "py-1 px-2 text-xs",
   md: "px-2.5 py-1 text-sm",
   lg: "p-3 text-base",

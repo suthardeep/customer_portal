@@ -9,6 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import CampaignGuidelineDownload from "@/features/spotlight/campaigns/components/CampaignGuidelineDownload";
 import CampaignJoinButton from "@/features/spotlight/campaigns/components/CampaignJoin";
+import CampaignProducts from "@/features/spotlight/campaigns/components/CampaignProducts";
 
 export const Route = createFileRoute(
   "/_public/spotlight/campaigns/$campaignId",
@@ -49,6 +50,7 @@ function RouteComponent() {
         />
         <CampaignRequirements requirements={data.requirements} />
         <CampaignRules rules={data.rules} />
+        <CampaignProducts products={data.products} />
         <CampaignGuidelineDownload guidelinePdfUrl={data.guidelinePdfUrl} />
       </div>
       <CampaignJoinButton

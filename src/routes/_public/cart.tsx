@@ -31,7 +31,6 @@ function CartComponent() {
   const { isAuthenticated } = useAuth();
 
   const hasItems = cart.items.length > 0;
-  console.log(cart);
 
   return (
     <div className="flex flex-col gap-6 p-4">

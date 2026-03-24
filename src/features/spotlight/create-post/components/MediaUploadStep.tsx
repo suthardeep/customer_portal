@@ -25,9 +25,7 @@ const MediaUploadStep = ({
     <div className="space-y-4">
       <div>
         <h5 className="font-semibold">Upload your media</h5>
-        <p className="text-n-600 mt-1">
-          Upload a photo or video for your reel
-        </p>
+        <p className="text-n-800 mt-1">Upload a photo or video for your reel</p>
       </div>
 
       <input

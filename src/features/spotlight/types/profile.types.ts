@@ -41,7 +41,12 @@ export type UpdateSpotlightProfileRequest = Pick<
   "name" | "email" | "profileImageUrl" | "bio" | "niches" | "instagramUrl" | "youtubeUrl"
 >;
 
+export type CreateSpotlightProfileRequest = Pick<
+  SpotlightProfile,
+  "name" | "email" | "profileImageUrl" | "bio" | "niches" | "instagramUrl" | "youtubeUrl"
+>;
+
 export type SpotlightProfileResponse = BaseApiResponse<{
   profile: SpotlightProfile;
   tierProgress: SpotlightTierProgress;
-}>;
+} | null>;

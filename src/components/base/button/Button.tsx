@@ -66,7 +66,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 <Icon
                   name={startIcon}
                   className={cn(
-                    "mr-1.5",
+                    "mr-1.5 text-current",
                     variant === "filled" &&
                       (color === "primary" || color === "danger") &&
                       "text-white",
@@ -79,7 +79,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               {endIcon && (
                 <Icon
                   name={endIcon}
-                  className={cn("ml-1.5", endIconClassname)}
+                  className={cn("ml-1.5 text-current", endIconClassname)}
                   size={iconSizeToPreset[size]}
                 />
               )}

@@ -1,5 +1,7 @@
 import { useToggleBookmarkMutation } from "@/features/spotlight/spotlightMutations";
 import ShortActionIconButton from "./ShortActionIconButton";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 
 interface ShortBookmarkProps {
   isBookmarked: boolean;
@@ -9,10 +11,21 @@ interface ShortBookmarkProps {
 
 const ShortBookmark: React.FC<ShortBookmarkProps> = (props) => {
   const { bookmarks, isBookmarked, postId } = props;
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
+
   const toggleBookmark = useToggleBookmarkMutation();
 
   const handleBookmarkClick = () => {
-    toggleBookmark.mutate(postId);
+    if (isAuthenticated) {
+      toggleBookmark.mutate(postId);
+    } else {
+      loginDialog.open({
+        onSuccess() {
+          toggleBookmark.mutate(postId);
+        },
+      });
+    }
   };
   return (
     <ShortActionIconButton
@@ -21,6 +34,7 @@ const ShortBookmark: React.FC<ShortBookmarkProps> = (props) => {
       label={bookmarks}
       highlight={isBookmarked}
       onClick={handleBookmarkClick}
+      enableLightMode
     />
   );
 };

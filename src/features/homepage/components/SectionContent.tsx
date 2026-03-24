@@ -4,10 +4,12 @@ import { SourceTypeEnum } from "../types/enums";
 import type { Section, Banner } from "../types/types";
 import type { Product } from "@/features/products/types";
 import type { Category } from "@/features/categories/types/types";
+import type { FeedPost } from "@/features/spotlight/types/feed.types";
 import { homepageQueries } from "../homepageQueries";
 import { ProductSection } from "./sections/ProductSection";
 import { CategorySection } from "./sections/CategorySection";
 import { BannerSection } from "./sections/BannerSection";
+import { UgcSection } from "./sections/UgcSection";
 import { SectionSkeleton } from "./skeletons/SectionSkeleton";
 
 interface SectionContentProps {
@@ -54,6 +56,13 @@ function SectionContentInner({ section }: SectionContentProps) {
       return (
         <BannerSection
           items={items as Banner[]}
+          displaySettings={displaySettings}
+        />
+      );
+    case SourceTypeEnum.UGC:
+      return (
+        <UgcSection
+          items={items as FeedPost[]}
           displaySettings={displaySettings}
         />
       );

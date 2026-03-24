@@ -1,5 +1,4 @@
 import { showErrorToasts } from "@/components/toast";
-import { getApiBaseUrl } from "@/utils/api";
 import { useMutation } from "@tanstack/react-query";
 import type { MutableRefObject } from "react";
 import type { MediaUploadResponse } from "@/components/base/media-uploader/media-uploader.types";
@@ -41,7 +40,7 @@ export const useUploadMediaMutation = (
         xhr.onerror = () => reject(new Error("Network error during upload"));
         xhr.onabort = () => reject(new Error("Upload cancelled"));
 
-        xhr.open("POST", `${getApiBaseUrl()}/v1/media/upload`);
+        xhr.open("POST", `/v1/media/upload`);
 
         const formData = new FormData();
         formData.append("file", file);

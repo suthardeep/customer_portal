@@ -24,6 +24,7 @@ const viewedSet = new Set<string>();
 export function useShortsEngagement(
   activePost: FeedPost | null,
   videoRef: React.RefObject<HTMLVideoElement | null>,
+  isMediaReady: boolean,
 ) {
   const elapsedRef = useRef(0);
   const lastTickRef = useRef<number | null>(null);
@@ -86,14 +87,16 @@ export function useShortsEngagement(
       } else {
         // Resume only if the video is still playing (for video posts)
         const video = videoRef.current;
-        if (activePost!.type === UgcPostType.IMAGE || (video && !video.paused)) {
+        if (activePost!.type === UgcPostType.IMAGE) {
+          if (isMediaReady) startTicking();
+        } else if (video && !video.paused) {
           startTicking();
         }
       }
     }
 
     if (activePost.type === UgcPostType.IMAGE) {
-      if (!document.hidden) startTicking();
+      if (!document.hidden && isMediaReady) startTicking();
     } else {
       // VIDEO: wait for actual playback
       const video = videoRef.current;
@@ -119,7 +122,7 @@ export function useShortsEngagement(
         video.removeEventListener("emptied", stopTicking);
       }
     };
-  // Re-run when the active post changes. videoRef is stable.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activePost?.id, activePost?.type]);
+    // Re-run when the active post changes or media becomes ready. videoRef is stable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePost?.id, activePost?.type, isMediaReady]);
 }

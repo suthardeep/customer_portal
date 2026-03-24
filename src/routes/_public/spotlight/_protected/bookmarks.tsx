@@ -1,4 +1,5 @@
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import { BookmarksEmptyState } from "@/features/spotlight/bookmarks/components/BookmarksEmptyState";
 import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
 import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
@@ -35,12 +36,17 @@ function RouteComponent() {
   return (
     <div>
       <AccountPageHeader title="Bookmarks" />
-
-      <SpotlightPostGrid className="mt-8" isLoading={isFetchingNextPage}>
-        {posts.map((post) => (
-          <SpotlightPostCard key={post.id} post={post} showBookmark />
-        ))}
-      </SpotlightPostGrid>
+      <div className="mt-8">
+        {posts.length === 0 ? (
+          <BookmarksEmptyState />
+        ) : (
+          <SpotlightPostGrid isLoading={isFetchingNextPage}>
+            {posts.map((post) => (
+              <SpotlightPostCard key={post.id} post={post} showBookmark />
+            ))}
+          </SpotlightPostGrid>
+        )}
+      </div>
 
       {hasNextPage && <div ref={loadMoreRef} />}
     </div>

@@ -1,9 +1,9 @@
 import { Button } from "@/components/base/button/Button";
 import { Chip } from "@/components/base/chip/Chip";
+import Dialog from "@/components/base/Dialog";
 import { Icon } from "@/components/base/icon";
-import { Image } from "@/components/base/Image";
-import { HlsVideoPlayer } from "@/features/spotlight/components/HlsVideoPlayer";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import { HlsVideoPlayer } from "@/features/spotlight/components/HlsVideoPlayer";
 import { MyPostDetailSkeleton } from "@/features/spotlight/components/skeletons/MyPostDetailSkeleton";
 import { SpotlightTaggedProductsStack } from "@/features/spotlight/components/SpotlightTaggedProductsStack";
 import { STATS } from "@/features/spotlight/my-posts/constants";
@@ -11,7 +11,11 @@ import {
   getStatusChipColor,
   getStatusLabel,
 } from "@/features/spotlight/my-posts/utils";
+import { ShortVideoPlaceholder } from "@/features/spotlight/shorts/components/ShortVideoPlaceholder";
+import { useDeletePostMutation } from "@/features/spotlight/spotlightMutations";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
+import { MediaStatus } from "@/features/spotlight/types/enums";
+import { useToggle } from "@/hooks/useToggle";
 import { prettyDate } from "@/utils/formatDateTime";
 import { prettyNumber } from "@/utils/prettyNumber";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -34,26 +38,47 @@ function RouteComponent() {
   const { data: post } = useSuspenseQuery(
     spotlightQueries.myPostDetail(postId),
   );
+  const deleteDialog = useToggle();
+  const deletePostMutation = useDeletePostMutation();
+  console.log(post, "hi short");
 
   return (
     <div>
       <AccountPageHeader
         title={"My Posts"}
         trailingTitleComponent={
-          <Button size="sm" variant="ghost">
-            Edit
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button size="sm" variant="ghost">
+              Edit
+            </Button>
+            <Button
+              color="danger"
+              size="sm"
+              variant="ghost"
+              onClick={deleteDialog.open}
+            >
+              Delete
+            </Button>
+          </div>
         }
       />
-      <div className="flex flex-col md:flex-row gap-6 items-start">
+
+      <div className="flex flex-col md:flex-row gap-6 items-start mt-8">
         {/* Center — media */}
-        <div className="aspect-9/16 w-full max-w-110 mx-auto md:w-80 max-h-[70vh] overflow-hidden rounded-xl">
-          <HlsVideoPlayer
-            hlsUrl={post.media.hlsUrl}
-            thumbnail={post.media.thumbnail}
-            alt={post.caption}
-            className="size-full"
-          />
+        <div className="aspect-9/16 w-full max-w-110 mx-auto md:w-80 max-h-[70vh] overflow-hidden rounded-xl relative">
+          {post.media.status === MediaStatus.READY ? (
+            <HlsVideoPlayer
+              hlsUrl={post.media.hlsUrl}
+              thumbnail={post.media.thumbnail}
+              alt={post.caption}
+              className="size-full"
+            />
+          ) : (
+            <ShortVideoPlaceholder
+              status={post.media.status}
+              thumbnail={post.media.thumbnail}
+            />
+          )}
         </div>
 
         {/* Right — details */}
@@ -110,6 +135,25 @@ function RouteComponent() {
           <SpotlightTaggedProductsStack products={post.taggedProducts} />
         </div>
       </div>
+      <Dialog
+        isOpen={deleteDialog.isOpen}
+        onClose={deleteDialog.close}
+        title="Delete Post"
+        subTitle="Are you sure you want to delete this post? This action cannot be undone."
+        size="sm"
+        actions={{
+          secondary: {
+            label: "Cancel",
+            onClick: deleteDialog.close,
+          },
+          primary: {
+            label: "Delete",
+            color: "danger",
+            loading: deletePostMutation.isPending,
+            onClick: () => deletePostMutation.mutate(postId),
+          },
+        }}
+      />
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import { MyPostsEmptyState } from "@/features/spotlight/my-posts/components/MyPostsEmptyState";
 import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
 import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useEffect } from "react";
 
@@ -35,17 +36,22 @@ function RouteComponent() {
   return (
     <div>
       <AccountPageHeader title="My Posts" />
-      <SpotlightPostGrid className="mt-8" isLoading={isFetchingNextPage}>
-        {posts.map((post) => (
-          <Link
-            key={post.id}
-            to="/spotlight/my-posts/$postId"
-            params={{ postId: post.id }}
-          >
-            <SpotlightPostCard post={post} disableRedirect />
-          </Link>
-        ))}
-      </SpotlightPostGrid>
+      <div className="mt-8">
+        {posts.length < 100 ? (
+          <MyPostsEmptyState />
+        ) : (
+          <SpotlightPostGrid isLoading={isFetchingNextPage}>
+            {posts.map((post) => (
+              <SpotlightPostCard
+                key={post.id}
+                post={post}
+                linkTo="/spotlight/my-posts/$postId"
+                linkParams={{ postId: post.id }}
+              />
+            ))}
+          </SpotlightPostGrid>
+        )}
+      </div>
 
       {hasNextPage && <div ref={loadMoreRef} />}
     </div>

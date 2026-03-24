@@ -1,5 +1,5 @@
 import { type ChipColor } from "@/components/base/chip/chip.types";
-import { PostStatus } from "../types/enums";
+import { MediaStatus, PostStatus } from "../types/enums";
 
 export const getStatusLabel = (status: PostStatus): string => {
   const labels: Record<PostStatus, string> = {
@@ -18,6 +18,26 @@ export const getStatusChipColor = (status: PostStatus): ChipColor => {
     [PostStatus.PUBLISHED]: "success",
     [PostStatus.REJECTED]: "danger",
     [PostStatus.ARCHIVED]: "neutral",
+  };
+
+  return colors[status];
+};
+
+export const getMediaStatusLabel = (status: MediaStatus): string => {
+  const labels: Record<MediaStatus, string> = {
+    [MediaStatus.READY]: "Ready",
+    [MediaStatus.PROCESSING]: "Processing",
+    [MediaStatus.FAILED]: "Failed",
+  };
+
+  return labels[status];
+};
+
+export const getMediaStatusChipColor = (status: MediaStatus): ChipColor => {
+  const colors: Record<MediaStatus, ChipColor> = {
+    [MediaStatus.READY]: "success",
+    [MediaStatus.PROCESSING]: "orange",
+    [MediaStatus.FAILED]: "danger",
   };
 
   return colors[status];

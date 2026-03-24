@@ -19,6 +19,10 @@ function getCtaHref(section: Section): string | undefined {
   const { ctaConfig } = section;
   if (!section.hasCta || !ctaConfig) return undefined;
 
+  if (ctaConfig.actionType === ActionTypeEnum.EXTERNAL_URL) {
+    return ctaConfig.targets?.[0]?.id;
+  }
+
   if (ctaConfig.actionType === ActionTypeEnum.IN_APP_PAGE) {
     const target = ctaConfig.targets?.[0];
     if (target?.id === "CATEGORY") return "/categories";
@@ -50,11 +54,19 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
         </div>
 
         {section.hasCta && section.ctaConfig?.label && ctaHref && (
-          <Link to={ctaHref}>
-            <Button variant="ghost" size="sm">
-              {section.ctaConfig.label}
-            </Button>
-          </Link>
+          ctaHref.startsWith("http") ? (
+            <a href={ctaHref} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm">
+                {section.ctaConfig.label}
+              </Button>
+            </a>
+          ) : (
+            <Link to={ctaHref}>
+              <Button variant="ghost" size="sm">
+                {section.ctaConfig.label}
+              </Button>
+            </Link>
+          )
         )}
       </div>
 

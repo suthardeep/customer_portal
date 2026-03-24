@@ -4,11 +4,10 @@ import { showErrorToasts } from "@/components/toast";
 import { Image } from "@/components/base/Image";
 import { Icon } from "@/components/base/icon/Icon";
 import { Button } from "@/components/base/button/Button";
-import { useUploadMediaMutation } from "@/mutations/mediaMutations";
+import { useMediaUpload } from "@/features/media-upload/useMediaUpload";
 import type { MediaUploaderProps } from "./media-uploader.types";
 
 export function MediaUploader({
-  group,
   onUpload,
   onRemove,
   maxSizeMb = 5,
@@ -20,19 +19,18 @@ export function MediaUploader({
   ...rest
 }: MediaUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const xhrRef = useRef<XMLHttpRequest | null>(null);
   const isButton = uploadVariant === "button";
 
-  const [progress, setProgress] = useState(0);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(defaultImage ?? null);
 
-  const mutation = useUploadMediaMutation(group, xhrRef, setProgress);
+  const { uploadAsync, progress: uploadProgress, isPending, reset } = useMediaUpload();
 
-  const isUploading = mutation.isPending;
-  const isUploaded = (mutation.isSuccess || !!defaultImage) && !!uploadedUrl;
+  const isUploading = isPending;
+  const isUploaded = (uploadProgress.phase === "done" || !!defaultImage) && !!uploadedUrl;
+  const progress = uploadProgress.percent;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -47,20 +45,19 @@ export function MediaUploader({
 
     // Show local preview immediately
     setPreviewUrl(URL.createObjectURL(file));
-    setProgress(0);
 
-    mutation.mutate(file, {
-      onSuccess: (data) => {
-        setUploadedUrl(data.data.s3Url);
-        onUpload(data.data.s3Url);
-      },
-    });
+    try {
+      const results = await uploadAsync([file]);
+      const s3Url = results[0].s3Url;
+      setUploadedUrl(s3Url);
+      onUpload(s3Url);
+    } catch {
+      // errors are handled inside useMediaUpload
+    }
   };
 
   const handleCancel = () => {
-    xhrRef.current?.abort();
-    mutation.reset();
-    setProgress(0);
+    reset();
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);

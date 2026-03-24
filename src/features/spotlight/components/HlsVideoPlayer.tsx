@@ -8,7 +8,7 @@ import { Popover } from "@/components/base/popover/Popover";
 import MenuItem from "@/components/base/MenuItem";
 
 interface HlsVideoPlayerProps {
-  hlsUrl: string;
+  hlsUrl?: string;
   thumbnail: string;
   alt: string;
   autoplay?: boolean;
@@ -37,6 +37,7 @@ export function HlsVideoPlayer({
   // or once isPlaying flips true (manual play).
   const initHls = useCallback(
     (video: HTMLVideoElement) => {
+      if (!hlsUrl) return;
       if (Hls.isSupported()) {
         const hls = new Hls();
         hlsRef.current = hls;
@@ -141,15 +142,17 @@ export function HlsVideoPlayer({
   if (!isPlaying) {
     return (
       <div
-        className={`relative cursor-pointer ${className ?? ""}`}
-        onClick={startPlaying}
+        className={`relative ${hlsUrl ? "cursor-pointer" : ""} ${className ?? ""}`}
+        onClick={hlsUrl ? startPlaying : undefined}
       >
         <Image src={thumbnail} alt={alt} className="size-full object-cover" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex items-center justify-center rounded-full backdrop-blur-md bg-black/40 p-4 border border-n-800">
-            <Icon name="PlayFill" size="xl" className="text-white" />
+        {hlsUrl && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex items-center justify-center rounded-full backdrop-blur-md bg-black/40 p-4 border border-n-800">
+              <Icon name="PlayFill" size="xl" className="text-white" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -184,7 +187,7 @@ export function HlsVideoPlayer({
       {isPaused && (
         <div className="absolute top-0 left-0 right-0 flex items-start justify-between px-3 pt-3">
           <ShortActionIconButton
-            name={isMuted ? "VolumeOff" : "VolumeUp"}
+            name={isMuted ? "VolumeOff" : "VolumeHigh"}
             onClick={toggleMute}
           />
           <Popover

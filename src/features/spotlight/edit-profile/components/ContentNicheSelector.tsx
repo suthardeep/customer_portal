@@ -1,3 +1,4 @@
+import ErrorText from "@/components/base/ErrorText";
 import { cn } from "@/utils/cssHelpers";
 import { Controller, useFormContext } from "react-hook-form";
 import { CONTENT_NICHES } from "../../constants";
@@ -8,7 +9,10 @@ interface ContentNicheSelectorProps {
 }
 
 export function ContentNicheSelector({ isPending }: ContentNicheSelectorProps) {
-  const { control } = useFormContext<EditProfileFormData>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<EditProfileFormData>();
 
   return (
     <div className="space-y-2">
@@ -47,6 +51,7 @@ export function ContentNicheSelector({ isPending }: ContentNicheSelectorProps) {
           </div>
         )}
       />
+      {errors.niches && <ErrorText>{errors.niches.message}</ErrorText>}
     </div>
   );
 }

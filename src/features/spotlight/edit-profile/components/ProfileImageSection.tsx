@@ -1,3 +1,4 @@
+import ErrorText from "@/components/base/ErrorText";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { Image } from "@/components/base/Image";
 import { MediaUploader } from "@/components/base/media-uploader/MediaUploader";
@@ -7,16 +8,24 @@ import { useFormContext, useWatch } from "react-hook-form";
 import type { EditProfileFormData } from "../schemas/editProfileFormSchema";
 
 interface ProfileImageSectionProps {
-  name: string;
+  mode: "add" | "edit";
 }
 
-export function ProfileImageSection({ name }: ProfileImageSectionProps) {
-  const { control, setValue } = useFormContext<EditProfileFormData>();
+export function ProfileImageSection({ mode }: ProfileImageSectionProps) {
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = useFormContext<EditProfileFormData>();
   const profileImageUrl = useWatch({ control, name: "profileImageUrl" });
+  const name = useWatch({ control, name: "name" });
   const dialog = useToggle();
 
   const handleUpload = (url: string) => {
-    setValue("profileImageUrl", url, { shouldDirty: true });
+    setValue("profileImageUrl", url, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
     dialog.close();
   };
 
@@ -38,11 +47,14 @@ export function ProfileImageSection({ name }: ProfileImageSectionProps) {
           onClick={dialog.open}
         />
       </div>
+      {errors.profileImageUrl && (
+        <ErrorText>{errors.profileImageUrl.message}</ErrorText>
+      )}
 
       <Dialog
         isOpen={dialog.isOpen}
         onClose={dialog.close}
-        title="Update Profile Photo"
+        title={mode === "add" ? "Add Profile Photo" : "Update Profile Photo"}
         size="sm"
       >
         <div className="flex flex-col items-center gap-3">
@@ -54,13 +66,14 @@ export function ProfileImageSection({ name }: ProfileImageSectionProps) {
             />
           </div>
           <MediaUploader
-            group="spotlight-profile-image"
             onUpload={handleUpload}
             uploadVariant="button"
-            buttonText="Upload new"
+            buttonText={mode === "add" ? "Upload photo" : "Upload new"}
           />
           <p className="text-center text-n-700">
-            Upload a new photo to replace your current profile picture
+            {mode === "add"
+              ? "Upload a photo for your profile"
+              : "Upload a new photo to replace your current profile picture"}
           </p>
         </div>
       </Dialog>

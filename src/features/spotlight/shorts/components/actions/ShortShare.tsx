@@ -12,6 +12,7 @@ const ShortShare: React.FC<ShortShareProps> = (props) => {
       aria-label="share-short-icon"
       label={shares}
       iconClassName="mr-0.5"
+      enableLightMode
     />
   );
 };

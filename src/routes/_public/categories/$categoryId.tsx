@@ -104,6 +104,7 @@ function CategoryDetailComponent() {
         const hasNoProducts = query?.data?.meta?.totalRows === 0;
         const hasMultiplePages = (query?.data?.meta?.totalPages ?? 0) > 1;
         if (hasNoProducts) return null;
+        console.log(query?.data?.data);
 
         return (
           <HorizontalScrollSection

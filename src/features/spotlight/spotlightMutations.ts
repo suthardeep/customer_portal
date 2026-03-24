@@ -1,15 +1,21 @@
 import { showErrorToasts, toast } from "@/components/toast";
 import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import { spotlightKeys } from "./spotlightQueryFactory";
 import {
   createPost,
+  deletePost,
+  onboardCreator,
   toggleBookmark,
   toggleLike,
   updateSpotlightProfile,
 } from "./spotlightService";
 import type { CreateDirectPostRequest, PostDetail } from "./types/feed.types";
-import type { UpdateSpotlightProfileRequest } from "./types/types";
+import type {
+  CreateSpotlightProfileRequest,
+  UpdateSpotlightProfileRequest,
+} from "./types/types";
 
 export const useToggleLikeMutation = () => {
   return useMutation({
@@ -88,6 +94,40 @@ export const useUpdateSpotlightProfileMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: spotlightKeys.profile() });
       toast.success("Profile updated successfully");
+    },
+    onError: (error) => {
+      showErrorToasts(error);
+    },
+  });
+};
+
+export const useOnboardCreatorMutation = () => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: async (data: CreateSpotlightProfileRequest) => {
+      const response = await onboardCreator({ data });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: spotlightKeys.profile() });
+      router.navigate({ to: "/spotlight/edit-profile" });
+    },
+    onError: (error) => {
+      showErrorToasts(error);
+    },
+  });
+};
+
+export const useDeletePostMutation = () => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      const res = await deletePost({ data: postId });
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: spotlightKeys.myPosts() });
+      router.navigate({ to: "/spotlight/my-posts" });
     },
     onError: (error) => {
       showErrorToasts(error);

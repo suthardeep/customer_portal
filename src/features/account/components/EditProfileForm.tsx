@@ -55,7 +55,6 @@ const EditProfileForm = ({
         <div className="rounded-full overflow-hidden shrink-0 border border-n-500">
           {profileImageUrl ? (
             <MediaUploader
-              group="profile-image"
               onUpload={handlePhotoUpload}
               buttonText="Upload new"
               variant="outline"

@@ -1,4 +1,5 @@
 import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
+import type { PaginationQueryParams } from "@/types/general.types";
 
 export interface TrackingEvent {
   status: string;
@@ -74,6 +75,12 @@ export enum PaymentStatus {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
 }
+
+export type MyOrdersQueryParams = PaginationQueryParams & {
+  lifecycleStatus?: OrderLifecycleStatus;
+};
+
+export type MyOrdersInfiniteParams = Omit<MyOrdersQueryParams, "currentPage">;
 
 export type OrderListResponse = BaseApiResponse<PaginatedResponse<OrderItem>>;
 export type OrderDetailResponse = BaseApiResponse<OrderItemDetail>;

@@ -38,11 +38,19 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
       )}
     >
       {icon && (
-        <Icon
-          name={icon}
-          size="lg"
-          className={cn(styles.icon, !isCompact && "size-12")}
-        />
+        <div
+          className={cn(
+            "flex size-24 items-center justify-center rounded-full",
+            styles.iconBg,
+          )}
+        >
+          <Icon
+            name={icon}
+            size="lg"
+            className={cn(styles.icon, !isCompact && "size-10")}
+            strokeWidth={2}
+          />
+        </div>
       )}
       <div className={cn(!isCompact && "text-center flex flex-col gap-1")}>
         <h6 className={cn(styles.text, !isCompact && "font-medium")}>
@@ -71,16 +79,18 @@ type FallbackViewColor = "neutral" | "danger";
 
 const colorStyles: Record<
   FallbackViewColor,
-  { bg: string; icon: string; text: string }
+  { bg: string; icon: string; text: string; iconBg: string }
 > = {
   neutral: {
     bg: "bg-n-50",
-    icon: "text-n-800",
-    text: "text-n-800",
+    icon: "text-p-500",
+    text: "text-n-900",
+    iconBg: "bg-p-50",
   },
   danger: {
     bg: "bg-danger-50",
     icon: "text-danger-500",
     text: "text-danger-600",
+    iconBg: "bg-danger-100/50",
   },
 };

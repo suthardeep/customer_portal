@@ -66,6 +66,7 @@ import {
   Tick02Icon,
   Coupon02Icon,
   CreditCardIcon,
+  LockPasswordIcon,
   UserIcon,
   Clock01Icon,
   ViewIcon,
@@ -77,8 +78,9 @@ import {
   PlayCircleIcon,
   PauseIcon,
   PlayIcon,
+  Flag02Icon,
   VolumeOffIcon,
-  VolumeUpIcon,
+  VolumeHighIcon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -106,6 +108,7 @@ export const iconRegistry = {
   Remove: Remove01Icon,
   PackageRemove: PackageRemoveIcon,
   Explore: DiscoverCircleIcon,
+  Lock: LockPasswordIcon,
   // Product detail page icons
   Star: StarIcon,
   StarHalf: StarHalfIcon,
@@ -125,6 +128,7 @@ export const iconRegistry = {
   PackageAdd: PackageAdd01Icon,
   PackagePacked: Package03Icon,
   DeliverySent: DeliverySent01Icon,
+  Report: Flag02Icon,
   DeliveryTracking: DeliveryTracking01Icon,
   PackageDelivered: PackageDelivered01Icon,
   DeliveryDelay: DeliveryDelay01Icon,
@@ -157,7 +161,7 @@ export const iconRegistry = {
   PlayFill: PlayIcon,
   Pause: PauseIcon,
   VolumeOff: VolumeOffIcon,
-  VolumeUp: VolumeUpIcon,
+  VolumeHigh: VolumeHighIcon,
   // Review icons
   ImageUpload: ImageUpload01Icon,
   // Search icons

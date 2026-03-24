@@ -143,7 +143,6 @@ export function ReturnProductForm({
           {images.map((_, idx) => (
             <MediaUploader
               key={idx}
-              group="returns"
               onUpload={(url) => handleUpload(idx, url)}
               onRemove={() => handleRemove(idx)}
               wrapperClassName="size-20 shrink-0"
@@ -154,7 +153,6 @@ export function ReturnProductForm({
           {images.length < MAX_IMAGES && (
             <MediaUploader
               key={`new-${images.length}`}
-              group="returns"
               onUpload={(url) => handleUpload(images.length, url)}
               wrapperClassName="size-20 shrink-0"
               imageClassName="rounded-xl border border-n-300"

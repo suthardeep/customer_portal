@@ -11,6 +11,7 @@ const ShortViews: React.FC<ShortViewsProps> = (props) => {
       name="Eye"
       aria-label="views-short-icon"
       label={views}
+      enableLightMode
     />
   );
 };

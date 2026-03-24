@@ -1,5 +1,7 @@
 import { useToggleLikeMutation } from "@/features/spotlight/spotlightMutations";
 import ShortActionIconButton from "./ShortActionIconButton";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 
 interface ShortLikeProps {
   isLiked: boolean;
@@ -10,9 +12,19 @@ interface ShortLikeProps {
 const ShortLike: React.FC<ShortLikeProps> = (props) => {
   const { isLiked, likes, postId } = props;
   const toggleLike = useToggleLikeMutation();
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
 
   const handleLikeClick = () => {
-    toggleLike.mutate(postId);
+    if (isAuthenticated) {
+      toggleLike.mutate(postId);
+    } else {
+      loginDialog.open({
+        onSuccess() {
+          toggleLike.mutate(postId);
+        },
+      });
+    }
   };
 
   return (
@@ -22,6 +34,7 @@ const ShortLike: React.FC<ShortLikeProps> = (props) => {
       label={likes}
       highlight={isLiked}
       onClick={handleLikeClick}
+      enableLightMode
     />
   );
 };

@@ -23,7 +23,7 @@ const SpotlightBookmark: React.FC<SpotlightBookmarkProps> = (props) => {
       onClick={handleBookmarkClick}
       disabled={toggleBookmark.isPending}
       className={cn(
-        "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full group cursor-pointer",
+        "flex size-8 items-center justify-center rounded-full group cursor-pointer",
         "backdrop-blur-xl transition-colors",
         isBookmarked ? "bg-p-50" : "bg-black/30 hover:bg-p-50",
       )}

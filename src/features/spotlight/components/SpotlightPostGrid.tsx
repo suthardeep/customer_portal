@@ -23,12 +23,14 @@ function SpotlightPostGrid({
         className,
       )}
     >
-      {Children.map(children, (child) => (
-        <div className="mb-4 break-inside-avoid">{child}</div>
+      {Children.map(children, (child, i) => (
+        <div key={i} className="break-inside-avoid mb-4">
+          {child}
+        </div>
       ))}
       {isLoading &&
         Array.from({ length: skeletonCount }, (_, i) => (
-          <div key={i} className="mb-4 break-inside-avoid">
+          <div key={`skeleton-${i}`} className="break-inside-avoid mb-4">
             <SpotlightPostCardSkeleton />
           </div>
         ))}

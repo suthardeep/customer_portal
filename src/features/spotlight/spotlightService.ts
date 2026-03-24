@@ -1,10 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { apiRequest } from "@/utils/apiRequest";
+import { ApiError } from "@/utils/api";
 import { getToken } from "@/utils/getToken";
 import type { BaseApiResponse } from "@/types/baseApi.types";
 import type {
   BookmarkToggleData,
   CreateDirectPostRequest,
+  CreateSpotlightProfileRequest,
   CreatorAnalyticsResponse,
   FeedExploreParams,
   FeedExploreResponse,
@@ -37,10 +39,14 @@ export const getBookmarkedPosts = createServerFn({ method: "GET" })
 export const getSpotlightProfile = createServerFn({ method: "GET" }).handler(
   async (): Promise<SpotlightProfileResponse> => {
     const token = getToken();
-
-    return apiRequest<SpotlightProfileResponse>("/v1/ugc/creators/me", {
-      token,
-    });
+    try {
+      return await apiRequest<SpotlightProfileResponse>("/v1/ugc/creators/me", { token });
+    } catch (e) {
+      if (e instanceof ApiError && e.statusCode === 404) {
+        return { data: null, statusCode: 404 };
+      }
+      throw e;
+    }
   },
 );
 
@@ -85,6 +91,18 @@ export const updateSpotlightProfile = createServerFn({ method: "POST" })
 
     return apiRequest<SpotlightProfileResponse>("/v1/ugc/creators/me", {
       method: "PATCH",
+      body: data,
+      token,
+    });
+  });
+
+export const onboardCreator = createServerFn({ method: "POST" })
+  .inputValidator((data: CreateSpotlightProfileRequest) => data)
+  .handler(async ({ data }): Promise<SpotlightProfileResponse> => {
+    const token = getToken();
+
+    return apiRequest<SpotlightProfileResponse>("/v1/ugc/creators/onboard", {
+      method: "POST",
       body: data,
       token,
     });
@@ -154,6 +172,7 @@ export const createPost = createServerFn({ method: "POST" })
   .inputValidator((data: CreateDirectPostRequest) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<{ id: string }>> => {
     const token = getToken();
+    console.log("[createPost] request body:", data);
     return apiRequest<BaseApiResponse<{ id: string }>>("/v1/ugc/posts", {
       method: "POST",
       body: data,
@@ -194,6 +213,17 @@ export const recordPostView = createServerFn({ method: "POST" })
 
     return apiRequest<BaseApiResponse<void>>(`/v1/ugc/posts/${postId}/view`, {
       method: "POST",
+      token,
+    });
+  });
+
+export const deletePost = createServerFn({ method: "POST" })
+  .inputValidator((data: string) => data)
+  .handler(async ({ data: postId }): Promise<BaseApiResponse<null>> => {
+    const token = getToken();
+
+    return apiRequest<BaseApiResponse<null>>(`/v1/ugc/posts/${postId}`, {
+      method: "DELETE",
       token,
     });
   });

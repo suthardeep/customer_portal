@@ -1,7 +1,7 @@
 import { Button } from "@/components/base/button/Button";
 import Dialog from "@/components/base/Dialog";
 import { useToggle } from "@/hooks/useToggle";
-import CampaignSubmissionForm from "./CampaignSubmissionForm";
+import CampaignSubmissionForm from "../submit/CampaignSubmissionForm";
 import type { Product } from "@/features/products/types/product.types";
 
 interface CampaignJoinButtonProps {
@@ -24,6 +24,7 @@ const CampaignJoinButton = ({
         isOpen={submissionDialog.isOpen}
         onClose={submissionDialog.close}
         title="Submission"
+        size="lg"
       >
         <CampaignSubmissionForm
           campaignId={campaignId}

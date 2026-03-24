@@ -8,7 +8,6 @@ export function CartEmptyState() {
       title="Your cart is empty"
       subtitle="Add items to get started"
       icon="ShoppingCart"
-      color="neutral"
       footer={
         <Link to="/">
           <Button variant="outline" color="primary" size="md">

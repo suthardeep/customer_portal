@@ -1,5 +1,8 @@
 import { Icon } from "@/components/base/icon";
+import { Image } from "@/components/base/Image";
+import Spinner from "@/components/compound/spinner/Spinner";
 import { useToggle } from "@/hooks/useToggle";
+import { useCanGoBack, useRouter } from "@tanstack/react-router";
 import Hls from "hls.js";
 import {
   forwardRef,
@@ -9,6 +12,9 @@ import {
   useRef,
   useState,
 } from "react";
+import ShortActionIconButton from "./actions/ShortActionIconButton";
+import { Popover } from "@/components/base/popover/Popover";
+import MenuItem from "@/components/base/MenuItem";
 
 export interface ShortsVideoPlayerHandle {
   play: () => void;
@@ -26,24 +32,28 @@ interface ShortsVideoPlayerProps {
   /** When true, initialise HLS with a 5s buffer cap but do not play */
   isPreload: boolean;
   onHlsReady?: (hls: Hls) => void;
+  onVideoReady?: (el: HTMLVideoElement) => void;
 }
 
 const ShortsVideoPlayer = forwardRef<
   ShortsVideoPlayerHandle,
   ShortsVideoPlayerProps
 >(function ShortsVideoPlayer(
-  { hlsUrl, thumbnail, alt, className, isActive, isPreload, onHlsReady },
+  { hlsUrl, thumbnail, alt, className, isActive, isPreload, onHlsReady, onVideoReady },
   ref,
 ) {
   const { isOpen: isPaused, open: pause, close: resume } = useToggle();
   const { isOpen: isMuted, toggle: toggleMute } = useToggle();
   const [progress, setProgress] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
   const seekBarRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
 
   useImperativeHandle(ref, () => ({
     play: () => {
@@ -85,16 +95,25 @@ const ShortsVideoPlayer = forwardRef<
 
         if (!preloadOnly) {
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play();
+            video.play().catch(() => {});
           });
         }
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = hlsUrl;
-        if (!preloadOnly) video.play();
+        if (!preloadOnly) video.play().catch(() => {});
       }
     },
     [hlsUrl, destroyHls, onHlsReady],
   );
+
+  const handleVolumeClick = () => {
+    toggleMute();
+    const video = videoRef.current;
+    if (video?.paused) {
+      video.play();
+      resume();
+    }
+  };
 
   const videoRefCallback = useCallback(
     (node: HTMLVideoElement | null) => {
@@ -115,9 +134,12 @@ const ShortsVideoPlayer = forwardRef<
     const video = videoRef.current;
     if (!video) return;
     if (isActive) {
+      setIsLoading(true);
       initHls(video, false);
     } else if (isPreload && !hlsRef.current) {
       initHls(video, true);
+    } else if (!isActive) {
+      destroyHls();
     }
   }, [isActive, isPreload, initHls]);
 
@@ -191,15 +213,34 @@ const ShortsVideoPlayer = forwardRef<
     flashTimerRef.current = setTimeout(() => setShowFlash(false), 800);
   }, [pause, resume]);
 
+  useEffect(() => {
+    if (!isActive) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        handleVideoClick();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isActive, handleVideoClick]);
+
   return (
     <div className={`relative overflow-hidden bg-black ${className ?? ""}`}>
-      {/* Thumbnail shown until video is ready */}
-      <img
-        src={thumbnail}
-        alt={alt}
-        className="absolute inset-0 size-full object-cover"
-        aria-hidden="true"
-      />
+      {/* Thumbnail + spinner shown until video is ready */}
+      {isLoading && (
+        <div className="absolute inset-0 z-10">
+          <Image
+            src={thumbnail}
+            alt={alt}
+            className="h-full w-full object-cover"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Spinner className="stroke-n-50" size={40} />
+          </div>
+        </div>
+      )}
 
       <video
         ref={videoRefCallback}
@@ -209,6 +250,10 @@ const ShortsVideoPlayer = forwardRef<
         className="relative size-full object-cover"
         onTimeUpdate={handleTimeUpdate}
         onClick={handleVideoClick}
+        onCanPlay={() => {
+          setIsLoading(false);
+          if (videoRef.current) onVideoReady?.(videoRef.current);
+        }}
       />
 
       {/* Center play/pause flash */}
@@ -223,20 +268,43 @@ const ShortsVideoPlayer = forwardRef<
           </div>
         </div>
       )}
-
+      {isPaused && (
+        <div className="flex gap-1 items-center absolute top-3 left-3">
+          {canGoBack && (
+            <ShortActionIconButton
+              name="ChevronLeft"
+              onClick={() => router.history.back()}
+              iconSize="md"
+            />
+          )}
+          <Popover
+            trigger={
+              <div>
+                <ShortActionIconButton
+                  name="MoreVertical"
+                  iconSize="md"
+                  className="cursor-pointer"
+                />
+              </div>
+            }
+          >
+            <div>
+              <MenuItem startIcon="Report" className="text-n-900">
+                Report
+              </MenuItem>
+            </div>
+          </Popover>
+        </div>
+      )}
       {/* Mute button — always visible */}
-      <button
-        type="button"
-        className="absolute top-3 left-3 flex items-center justify-center size-9 rounded-full backdrop-blur-lg bg-black/30 border border-transparent"
-        onClick={toggleMute}
-        aria-label={isMuted ? "Unmute" : "Mute"}
-      >
-        <Icon
-          name={isMuted ? "VolumeOff" : "VolumeUp"}
-          size="md"
-          className="text-n-50"
+      {isPaused && (
+        <ShortActionIconButton
+          name={isMuted ? "VolumeOff" : "VolumeHigh"}
+          className="absolute top-3 right-3"
+          iconSize="md"
+          onClick={handleVolumeClick}
         />
-      </button>
+      )}
 
       {/* Seek bar */}
       <div className="absolute bottom-0 left-0 right-0">

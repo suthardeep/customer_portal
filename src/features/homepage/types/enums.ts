@@ -28,16 +28,14 @@ export enum SectionTypeEnum {
   BRAND = "BRAND",
   BANNER = "BANNER",
   CUSTOM = "CUSTOM",
-  UGC_USER = "UGC_USER",
-  UGC_REEL = "UGC_REEL",
+  UGC = "UGC",
 }
 
 export enum SourceTypeEnum {
   PRODUCT = "PRODUCT",
   CATEGORY = "CATEGORY",
   BANNER = "BANNER",
-  UGC_USER = "UGC_USER",
-  UGC_REEL = "UGC_REEL",
+  UGC = "UGC",
 }
 
 export enum SelectionTypeEnum {
@@ -64,6 +62,7 @@ export enum ActionTypeEnum {
   IN_APP_PAGE = "IN_APP_PAGE",
   UGC_USER = "UGC_USER",
   UGC_REEL = "UGC_REEL",
+  EXTERNAL_URL = "EXTERNAL_URL",
 }
 
 export enum TextAlignEnum {
@@ -107,4 +106,9 @@ export enum ScreenTypeEnum {
   CATEGORY = "CATEGORY",
   PROFILE = "PROFILE",
   ORDERS = "ORDERS",
+  WALLET = "WALLET",
+  WISHLIST = "WISHLIST",
+  UGC_FEED = "UGC_FEED",
+  SUBSCRIPTION = "SUBSCRIPTION",
+  NOTIFICATIONS = "NOTIFICATIONS",
 }

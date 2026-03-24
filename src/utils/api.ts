@@ -8,9 +8,7 @@ export const getApiBaseUrl = createIsomorphicFn()
     return baseUrl;
   })
   .client(() => {
-    return import.meta.env.PROD
-      ? import.meta.env.VITE_API_BASE_URL // production: real API URL
-      : "";
+    return import.meta.env.VITE_API_BASE_URL;
   });
 
 export class ApiError extends Error {

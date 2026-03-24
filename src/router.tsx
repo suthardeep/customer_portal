@@ -21,6 +21,7 @@ export const getRouter = () => {
     },
 
     defaultPreload: "intent",
+    defaultPreloadStaleTime: 1000 * 60 * 10,
   });
 
   setupRouterSsrQueryIntegration({
@@ -31,7 +32,7 @@ export const getRouter = () => {
   if (!router.isServer) {
     Sentry.init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
-      // enabled: import.meta.env.PROD,
+      enabled: import.meta.env.PROD,
       integrations: [],
       tracesSampleRate: 1.0,
       sendDefaultPii: true,

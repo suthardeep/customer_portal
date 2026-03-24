@@ -1,28 +1,35 @@
-import { queryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import type { PaginatedResponse } from "@/types/baseApi.types";
-import type { PaginationQueryParams } from "@/types/general.types";
-import type { InvoiceData, OrderItem, OrderItemDetail } from "./types/types";
+import type { InvoiceData, MyOrdersInfiniteParams, MyOrdersQueryParams, OrderItem, OrderItemDetail } from "./types/types";
 import { myOrderKeys } from "./myOrdersQueryFactory";
 import {
   getMyOrders,
   getMyOrderItemDetail,
   getMyOrderItemInvoice,
 } from "./myOrdersService";
-import { MY_ORDERS_PAGE_SIZE } from "./constants";
 
 export const myOrderQueries = {
-  list: (
-    params: PaginationQueryParams = {
-      currentPage: 1,
-      pageSize: MY_ORDERS_PAGE_SIZE,
-    },
-  ) =>
+  list: (params: MyOrdersQueryParams = {}) =>
     queryOptions({
       queryKey: myOrderKeys.list(params),
       queryFn: async (): Promise<PaginatedResponse<OrderItem>> => {
         const response = await getMyOrders({ data: params });
         return response.data;
       },
+    }),
+
+  listInfinite: (params: MyOrdersInfiniteParams = {}) =>
+    infiniteQueryOptions({
+      queryKey: myOrderKeys.listInfinite(params),
+      queryFn: async ({ pageParam }): Promise<PaginatedResponse<OrderItem>> => {
+        const response = await getMyOrders({
+          data: { currentPage: pageParam, ...params },
+        });
+        return response.data;
+      },
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) =>
+        lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
     }),
 
   detail: (orderItemId: string) =>

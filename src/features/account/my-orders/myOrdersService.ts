@@ -1,18 +1,18 @@
 import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
-import type { PaginationQueryParams } from "@/types/general.types";
 import { apiRequest } from "@/utils/apiRequest";
 import { getToken } from "@/utils/getToken";
 import { createServerFn } from "@tanstack/react-start";
 import type {
   CancelOrderItemRequest,
   InvoiceData,
+  MyOrdersQueryParams,
   OrderItem,
   OrderItemDetail,
   ReturnOrderItemRequest,
 } from "./types/types";
 
 export const getMyOrders = createServerFn({ method: "GET" })
-  .inputValidator((data: PaginationQueryParams) => data)
+  .inputValidator((data: MyOrdersQueryParams) => data)
   .handler(
     async ({ data }): Promise<BaseApiResponse<PaginatedResponse<OrderItem>>> => {
       const token = getToken();
