@@ -10,6 +10,7 @@ import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import CampaignGuidelineDownload from "@/features/spotlight/campaigns/components/CampaignGuidelineDownload";
 import CampaignJoinButton from "@/features/spotlight/campaigns/components/CampaignJoin";
 import CampaignProducts from "@/features/spotlight/campaigns/components/CampaignProducts";
+import MyCampaignSubmissions from "@/features/spotlight/campaigns/components/MyCampaignSubmissions";
 
 export const Route = createFileRoute(
   "/_public/spotlight/campaigns/$campaignId",
@@ -19,6 +20,9 @@ export const Route = createFileRoute(
     await context.queryClient.ensureQueryData(
       campaignQueries.campaignDetail(params.campaignId),
     );
+    context.queryClient.prefetchQuery(
+      campaignQueries.myCampaignSubmissions(params.campaignId, {}),
+    );
   },
 });
 
@@ -26,6 +30,9 @@ function RouteComponent() {
   const params = Route.useParams();
   const { data } = useSuspenseQuery(
     campaignQueries.campaignDetail(params.campaignId),
+  );
+  const { data: submissions } = useSuspenseQuery(
+    campaignQueries.myCampaignSubmissions(params.campaignId, {}),
   );
 
   return (
@@ -52,6 +59,7 @@ function RouteComponent() {
         <CampaignRules rules={data.rules} />
         <CampaignProducts products={data.products} />
         <CampaignGuidelineDownload guidelinePdfUrl={data.guidelinePdfUrl} />
+        <MyCampaignSubmissions submissions={submissions.data} />
       </div>
       <CampaignJoinButton
         campaignId={params.campaignId}

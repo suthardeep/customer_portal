@@ -3,7 +3,6 @@ import { Icon } from "@/components/base/icon";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { Image } from "@/components/base/Image";
 import Sheet from "@/components/base/sheet/Sheet";
-import { Button } from "@/components/base/button/Button";
 import { Input } from "@/components/base/input/Input";
 import { Textarea } from "@/components/base/textarea/Textarea";
 import { StarRatingInput } from "@/components/base/StarRatingInput";

@@ -21,7 +21,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
 
   const defaultContent = (
     <>
-      <div className={cn("flex shrink-0 items-center gap-4", PADDING_CLASS)}>
+      <div className={cn("flex shrink-0 items-start gap-4", PADDING_CLASS)}>
         <div className="mr-auto flex flex-col">
           {title && (
             <RadixDialog.Title className="font-semibold text-n-900 text-lg">
@@ -39,7 +39,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
           icon="X"
           aria-label="Close dialog"
           onClick={onClose}
-          size="sm"
+          size="md"
           variant="ghost"
           color="neutral"
         />

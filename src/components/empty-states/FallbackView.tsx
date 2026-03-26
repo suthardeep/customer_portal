@@ -67,8 +67,8 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
             {subtitle}
           </p>
         )}
+        {footer && footer}
       </div>
-      {footer && footer}
     </div>
   );
 };

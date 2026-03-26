@@ -17,7 +17,7 @@ const EditProfileDialog = ({ isOpen, onClose }: EditProfileDialogProps) => {
   const handleSubmit = (data: ProfileFormData) => {
     const payload = {
       fullName: data.fullName,
-      ...(data.email ? { email: data.email } : {}),
+      email: data.email,
       ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth } : {}),
       ...(data.profileImageUrl
         ? { profileImageUrl: data.profileImageUrl }

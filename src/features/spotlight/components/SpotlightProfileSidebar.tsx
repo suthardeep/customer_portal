@@ -18,7 +18,10 @@ export function SpotlightProfileSidebar() {
       {loading ? (
         <SpotlightProfileSidebarSkeleton />
       ) : !isAuthenticated ? (
-        <NotLoggedInEmptyState />
+        <NotLoggedInEmptyState
+          title="Login to continue"
+          subtitle="Please login to access your spotlight profile."
+        />
       ) : !hasSpotlightProfile ? (
         <NoSpotlightProfileEmptyState />
       ) : (

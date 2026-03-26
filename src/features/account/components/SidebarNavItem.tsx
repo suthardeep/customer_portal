@@ -15,7 +15,7 @@ export function SidebarNavItem({ item }: SidebarNavItemProps) {
         className: "text-p-700 bg-p-50/50!",
       }}
     >
-      <Icon name={item.icon} size="lg" />
+      <Icon name={item.icon} size="lg" className="text-current" />
       <p className="flex-1 font-semibold">{item.label}</p>
       <Icon name="ChevronRight" size="md" />
     </Link>

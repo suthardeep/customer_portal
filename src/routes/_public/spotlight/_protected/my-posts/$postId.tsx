@@ -40,7 +40,6 @@ function RouteComponent() {
   );
   const deleteDialog = useToggle();
   const deletePostMutation = useDeletePostMutation();
-  console.log(post, "hi short");
 
   return (
     <div>

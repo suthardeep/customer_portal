@@ -1,6 +1,5 @@
 import { Image } from "@/components/base/Image";
 import { Icon } from "@/components/base/icon";
-import { Chip } from "@/components/base/chip/Chip";
 import { prettyDate } from "@/utils/formatDateTime";
 import { prettyNumber } from "@/utils/prettyNumber";
 import type { CampaignListItem } from "../types/types";

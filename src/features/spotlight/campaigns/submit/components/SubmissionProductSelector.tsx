@@ -39,9 +39,9 @@ const SubmissionProductSelector = ({
       <p className="mb-2 font-medium">
         Select Products <span className="text-danger-500">*</span>
       </p>
-      {hasAnyEligibleProduct || true ? (
+      {hasAnyEligibleProduct ? (
         <div className="max-h-48 overflow-y-auto grid grid-cols-1 lg:grid-cols-2 gap-2">
-          {products.map((product) => (
+          {eligibleProducts.map((product) => (
             <label
               key={product.id}
               className={cn(

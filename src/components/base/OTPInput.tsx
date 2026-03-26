@@ -146,6 +146,7 @@ const OTPInput = forwardRef<OTPInputHandle, OTPInputProps>(
             autoFocus={autoFocus && index === 0}
             className="h-14 w-12 rounded-lg border border-gray-300 bg-gray-50 text-center text-base font-medium transition-all focus:border-primary-500 focus:outline-none"
             aria-label={`OTP digit ${index + 1}`}
+            wrapperClassName="[&>div]:p-1"
           />
         ))}
       </div>

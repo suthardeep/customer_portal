@@ -17,7 +17,7 @@ export function getErrorStatusCode(error: unknown): number | undefined {
 
   const message = (error as any).message;
 
-  const match = message.match(/^\[(\d{3})\]\s?/);
+  const match = message.match(/\[(\d{3})\]/);
   if (!match) {
     return undefined;
   }

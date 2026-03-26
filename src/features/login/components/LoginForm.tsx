@@ -4,13 +4,21 @@ import { Input } from "@/components/base/input/Input";
 import { Button } from "@/components/base/button/Button";
 import { loginFormSchema, type LoginFormData } from "../types/types";
 import { Logo } from "@/components/compound/logo/Logo";
+import { Link } from "@tanstack/react-router";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
   isLoading?: boolean;
+  registerHref?: string;
+  onRegisterClick?: () => void;
 }
 
-const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
+const LoginForm = ({
+  onSubmit,
+  isLoading = false,
+  registerHref,
+  onRegisterClick,
+}: LoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -56,6 +64,26 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
       >
         Continue
       </Button>
+
+      <p className="text-center text-sm text-n-700">
+        Don&apos;t have an account?{" "}
+        {onRegisterClick ? (
+          <button
+            type="button"
+            onClick={onRegisterClick}
+            className="text-n-900 font-medium hover:underline"
+          >
+            Register
+          </button>
+        ) : (
+          <Link
+            to={registerHref ?? "/register"}
+            className="text-n-900 font-medium hover:underline"
+          >
+            Register
+          </Link>
+        )}
+      </p>
     </form>
   );
 };

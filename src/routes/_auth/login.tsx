@@ -6,6 +6,7 @@ import z from "zod";
 
 const loginSearchSchema = z.object({
   redirectTo: z.string().optional(),
+  referralCode: z.string().optional(),
 });
 
 export const Route = createFileRoute("/_auth/login")({
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/_auth/login")({
 function LoginRouteComponent() {
   const navigate = useNavigate();
   const sendOtpMutation = useSendOtpMutation();
-  const { redirectTo } = Route.useSearch();
+  const { redirectTo, referralCode } = Route.useSearch();
 
   const handleSubmit = (data: LoginFormData) => {
     sendOtpMutation.mutate(
@@ -26,14 +27,17 @@ function LoginRouteComponent() {
       },
       {
         onSuccess: (response) => {
-          navigate({
-            to: "/verify-otp",
-            search: {
-              phone: response.phone,
-              isNewUser: response.isNewUser,
-              redirectTo,
-            },
-          });
+          if (response.isNewUser) {
+            navigate({
+              to: "/register",
+              search: { phone: response.phone, redirectTo, referralCode },
+            });
+          } else {
+            navigate({
+              to: "/verify-otp",
+              search: { phone: response.phone, redirectTo, referralCode },
+            });
+          }
         },
       },
     );

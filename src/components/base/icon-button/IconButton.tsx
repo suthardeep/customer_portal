@@ -128,7 +128,7 @@ const contentHeights: Record<IconButtonSize, string> = {
 
 // Base button styles
 const baseStyles =
-  "inline-flex items-center cursor-pointer justify-center transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-[10px]";
+  "inline-flex items-center shrink-0 cursor-pointer justify-center transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-[10px]";
 
 // Variant-color matrix (same as Button, excluding "link")
 const variantStyles: Record<

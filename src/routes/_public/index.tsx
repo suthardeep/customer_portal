@@ -27,8 +27,6 @@ export const Route = createFileRoute("/_public/")({
 
 function HomePage() {
   const { data: homeScreen } = useSuspenseQuery(homepageQueries.config());
-  console.log(homeScreen, "homeScreen");
-
   return (
     <div className="flex flex-col">
       {homeScreen.sections

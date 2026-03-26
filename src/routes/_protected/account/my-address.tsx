@@ -72,16 +72,20 @@ function RouteComponent() {
         }
       />
 
-      <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2">
-        {addresses.map((address) => (
-          <AddressListItem
-            key={address.id}
-            address={address}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {addresses?.length > 0 ? (
+        <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2">
+          {addresses.map((address) => (
+            <AddressListItem
+              key={address.id}
+              address={address}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
+      ) : (
+        <FallbackView title="No address saved yet" icon="Location" />
+      )}
 
       <AddAddressDialog
         isOpen={addDialog.isOpen}

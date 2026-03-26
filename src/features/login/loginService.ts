@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { setCookie } from '@tanstack/react-start/server';
 import { apiRequest } from '@/utils/apiRequest';
-import type { SendOtpRequest, SendOtpResponse, VerifyOtpRequest, VerifyOtpResponse, User } from './types/types';
+import type { SendOtpRequest, SendOtpResponse, VerifyOtpRequest, VerifyOtpResponse, User, ValidateReferralRequest, ValidateReferralResponse } from './types/types';
 import type { BaseApiResponse } from '@/types/baseApi.types';
 
 export const sendOtp = createServerFn({ method: 'POST' })
@@ -38,4 +38,13 @@ export const verifyOtp = createServerFn({ method: 'POST' })
     });
 
     return user;
+  });
+
+export const validateReferral = createServerFn({ method: 'POST' })
+  .inputValidator((data: ValidateReferralRequest) => data)
+  .handler(async ({ data }): Promise<ValidateReferralResponse> => {
+    return apiRequest<ValidateReferralResponse>('/v1/auth/referral/validate', {
+      method: 'POST',
+      body: data,
+    });
   });

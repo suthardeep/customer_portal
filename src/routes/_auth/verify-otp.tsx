@@ -4,8 +4,9 @@ import { z } from "zod";
 
 const verifyOtpSearchSchema = z.object({
   phone: z.string(),
+  fullName: z.string().optional(),
+  referralCode: z.string().optional(),
   redirectTo: z.string().optional(),
-  isNewUser: z.boolean().optional().default(false),
 });
 
 export const Route = createFileRoute("/_auth/verify-otp")({
@@ -14,14 +15,16 @@ export const Route = createFileRoute("/_auth/verify-otp")({
 });
 
 function VerifyOtpRouteComponent() {
-  const { phone, redirectTo } = Route.useSearch();
+  const { phone, fullName, referralCode, redirectTo } = Route.useSearch();
   const navigate = useNavigate();
   const routeToNavigate = redirectTo || "/categories";
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-4">
+    <div className="flex h-screen flex-col items-center justify-center gap-4 max-w-lg mx-auto">
       <VerifyOtpForm
         phone={phone}
+        fullName={fullName}
+        referralCode={referralCode}
         onSuccess={() => navigate({ to: routeToNavigate })}
       />
     </div>

@@ -30,18 +30,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Subscription",
         icon: "Bell",
-        to: "/",
+        to: "/subscription",
       },
     ],
   },
   {
     title: "Earn & Grow",
     items: [
-      {
-        label: "Studio",
-        icon: "VideoCameraSpark",
-        to: "/",
-      },
       {
         label: "Become a Seller",
         icon: "Store",
@@ -50,7 +45,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Referral link",
         icon: "Link",
-        to: "/",
+        to: "/account/refer-and-earn",
       },
     ],
   },

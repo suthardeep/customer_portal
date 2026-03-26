@@ -14,7 +14,7 @@ import {
   useTopUpWalletMutation,
   useVerifyTopUpMutation,
 } from "../walletMutations";
-import type { RazorpayPaymentResult } from "@/lib/razorpay";
+import type { RazorpayPaymentResult } from "@/lib/razorpayTopUp";
 import { formatCurrency } from "@/utils/formatCurrency";
 import FallbackView from "@/components/empty-states/FallbackView";
 

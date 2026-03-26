@@ -7,6 +7,7 @@ import * as Sentry from "@sentry/tanstackstart-react";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import RouteErrorComponent from "./components/empty-states/RouteErrorComponent";
+import NotFoundComponent from "./components/empty-states/NotFoundComponent";
 
 // Create a new router instance
 export const getRouter = () => {
@@ -16,6 +17,7 @@ export const getRouter = () => {
     routeTree,
     defaultStaleTime: 5 * 60 * 1000,
     defaultErrorComponent: RouteErrorComponent,
+    defaultNotFoundComponent: NotFoundComponent,
     context: {
       ...rqContext,
     },
@@ -46,7 +48,7 @@ declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
     showCategorySubNav?: boolean;
     showBottomBar?: boolean;
-    maxWidth?: "max-w-7xl" | "max-w-8xl";
+    maxWidth?: "max-w-7xl" | "max-w-8xl" | "none";
     hideHeader?: "all" | "desktop" | "mobile";
   }
 }

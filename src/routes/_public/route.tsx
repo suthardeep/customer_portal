@@ -1,15 +1,27 @@
 import Header from "@/components/shared/header/Header";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { cn } from "@/utils/cssHelpers";
+import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_public")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const maxWidth = useMatches({
+    select: (matches) => {
+      const match = matches.find((m) => m.staticData?.maxWidth);
+      return match?.staticData?.maxWidth as
+        | "none"
+        | "max-w-7xl"
+        | "max-w-8xl"
+        | undefined;
+    },
+  });
+
   return (
     <div>
       <Header />
-      <div className="max-w-8xl mx-auto">
+      <div className={cn("mx-auto", maxWidth === "none" ? "" : "max-w-8xl")}>
         <Outlet />
       </div>
     </div>

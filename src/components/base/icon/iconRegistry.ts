@@ -1,5 +1,6 @@
 import {
   Add01Icon,
+  Copy01Icon,
   AddSquareIcon,
   Alert01Icon,
   Analytics01Icon,
@@ -66,6 +67,7 @@ import {
   Tick02Icon,
   Coupon02Icon,
   CreditCardIcon,
+  HelpSquareIcon,
   LockPasswordIcon,
   UserIcon,
   Clock01Icon,
@@ -81,6 +83,7 @@ import {
   Flag02Icon,
   VolumeOffIcon,
   VolumeHighIcon,
+  Mail01Icon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -122,6 +125,7 @@ export const iconRegistry = {
   Truck: DeliveryTruck01Icon,
   MegaPhone: Megaphone02Icon,
   DeliveryReturn: DeliveryReturn01Icon,
+  HelpSquare: HelpSquareIcon,
   // Order status icons
   Package: Package01Icon,
   Clock: Clock01Icon,
@@ -184,6 +188,9 @@ export const iconRegistry = {
   // Social icons
   Instagram: InstagramIcon,
   Youtube: YoutubeIcon,
+  // Utility icons
+  Copy: Copy01Icon,
+  Mail: Mail01Icon,
 } as const;
 
 export type IconName = keyof typeof iconRegistry;

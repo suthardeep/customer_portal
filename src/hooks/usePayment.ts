@@ -1,4 +1,4 @@
-import { openRazorpayCheckout, type RazorpayOrderData, type RazorpayPaymentResult } from "@/lib/razorpay";
+import { openRazorpayCheckout, type RazorpayOrderData, type RazorpayPaymentResult } from "@/lib/razorpayTopUp";
 import { useCallback, useState } from "react";
 
 type PaymentStatus = "idle" | "checkout_open" | "verifying" | "success" | "error" | "dismissed";

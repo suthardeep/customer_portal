@@ -13,11 +13,19 @@ const RESEND_COUNTDOWN_SECONDS = 30;
 
 interface VerifyOtpFormProps {
   phone: string;
+  fullName?: string;
+  referralCode?: string;
   onSuccess?: () => void;
   onBack?: () => void;
 }
 
-const VerifyOtpForm = ({ phone, onSuccess, onBack }: VerifyOtpFormProps) => {
+const VerifyOtpForm = ({
+  phone,
+  fullName,
+  referralCode,
+  onSuccess,
+  onBack,
+}: VerifyOtpFormProps) => {
   const otpInputRef = useRef<OTPInputHandle>(null);
   const [isVerified, setIsVerified] = useState(false);
 
@@ -40,7 +48,7 @@ const VerifyOtpForm = ({ phone, onSuccess, onBack }: VerifyOtpFormProps) => {
 
   const handleOtpComplete = (otp: string) => {
     verifyOtpMutation.mutate(
-      { phone, otp },
+      { phone, otp, fullName, referralCode },
       {
         onSuccess: () => {
           setIsVerified(true);

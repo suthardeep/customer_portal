@@ -33,7 +33,7 @@ export function MenuDrawer() {
   };
   const handleSpotlightClick = () => {
     drawer.close();
-    navigate({ to: "/spotlight" });
+    navigate({ to: "/spotlight/buy-clips" });
   };
 
   const accountLabel = isAuthenticated
@@ -96,12 +96,12 @@ export function MenuDrawer() {
                 navigate({ to: "/account/wallet" });
               }}
             />
+            <DrawerItem icon="Store" label="Sell Now" />
             <DrawerItem
-              icon="Store"
-              label="Sell Now"
+              icon="VideoCameraSpark"
+              label="Spotlight"
               onClick={handleSpotlightClick}
             />
-            <DrawerItem icon="VideoCameraSpark" label="Spotlight" />
             <button className="flex items-center gap-3 py-3.5 px-1 w-full text-left group">
               <AavakFinTechLogo />
               <p className="font-medium text-n-900 group-hover:text-p-600">

@@ -2,5 +2,14 @@ import type { User } from "@/types/user.types";
 
 export type UpdateProfileRequest = Pick<
   User,
-  "email" | "fullName" | "profileImageUrl" | "dateOfBirth"
+  "fullName" | "profileImageUrl" | "dateOfBirth" | "email"
 >;
+
+export interface RequestEmailOtpRequest {
+  email: string;
+}
+
+export interface VerifyEmailOtpRequest {
+  email: string;
+  otp: string;
+}

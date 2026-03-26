@@ -11,6 +11,8 @@ interface LoginDialogState {
   isOpen: boolean;
   currentStep: LoginStep;
   phone: string;
+  fullName: string;
+  referralCode: string;
   onSuccessCallback: (() => void) | null;
 
   // Actions
@@ -18,6 +20,8 @@ interface LoginDialogState {
   close: () => void;
   setStep: (step: LoginStep) => void;
   setPhone: (phone: string) => void;
+  setFullName: (fullName: string) => void;
+  setReferralCode: (code: string) => void;
   executeOnSuccess: () => void;
   reset: () => void;
 }
@@ -27,6 +31,8 @@ export const useLoginDialogStore = create<LoginDialogState>((set, get) => ({
   isOpen: false,
   currentStep: 'phone',
   phone: '',
+  fullName: '',
+  referralCode: '',
   onSuccessCallback: null,
 
   // Actions
@@ -51,6 +57,14 @@ export const useLoginDialogStore = create<LoginDialogState>((set, get) => ({
     set({ phone });
   },
 
+  setFullName: (fullName) => {
+    set({ fullName });
+  },
+
+  setReferralCode: (code) => {
+    set({ referralCode: code });
+  },
+
   executeOnSuccess: () => {
     const { onSuccessCallback, close } = get();
     if (onSuccessCallback) {
@@ -64,6 +78,8 @@ export const useLoginDialogStore = create<LoginDialogState>((set, get) => ({
       isOpen: false,
       currentStep: 'phone',
       phone: '',
+      fullName: '',
+      referralCode: '',
       onSuccessCallback: null,
     });
   },

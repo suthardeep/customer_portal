@@ -28,43 +28,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    // Generate unique ID for label association, allow override
     const generatedId = useId();
     const inputId = providedId ?? generatedId;
 
-    // Password visibility state (only used when togglePassword is true)
     const [showPassword, setShowPassword] = useState(false);
 
-    // Determine actual input type
     const isPasswordType = type === "password";
     const actualType = isPasswordType && showPassword ? "text" : type;
-
-    // Determine if we should show the toggle button
     const showToggleButton = togglePassword && isPasswordType;
-
-    // Determine state for styling
     const hasError = Boolean(error);
-
-    // Check if we have right-side content
     const hasRightContent = rightElement || showToggleButton;
 
-    // Compose input classes
-    const inputClasses = cn(
-      baseInputStyles,
+    const wrapperClasses = cn(
+      "flex items-center",
       variantStyles[variant],
       sizeStyles[size],
       hasError
         ? variantStateStyles[variant].error
         : variantStateStyles[variant].default,
       disabled && variantStateStyles[variant].disabled,
-      leftElement && leftPaddingStyles[size],
-      hasRightContent && rightPaddingStyles[size],
-      className,
     );
 
     return (
       <div className={cn(fullWidth ? "w-full" : "w-fit", wrapperClassName)}>
-        {/* Label */}
         {label && (
           <div className="flex items-center gap-0.5">
             <Label
@@ -77,22 +63,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </div>
         )}
 
-        {/* Input container with absolute positioned elements */}
-        <div className="relative">
-          {/* Left element */}
+        <div className={wrapperClasses}>
           {leftElement && (
-            <div
-              className={cn(
-                "pointer-events-none absolute left-0 top-0 flex items-center justify-center text-n-700",
-                iconContainerStyles[size],
-                iconContainerWidths[size],
-              )}
-            >
-              <span className="pointer-events-auto">{leftElement}</span>
-            </div>
+            <span className="shrink-0 text-n-700">{leftElement}</span>
           )}
 
-          {/* Input element */}
           <input
             ref={ref}
             id={inputId}
@@ -106,19 +81,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   ? `${inputId}-helper`
                   : undefined
             }
-            className={inputClasses}
+            className={cn(baseInputStyles, className)}
             {...restProps}
           />
 
-          {/* Right element OR password toggle */}
           {hasRightContent && (
-            <div
-              className={cn(
-                "absolute right-0 top-0 flex items-center justify-center",
-                iconContainerStyles[size],
-                iconContainerWidths[size],
-              )}
-            >
+            <span className="shrink-0">
               {showToggleButton ? (
                 <button
                   type="button"
@@ -147,15 +115,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   )}
                 </button>
               ) : (
-                <span className="pointer-events-auto text-n-700">
-                  {rightElement}
-                </span>
+                <span className="text-n-700">{rightElement}</span>
               )}
-            </div>
+            </span>
           )}
         </div>
 
-        {/* Helper text or error message */}
         {(error || helperText) && (
           <p
             id={error ? `${inputId}-error` : `${inputId}-helper`}
@@ -174,85 +139,51 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 
-// Variant styles
-const variantStyles = {
+// Variant styles (on wrapper now)
+const variantStyles: Record<InputVariant, string> = {
   default: "rounded-xl border bg-n-50 disabled:bg-n-200",
-  underline:
-    "rounded-none border-0 border-b bg-transparent disabled:bg-transparent",
+  underline: "rounded-none border-0 border-b bg-transparent",
 };
 
-// Variant-specific state styles (border + ring per state)
+// Variant-specific state styles (focus-within replaces focus)
 const variantStateStyles: Record<
   InputVariant,
   Record<"default" | "error" | "disabled", string>
 > = {
   default: {
     default:
-      "border-n-500 focus:border-n-600 focus:ring-2 focus:ring-offset-0 focus:ring-n-500/20",
+      "border-n-500 focus-within:border-n-600 focus-within:ring-2 focus-within:ring-offset-0 focus-within:ring-n-500/20",
     error:
-      "border-danger-500 focus:border-danger-500 focus:ring-2 focus:ring-offset-0 focus:ring-danger-500/20",
-    disabled: "border-n-500",
+      "border-danger-500 focus-within:border-danger-500 focus-within:ring-2 focus-within:ring-offset-0 focus-within:ring-danger-500/20",
+    disabled: "border-n-500 bg-n-200",
   },
   underline: {
-    default: "border-n-500 focus:border-n-600",
-    error: "border-danger-500 focus:border-danger-500",
+    default: "border-n-500 focus-within:border-n-600",
+    error: "border-danger-500 focus-within:border-danger-500",
     disabled: "border-n-300",
   },
 };
 
-// Base input styles
+// Base input styles — nude, no border, no background
 const baseInputStyles =
-  "w-full text-n-925 placeholder:text-n-600 " +
-  "transition-[border-color,box-shadow] duration-150 ease-out " +
-  "focus:outline-none " +
+  "flex-1 min-w-0 bg-transparent border-none outline-none " +
+  "text-n-925 placeholder:text-n-600 " +
   "disabled:cursor-not-allowed disabled:text-n-700";
 
-// Size styles
+// Size styles on wrapper (padding + text size)
 const sizeStyles: Record<InputSize, string> = {
-  xs: "px-2 py-1 text-xs ",
-  sm: "px-2.5 py-1.5 text-sm",
-  md: "px-3 py-2.5 text-base",
-  lg: "px-4 py-2.5 text-lg",
-};
-
-// Left padding adjustments for left element
-const leftPaddingStyles: Record<InputSize, string> = {
-  xs: "pl-7",
-  sm: "pl-8",
-  md: "pl-10",
-  lg: "pl-12",
-};
-
-// Right padding adjustments for right element / password toggle
-const rightPaddingStyles: Record<InputSize, string> = {
-  xs: "pr-7",
-  sm: "pr-8",
-  md: "pr-10",
-  lg: "pr-12",
-};
-
-// Icon container heights (match input heights)
-const iconContainerStyles: Record<InputSize, string> = {
-  xs: "h-7",
-  sm: "h-8",
-  md: "h-11",
-  lg: "h-12",
-};
-
-// Icon container widths
-const iconContainerWidths: Record<InputSize, string> = {
-  xs: "w-7",
-  sm: "w-8",
-  md: "w-10",
-  lg: "w-12",
+  xs: "gap-1.5 px-2 py-1 text-xs",
+  sm: "gap-2 px-2.5 py-1.5 text-sm",
+  md: "gap-2.5 px-3 py-2.5 text-base",
+  lg: "gap-3 px-4 py-2.5 text-lg",
 };
 
 // Icon size mapping for password toggle
 const iconSizeToPreset: Record<InputSize, IconSize> = {
-  xs: "sm", // 14px → 14px ✓
-  sm: "md", // 16px → 16px ✓
-  md: "lg", // 18px → 20px (override with className size-4.5)
-  lg: "lg", // 20px → 20px ✓
+  xs: "sm",
+  sm: "md",
+  md: "lg",
+  lg: "lg",
 };
 
 // Label styles

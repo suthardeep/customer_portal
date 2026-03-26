@@ -155,7 +155,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
               <Image
                 src={image}
                 alt={`Product thumbnail ${index + 1}`}
-                className="size-full object-cover"
+                className="size-full object-contain"
               />
             </button>
           ))}
@@ -170,7 +170,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
       >
         <div
           className={cn(
-            "image-gallery-transition",
+            "size-full image-gallery-transition",
             previousIndex !== null && "changing",
           )}
         >
