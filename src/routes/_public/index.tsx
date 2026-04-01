@@ -20,7 +20,6 @@ export const Route = createFileRoute("/_public/")({
         icon="AlertCircle"
         subtitle={"We are facing some issues. Please try again later."}
       />
-      ,
     </div>
   ),
 });

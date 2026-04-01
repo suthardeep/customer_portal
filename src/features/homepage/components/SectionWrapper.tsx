@@ -42,7 +42,7 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
   const ctaHref = getCtaHref(section);
 
   return (
-    <section className="py-4 px-4 md:px-0" style={backgroundStyle}>
+    <section className="p-4" style={backgroundStyle}>
       <div className="flex items-center justify-between mb-3">
         <div>
           <h5 style={titleStyle}>{section.title}</h5>
@@ -53,8 +53,10 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
           )}
         </div>
 
-        {section.hasCta && section.ctaConfig?.label && ctaHref && (
-          ctaHref.startsWith("http") ? (
+        {section.hasCta &&
+          section.ctaConfig?.label &&
+          ctaHref &&
+          (ctaHref.startsWith("http") ? (
             <a href={ctaHref} target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="sm">
                 {section.ctaConfig.label}
@@ -66,8 +68,7 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
                 {section.ctaConfig.label}
               </Button>
             </Link>
-          )
-        )}
+          ))}
       </div>
 
       {children}
