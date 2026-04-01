@@ -3,6 +3,7 @@ import type { GridDisplaySettings } from "../../types/types";
 interface GridLayoutProps {
   children: React.ReactNode;
   displaySettings: GridDisplaySettings;
+  colsOverride?: string;
 }
 
 const GRID_COLS_MAP: Record<number, string> = {
@@ -14,10 +15,10 @@ const GRID_COLS_MAP: Record<number, string> = {
   6: "grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
 };
 
-export function GridLayout({ children, displaySettings }: GridLayoutProps) {
+export function GridLayout({ children, displaySettings, colsOverride }: GridLayoutProps) {
   const cols = displaySettings.columnsMax ?? 4;
   const gap = displaySettings.gridSpacing ?? 16;
-  const gridColsClass = GRID_COLS_MAP[cols] ?? "grid-cols-2 md:grid-cols-4";
+  const gridColsClass = colsOverride ?? GRID_COLS_MAP[cols] ?? "grid-cols-2 md:grid-cols-4";
 
   return (
     <div className={`grid ${gridColsClass}`} style={{ gap: `${gap}px` }}>

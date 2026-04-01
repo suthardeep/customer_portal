@@ -1,6 +1,5 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
 import Divider from "@/components/base/Divider";
-import { Icon } from "@/components/base/icon";
 import { Image } from "@/components/base/Image";
 import { StarRatingDisplay } from "@/components/base/StarRatingDisplay";
 import { StarRatingInput } from "@/components/base/StarRatingInput";
@@ -9,11 +8,10 @@ import { useCreateReviewMutation } from "@/features/reviews/reviewsMutations";
 import { reviewQueries } from "@/features/reviews/reviewsQueries";
 import { useToggle } from "@/hooks/useToggle";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { prettyDate } from "@/utils/formatDateTime";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { PAYMENT_METHOD_LABEL } from "../constants";
+import { getOrderStatusDateLabel } from "../utils";
 import type { OrderItem } from "../types/types";
 import MyOrderCardHeader from "./MyOrderCardHeader";
 
@@ -83,25 +81,20 @@ export function MyOrdersCard({
           <p className="line-clamp-1 font-medium text-n-800">
             {formatCurrency(order.amount)}
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-5">
             {order.customerEarnedCoins > 0 && (
               <AavakCoinsChip
                 coins={order.customerEarnedCoins}
                 label="Earned"
               />
             )}
-            <div className="flex items-center gap-1">
-              <Icon name="CreditCard" size="lg" />
-              <p className="text-n-900 text-sm uppercase font-medium">
-                {PAYMENT_METHOD_LABEL[order.paymentMethod]}
-              </p>
-            </div>
-            <div className="flex items-center gap-1">
-              <Icon name="Calendar" size="lg" />
-              <p className="text-n-900 text-sm uppercase font-medium">
-                {prettyDate(order.createdAt)}
-              </p>
-            </div>
+            <p className="text-n-900 text-sm font-medium">
+              {getOrderStatusDateLabel(
+                order.lifecycleStatus,
+                order.createdAt,
+                order.deliveredAt,
+              )}
+            </p>
           </div>
         </div>
       </div>

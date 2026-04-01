@@ -13,17 +13,25 @@ import { SliderLayout } from "../layouts/SliderLayout";
 interface SectionLayoutProps {
   displaySettings: DisplaySettings;
   children: React.ReactNode;
+  slideBasis?: string;
+  colsOverride?: string;
+  align?: "start" | "center" | "end";
 }
 
 export function SectionLayout({
   displaySettings,
   children,
+  slideBasis,
+  colsOverride,
+  align,
 }: SectionLayoutProps) {
   switch (displaySettings.displayType) {
     case DisplayTypeEnum.SLIDER:
       return (
         <SliderLayout
           displaySettings={displaySettings as SliderDisplaySettings}
+          slideBasis={slideBasis}
+          align={align}
         >
           {children}
         </SliderLayout>
@@ -38,7 +46,10 @@ export function SectionLayout({
       );
     case DisplayTypeEnum.GRID:
       return (
-        <GridLayout displaySettings={displaySettings as GridDisplaySettings}>
+        <GridLayout
+          displaySettings={displaySettings as GridDisplaySettings}
+          colsOverride={colsOverride}
+        >
           {children}
         </GridLayout>
       );

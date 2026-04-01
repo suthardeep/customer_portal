@@ -8,9 +8,11 @@ import type { SliderDisplaySettings } from "../../types/types";
 interface SliderLayoutProps {
   children: React.ReactNode;
   displaySettings: SliderDisplaySettings;
+  slideBasis?: string;
+  align?: "start" | "center" | "end";
 }
 
-export function SliderLayout({ children, displaySettings }: SliderLayoutProps) {
+export function SliderLayout({ children, displaySettings, slideBasis, align }: SliderLayoutProps) {
   const {
     autoPlay = false,
     interval = 3000,
@@ -25,7 +27,7 @@ export function SliderLayout({ children, displaySettings }: SliderLayoutProps) {
     [autoPlay, interval],
   );
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, plugins);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: align ?? "center" }, plugins);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -45,9 +47,9 @@ export function SliderLayout({ children, displaySettings }: SliderLayoutProps) {
   return (
     <div className="relative">
       <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex">
+        <div className="flex gap-4">
           {slides.map((child, i) => (
-            <div key={i} className="min-w-0 shrink-0 grow-0 basis-full">
+            <div key={i} className={cn("min-w-0 shrink-0 grow-0", slideBasis ?? "basis-full")}>
               {child}
             </div>
           ))}

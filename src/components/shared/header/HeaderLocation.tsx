@@ -48,7 +48,7 @@ export function HeaderLocation() {
       <button
         onClick={handleClick}
         disabled={isDetecting}
-        className="flex items-center gap-2 max-w-56 group cursor-pointer"
+        className="flex items-center gap-2 group cursor-pointer"
       >
         <Icon
           name="Location"
@@ -66,7 +66,7 @@ export function HeaderLocation() {
               className="text-n-900 group-hover:text-p-600"
             />
           </div>
-          <p className="text-[13px] font-medium text-n-800 truncate group-hover:text-p-600 text-left max-w-72">
+          <p className="text-[13px] font-medium text-n-800 truncate group-hover:text-p-600 text-left max-w-56 md:max-w-72">
             {label}
           </p>
         </div>

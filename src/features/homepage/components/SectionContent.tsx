@@ -34,7 +34,11 @@ export function SectionContent({ section }: SectionContentProps) {
 
 function SectionContentInner({ section }: SectionContentProps) {
   const { data } = useQuery(homepageQueries.sectionContent(section.actionApi));
-  const items = data?.data ?? [];
+  const items = Array.isArray(data?.data)
+    ? data.data
+    : Array.isArray(data)
+      ? data
+      : [];
   const { displaySettings, contentConfig } = section;
 
   switch (contentConfig.sourceType) {
