@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_public/spotlight/shorts/$id")({
   pendingComponent: ShortFeedSkeleton,
   staticData: {
     hideHeader: "mobile",
+    showBottomBar: false,
   },
 });
 

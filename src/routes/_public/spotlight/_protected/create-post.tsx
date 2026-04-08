@@ -157,9 +157,14 @@ function CreateReelPage() {
       <div>
         <AccountPageHeader
           title="Create Post"
-          trailingTitleComponent={<StepIndicator currentStep={currentStep} />}
+          trailingTitleComponent={
+            <StepIndicator
+              currentStep={currentStep}
+              className="hidden lg:flex"
+            />
+          }
         />
-
+        <StepIndicator currentStep={currentStep} className="flex lg:hidden" />
         {/* Step Content */}
         <div className="mt-8">
           {currentStep === 1 && (

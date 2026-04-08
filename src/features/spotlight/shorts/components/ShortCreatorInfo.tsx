@@ -22,11 +22,11 @@ export function ShortCreatorInfo({ creator, caption }: ShortCreatorInfoProps) {
         <Link
           to="/spotlight/users/$userId"
           params={{ userId: creator.id }}
-          className="text-n-900 font-medium hover:underline"
+          className="text-white lg:text-n-900 text-base font-medium hover:underline"
         >
           {creator.fullName}
         </Link>
-        <p className="text-n-800 truncate">{caption}</p>
+        <p className="text-n-500 lg:text-n-800 truncate">{caption}</p>
       </div>
     </div>
   );

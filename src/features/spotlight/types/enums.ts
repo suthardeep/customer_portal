@@ -15,3 +15,11 @@ export enum MediaStatus {
   PROCESSING = "processing",
   FAILED = "failed",
 }
+
+export enum ReportReason {
+  SPAM = "SPAM",
+  INAPPROPRIATE = "INAPPROPRIATE",
+  FAKE_PRODUCT = "FAKE_PRODUCT",
+  MISLEADING = "MISLEADING",
+  OTHER = "OTHER",
+}

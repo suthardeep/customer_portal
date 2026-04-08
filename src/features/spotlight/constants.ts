@@ -3,6 +3,15 @@ import type {
   SpotlightProfileStat,
   SpotlightSidebarSection,
 } from "./types/types";
+import { ReportReason } from "./types/enums";
+
+export const REPORT_REASON_OPTIONS = [
+  { label: "Spam", value: ReportReason.SPAM },
+  { label: "Inappropriate", value: ReportReason.INAPPROPRIATE },
+  { label: "Fake Product", value: ReportReason.FAKE_PRODUCT },
+  { label: "Misleading", value: ReportReason.MISLEADING },
+  { label: "Other", value: ReportReason.OTHER },
+];
 
 export const SPOTLIGHT_PROFILE_STATS: SpotlightProfileStat[] = [
   { value: "25k", label: "Views" },

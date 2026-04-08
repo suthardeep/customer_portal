@@ -73,6 +73,7 @@ export function ShortFeedScrollerItem({
           thumbnail={media.thumbnail}
           alt={post.caption}
           className="size-full lg:rounded-xl"
+          postId={post.id}
           isActive={isActive}
           isPreload={isPreload}
           onVideoReady={(el) => { videoRef.current = el; setIsMediaReady(true); }}

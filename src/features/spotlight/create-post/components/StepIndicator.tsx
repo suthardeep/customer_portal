@@ -4,11 +4,12 @@ import { CREATE_REEL_STEPS } from "../constants";
 
 interface StepIndicatorProps {
   currentStep: number;
+  className?: string;
 }
 
-const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
+const StepIndicator = ({ currentStep, className }: StepIndicatorProps) => {
   return (
-    <div className="flex items-center justify-center gap-0">
+    <div className={cn("flex items-center justify-center gap-0", className)}>
       {CREATE_REEL_STEPS.map((step, index) => {
         const isCompleted = currentStep > step.number;
         const isActive = currentStep === step.number;

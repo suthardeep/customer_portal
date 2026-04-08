@@ -7,11 +7,12 @@ import {
   createPost,
   deletePost,
   onboardCreator,
+  reportPost,
   toggleBookmark,
   toggleLike,
   updateSpotlightProfile,
 } from "./spotlightService";
-import type { CreateDirectPostRequest, PostDetail } from "./types/feed.types";
+import type { CreateDirectPostRequest, PostDetail, ReportPostRequest } from "./types/feed.types";
 import type {
   CreateSpotlightProfileRequest,
   UpdateSpotlightProfileRequest,
@@ -111,6 +112,18 @@ export const useOnboardCreatorMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: spotlightKeys.profile() });
       router.navigate({ to: "/spotlight/edit-profile" });
+    },
+    onError: (error) => {
+      showErrorToasts(error);
+    },
+  });
+};
+
+export const useReportPostMutation = () => {
+  return useMutation({
+    mutationFn: async (data: ReportPostRequest) => {
+      const response = await reportPost({ data });
+      return response.data;
     },
     onError: (error) => {
       showErrorToasts(error);

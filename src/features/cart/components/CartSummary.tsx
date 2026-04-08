@@ -5,9 +5,11 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import type { Cart } from "../types/types";
 import { Image } from "@/components/base/Image";
 import Divider from "@/components/base/Divider";
+import ApplyCouponsDialog from "./ApplyCouponsDialog";
 
 export function CartSummary({ cart }: CartSummaryProps) {
   const gstToggle = useToggle();
+  const applyCouponToggle = useToggle();
 
   const itemsTotal = cart.items.reduce((acc, item) => acc + item.subtotal, 0);
   const totalMrp = cart.items.reduce(
@@ -26,21 +28,21 @@ export function CartSummary({ cart }: CartSummaryProps) {
     <div className="flex flex-col overflow-hidden rounded-xl border border-n-400 bg-n-50">
       {/* Apply Coupons section */}
       <div className="p-4">
-        <div className="flex items-center justify-between">
-          <p className="font-semibold text-n-900">Apply Coupons</p>
-          <button className="text-sm font-semibold text-s-700 transition-colors hover:text-s-800">
-            View All
-          </button>
-        </div>
-
         <div className="mt-3 flex items-center justify-between rounded-xl border border-n-400 bg-n-200 px-3 py-2.5">
-          <div className="flex items-center gap-2">
+          <div
+            onClick={applyCouponToggle.open}
+            className="flex items-center gap-2 w-full cursor-pointer"
+          >
             <div className="size-5">
               <Image src="/discount-3d-badge.png" alt="discount-3d-badge-alt" />
             </div>
-            <p className="text-sm font-medium text-n-900">Apply Coupon</p>
+            <p className="text-sm font-medium text-n-900 mr-auto">
+              Apply Coupon
+            </p>
+            <button className="text-sm font-semibold text-s-700 transition-colors hover:underline">
+              View All
+            </button>
           </div>
-          <Icon name="ChevronDown" size="sm" className="text-n-800" />
         </div>
       </div>
 
@@ -141,6 +143,10 @@ export function CartSummary({ cart }: CartSummaryProps) {
           Continue
         </Button>
       </div>
+      <ApplyCouponsDialog
+        isOpen={applyCouponToggle.isOpen}
+        onClose={applyCouponToggle.close}
+      />
     </div>
   );
 }

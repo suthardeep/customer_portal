@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useMatches } from "@tanstack/react-router";
 import { Icon } from "@/components/base/icon";
 import { Image } from "@/components/base/Image";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -27,7 +27,6 @@ function SpotlightNavbarItem({ label, icon, to }: SpotlightNavItem) {
     isProfile && isAuthenticated
       ? user?.fullName?.split(" ")[0] || user?.phone || "Profile"
       : label;
-
   return (
     <Link
       to={to}
@@ -51,6 +50,11 @@ function SpotlightNavbarItem({ label, icon, to }: SpotlightNavItem) {
 }
 
 const SpotlightNavbar = () => {
+  const showBottomBar = useMatches({
+    select: (matches) => matches.some((m) => m.staticData?.showBottomBar),
+  });
+  if (!showBottomBar) return null;
+
   return (
     <nav className="fixed bottom-8 left-1/2 -translate-x-1/2  lg:hidden z-20 flex gap-2 items-center">
       <Link

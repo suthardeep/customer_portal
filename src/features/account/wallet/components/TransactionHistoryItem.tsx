@@ -1,8 +1,8 @@
 import { Chip } from "@/components/base/chip/Chip";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { prettyDate } from "@/utils/formatDateTime";
-import { POOL_CHIP_MAP } from "../utils";
 import type { WalletTransaction } from "../types/types";
+import { TYPE_CHIP_MAP } from "../utils";
 
 interface TransactionHistoryItemProps {
   transaction: WalletTransaction;
@@ -28,9 +28,11 @@ export function TransactionHistoryItem({
         </p>
         <span className="text-n-800">{transaction.referenceId}</span>
       </div>
-      <Chip color={POOL_CHIP_MAP[transaction.pool].color} size="sm">
-        {POOL_CHIP_MAP[transaction.pool].label}
+      {/* {transaction.type !== TransactionTypeEnum.WITHDRAW && ( */}
+      <Chip color={TYPE_CHIP_MAP[transaction.type].color} size="sm">
+        {TYPE_CHIP_MAP[transaction.type].label}
       </Chip>
+      {/* )} */}
       <p
         className={`shrink-0 font-semibold ${
           isCredit ? "text-success-500" : "text-danger-500"

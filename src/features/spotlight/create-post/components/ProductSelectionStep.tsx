@@ -27,7 +27,7 @@ const ProductSelectionStep = ({
     return (
       <FallbackView
         icon="Cart"
-        title="No products found"
+        title="No products purchased yet"
         subtitle="You must purchase a product before you can create a post."
       />
     );

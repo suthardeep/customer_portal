@@ -69,8 +69,8 @@ export function CartItemCard({
           <AavakCoinsChip coins={item.aavakCoinsEarned} />
         )}
 
-        <div className="flex justify-between items-center">
-          <p className="text-xs text-n-800">7 Days Returnable</p>
+        <div className="flex justify-between items-center w-full">
+          <p className="text-xs text-n-900">7 Days Returnable</p>
           <QuantitySelector
             value={item.quantity}
             onChange={(q) => onQuantityChange(item.id, q)}

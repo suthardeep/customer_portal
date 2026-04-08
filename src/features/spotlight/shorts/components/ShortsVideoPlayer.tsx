@@ -15,6 +15,8 @@ import {
 import ShortActionIconButton from "./actions/ShortActionIconButton";
 import { Popover } from "@/components/base/popover/Popover";
 import MenuItem from "@/components/base/MenuItem";
+import { useShortsPlayerStore } from "../stores/shortsPlayerStore";
+import ReportPostDialog from "./ReportPostDialog";
 
 export interface ShortsVideoPlayerHandle {
   play: () => void;
@@ -27,6 +29,7 @@ interface ShortsVideoPlayerProps {
   thumbnail: string;
   alt: string;
   className?: string;
+  postId: string;
   /** When true, initialise HLS immediately and start playing */
   isActive: boolean;
   /** When true, initialise HLS with a 5s buffer cap but do not play */
@@ -39,11 +42,13 @@ const ShortsVideoPlayer = forwardRef<
   ShortsVideoPlayerHandle,
   ShortsVideoPlayerProps
 >(function ShortsVideoPlayer(
-  { hlsUrl, thumbnail, alt, className, isActive, isPreload, onHlsReady, onVideoReady },
+  { hlsUrl, thumbnail, alt, className, postId, isActive, isPreload, onHlsReady, onVideoReady },
   ref,
 ) {
   const { isOpen: isPaused, open: pause, close: resume } = useToggle();
-  const { isOpen: isMuted, toggle: toggleMute } = useToggle();
+  const reportDialog = useToggle();
+  const isMuted = useShortsPlayerStore((s) => s.isMuted);
+  const setMuted = useShortsPlayerStore((s) => s.setMuted);
   const [progress, setProgress] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -107,7 +112,7 @@ const ShortsVideoPlayer = forwardRef<
   );
 
   const handleVolumeClick = () => {
-    toggleMute();
+    setMuted(!isMuted);
     const video = videoRef.current;
     if (video?.paused) {
       video.play();
@@ -216,14 +221,14 @@ const ShortsVideoPlayer = forwardRef<
   useEffect(() => {
     if (!isActive) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+      if (e.code === "Space" && !reportDialog.isOpen) {
         e.preventDefault();
         handleVideoClick();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isActive, handleVideoClick]);
+  }, [isActive, handleVideoClick, reportDialog.isOpen]);
 
   return (
     <div className={`relative overflow-hidden bg-black ${className ?? ""}`}>
@@ -289,13 +294,14 @@ const ShortsVideoPlayer = forwardRef<
             }
           >
             <div>
-              <MenuItem startIcon="Report" className="text-n-900">
+              <MenuItem startIcon="Report" className="text-n-900" onClick={reportDialog.open}>
                 Report
               </MenuItem>
             </div>
           </Popover>
         </div>
       )}
+      <ReportPostDialog isOpen={reportDialog.isOpen} onClose={reportDialog.close} postId={postId} />
       {/* Mute button — always visible */}
       {isPaused && (
         <ShortActionIconButton

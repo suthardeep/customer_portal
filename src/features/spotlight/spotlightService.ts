@@ -14,6 +14,7 @@ import type {
   MyPostsParams,
   MyPostsResponse,
   PostDetailResponse,
+  ReportPostRequest,
   SpotlightProfile,
   SpotlightProfileResponse,
   UpdateSpotlightProfileRequest,
@@ -213,6 +214,18 @@ export const recordPostView = createServerFn({ method: "POST" })
 
     return apiRequest<BaseApiResponse<void>>(`/v1/ugc/posts/${postId}/view`, {
       method: "POST",
+      token,
+    });
+  });
+
+export const reportPost = createServerFn({ method: "POST" })
+  .inputValidator((data: ReportPostRequest) => data)
+  .handler(async ({ data: { postId, ...body } }): Promise<BaseApiResponse<null>> => {
+    const token = getToken();
+
+    return apiRequest<BaseApiResponse<null>>(`/v1/ugc/posts/${postId}/report`, {
+      method: "POST",
+      body,
       token,
     });
   });

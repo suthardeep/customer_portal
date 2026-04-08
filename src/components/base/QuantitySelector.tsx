@@ -1,5 +1,6 @@
 import { PriceDisplay } from "@/features/products/components/PriceDisplay";
 import { IconButton } from "./icon-button/IconButton";
+import { cn } from "@/utils/cssHelpers";
 
 interface QuantitySelectorProps {
   value: number;
@@ -9,6 +10,7 @@ interface QuantitySelectorProps {
   disabled?: boolean;
   currentPrice?: number;
   originalPrice?: number;
+  className?: string;
 }
 
 export function QuantitySelector({
@@ -19,6 +21,7 @@ export function QuantitySelector({
   disabled = false,
   currentPrice,
   originalPrice,
+  className = "",
 }: QuantitySelectorProps) {
   const handleDecrement = () => {
     if (value > min) {
@@ -36,7 +39,7 @@ export function QuantitySelector({
   const isIncrementDisabled = disabled || value >= max;
 
   return (
-    <div className="flex items-center justify-between gap-2 w-full">
+    <div className={cn("flex items-center justify-between gap-2", className)}>
       {currentPrice !== undefined && (
         <PriceDisplay
           currentPrice={currentPrice}

@@ -1,5 +1,5 @@
 import { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
-import { MediaStatus, PostStatus, UgcPostType } from "./enums";
+import { MediaStatus, PostStatus, ReportReason, UgcPostType } from "./enums";
 
 export interface FeedPostStats {
   views: number;
@@ -142,6 +142,12 @@ export interface BookmarkToggleData {
 export interface LikeToggleData {
   isLiked: boolean;
   likes: number;
+}
+
+export interface ReportPostRequest {
+  postId: string;
+  reason: ReportReason;
+  description?: string;
 }
 
 export interface CreateDirectPostRequest {
