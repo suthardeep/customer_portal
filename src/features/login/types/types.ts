@@ -57,7 +57,7 @@ export interface VerifyOtpRequest {
   phone: string;
   otp: string;
   fullName?: string;
-  referralCode?: string;
+  referredByCode?: string;
 }
 
 export interface ValidateReferralRequest {

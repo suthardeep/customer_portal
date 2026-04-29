@@ -47,7 +47,7 @@ function CampaignDescription({
       </div>
 
       {/* Title */}
-      <h4 className="font-bold text-n-900 mt-6 mb-3">{name}</h4>
+      <h3 className="font-bold text-n-900 mt-6 mb-3">{name}</h3>
 
       {/* Description */}
       <p className="text-n-800">

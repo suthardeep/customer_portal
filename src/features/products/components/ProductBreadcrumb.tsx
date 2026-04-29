@@ -10,12 +10,17 @@ export function ProductBreadcrumb({ product }: ProductBreadcrumbProps) {
     { label: "Home", href: "/" },
   ];
 
-  // Add category if available
-  const primaryCategory = product.categories?.[product.categories.length - 1];
+  // Add category if available — prefer deepest level (CHILD > SUB > MAIN)
+  const LEVEL_ORDER: Record<string, number> = { CHILD: 2, SUB: 1, MAIN: 0 };
+  const primaryCategory = product.categories
+    ?.slice()
+    .sort(
+      (a, b) => (LEVEL_ORDER[b.level] ?? 0) - (LEVEL_ORDER[a.level] ?? 0),
+    )[0];
   if (primaryCategory) {
     items.push({
       label: primaryCategory.name,
-      href: `/categories/${product.categoryId}`,
+      href: `/categories/${primaryCategory.id}`,
     });
   }
 

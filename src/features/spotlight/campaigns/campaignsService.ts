@@ -4,6 +4,7 @@ import { getToken } from "@/utils/getToken";
 import type { CampaignDetailApiResponse, CampaignListParams, CampaignListResponse } from "./types/types";
 import type {
   CreateCampaignSubmissionRequest,
+  EditCampaignSubmissionRequest,
   CampaignSubmissionResponse,
   MySubmissionsParams,
   MySubmissionsResponse,
@@ -21,8 +22,10 @@ export const getCampaignList = createServerFn({ method: "GET" })
 export const getCampaignDetail = createServerFn({ method: "GET" })
   .inputValidator((data: { campaignId: string }) => data)
   .handler(async ({ data }): Promise<CampaignDetailApiResponse> => {
+    const token = getToken();
     return apiRequest<CampaignDetailApiResponse>(
       `/v1/ugc/campaigns/${data.campaignId}`,
+      { token },
     );
   });
 
@@ -45,6 +48,19 @@ export const getMyCampaignSubmissions = createServerFn({ method: "GET" })
       `/v1/ugc/campaigns/${campaignId}/submissions/my`,
       { params, token },
     );
+  });
+
+export const editCampaignSubmission = createServerFn({ method: "POST" })
+  .inputValidator((data: { postId: string } & EditCampaignSubmissionRequest) => data)
+  .handler(async ({ data }): Promise<CampaignSubmissionResponse> => {
+    const token = getToken();
+    const { postId, ...body } = data;
+
+    return apiRequest<CampaignSubmissionResponse>(`/v1/ugc/posts/${postId}`, {
+      method: "PATCH",
+      body,
+      token,
+    });
   });
 
 export const submitCampaign = createServerFn({ method: "POST" })

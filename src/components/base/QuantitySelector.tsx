@@ -1,42 +1,51 @@
 import { PriceDisplay } from "@/features/products/components/PriceDisplay";
 import { IconButton } from "./icon-button/IconButton";
 import { cn } from "@/utils/cssHelpers";
+import { toast } from "@/utils/toast";
 
 interface QuantitySelectorProps {
   value: number;
   onChange: (value: number) => void;
+  onRemove?: () => void;
   min?: number;
   max?: number;
   disabled?: boolean;
   currentPrice?: number;
   originalPrice?: number;
   className?: string;
+  quantityActionsWrapperClassName?: string;
 }
 
 export function QuantitySelector({
   value,
   onChange,
+  onRemove,
   min = 1,
   max = 99,
   disabled = false,
   currentPrice,
   originalPrice,
   className = "",
+  quantityActionsWrapperClassName = "",
 }: QuantitySelectorProps) {
   const handleDecrement = () => {
     if (value > min) {
       onChange(value - 1);
+    } else if (onRemove) {
+      onRemove();
     }
   };
 
   const handleIncrement = () => {
     if (value < max) {
       onChange(value + 1);
+    } else {
+      toast.warning(`Only ${max} units available`);
     }
   };
 
-  const isDecrementDisabled = disabled || value <= min;
-  const isIncrementDisabled = disabled || value >= max;
+  const isDecrementDisabled = disabled || (value <= min && !onRemove);
+  const isIncrementDisabled = disabled;
 
   return (
     <div className={cn("flex items-center justify-between gap-2", className)}>
@@ -46,7 +55,12 @@ export function QuantitySelector({
           originalPrice={originalPrice}
         />
       )}
-      <div className="flex items-center gap-1 bg-p-900 rounded-md">
+      <div
+        className={cn(
+          "flex items-center gap-1 bg-p-900 rounded-md justify-between",
+          quantityActionsWrapperClassName,
+        )}
+      >
         <IconButton
           icon="Remove"
           size="sm"

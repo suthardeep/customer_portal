@@ -36,11 +36,7 @@ export function ShortFeedScrollerItem({
     setIsMediaReady(false);
   }, [post.id]);
 
-  useShortsEngagement(
-    isActive ? detail : null,
-    videoRef,
-    isMediaReady,
-  );
+  useShortsEngagement(isActive ? detail : null, videoRef, isMediaReady);
 
   const stats = detail.stats;
   const isLiked = detail.isLiked;
@@ -76,7 +72,10 @@ export function ShortFeedScrollerItem({
           postId={post.id}
           isActive={isActive}
           isPreload={isPreload}
-          onVideoReady={(el) => { videoRef.current = el; setIsMediaReady(true); }}
+          onVideoReady={(el) => {
+            videoRef.current = el;
+            setIsMediaReady(true);
+          }}
         />
       );
     }

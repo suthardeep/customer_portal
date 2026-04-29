@@ -19,8 +19,7 @@ export const spotlightQueries = {
       queryKey: spotlightKeys.profile(),
       queryFn: async () => {
         const response = await getSpotlightProfile();
-        if (!response.data) throw new Error("Spotlight profile not found");
-        return response.data;
+        return response.data ?? null;
       },
     }),
 

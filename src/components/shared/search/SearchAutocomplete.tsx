@@ -24,7 +24,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({ onClose }) => {
   if (!suggestions.length) return null;
 
   const handleSelect = (q: string) => {
-    navigate({ to: "/search", search: { q } });
+    navigate({ to: "/products", search: { search: q } });
     onClose?.();
   };
 
@@ -32,13 +32,13 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({ onClose }) => {
     <div className="flex flex-col gap-1">
       {suggestions.map((suggestion) => (
         <button
-          key={suggestion}
+          key={suggestion.productId}
           type="button"
-          onClick={() => handleSelect(suggestion)}
+          onClick={() => handleSelect(suggestion.keyword)}
           className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-n-100 text-left transition-colors"
         >
           <Icon name="Search" size="sm" className="text-n-500 shrink-0" />
-          <span className="text-n-900">{suggestion}</span>
+          <span className="text-n-900">{suggestion.keyword}</span>
         </button>
       ))}
     </div>

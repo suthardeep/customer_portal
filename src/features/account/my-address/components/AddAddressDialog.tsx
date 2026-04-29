@@ -7,6 +7,7 @@ interface AddAddressDialogProps {
   onClose: () => void;
   onSubmit: (data: AddressFormData) => void;
   isMutating?: boolean;
+  defaultValues?: Partial<AddressFormData>;
 }
 
 const AddAddressDialog = ({
@@ -14,6 +15,7 @@ const AddAddressDialog = ({
   onClose,
   onSubmit,
   isMutating = false,
+  defaultValues,
 }: AddAddressDialogProps) => {
   return (
     <Dialog
@@ -25,6 +27,7 @@ const AddAddressDialog = ({
     >
       <AddEditAddressForm
         mode="add"
+        defaultValues={defaultValues}
         onSubmit={onSubmit}
         onCancel={onClose}
         onSuccess={onClose}

@@ -1,3 +1,4 @@
+import { VariantOptionValue } from "@/features/products/types/variant.types";
 import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
 import type { PaginationQueryParams } from "@/types/general.types";
 
@@ -23,20 +24,45 @@ export interface OrderItem {
   orderId: string;
   orderNumber: string;
   productName: string;
+  variantId: string;
+  variantSku: string;
+  brandName: string;
+  brandId: string;
+  brandLogoUrl: string | null;
   mediaUrls: string[];
   productImage: string;
-  amount: number;
   quantity: number;
+  mrp: number;
+  sellingPrice: number;
+  discountPercent: number;
   lifecycleStatus: OrderLifecycleStatus;
   paymentMethod: PaymentMethod;
   deliveredAt: string | null;
   aavakCoinsEarned: number;
   customerEarnedCoins: number;
   createdAt: string;
+  optionValues: VariantOptionValue[];
+}
+
+export interface OrderPricing {
+  subtotal: number;
+  couponCode: string | null;
+  couponDiscount: number;
+  coinsApplied: number;
+  shippingCharges: number;
+  gstAmount: number;
+  totalAmount: number;
+  amountPaid: number;
+}
+
+export interface GstSnapshot {
+  gstin: string;
+  businessName: string;
+  billingAddress: string;
 }
 
 export interface OrderItemDetail extends OrderItem {
-  orderDate: string;
+  productId: string;
   itemPrice: number;
   trackingId: string | null;
   carrierName: string | null;
@@ -44,6 +70,8 @@ export interface OrderItemDetail extends OrderItem {
   trackingEvents: TrackingEvent[];
   shippingAddress: ShippingAddress;
   paymentStatus: PaymentStatus;
+  orderPricing: OrderPricing;
+  gstSnapshot: GstSnapshot | null;
   canCancel: boolean;
   canReturn: boolean;
   returnWindowEndsAt: string | null;
@@ -84,6 +112,26 @@ export type MyOrdersInfiniteParams = Omit<MyOrdersQueryParams, "currentPage">;
 
 export type OrderListResponse = BaseApiResponse<PaginatedResponse<OrderItem>>;
 export type OrderDetailResponse = BaseApiResponse<OrderItemDetail>;
+
+export interface OrderDetailItem {
+  id: string;
+  productName: string;
+  quantity: number;
+  sellingPrice: number;
+  aavakCoinsEarned: number;
+}
+
+export interface OrderDetail {
+  id: string;
+  orderNumber: string;
+  status: string;
+  totalAmount: string;
+  deliveryCity: string;
+  deliveryAddressId: string;
+  paymentMethod: string;
+  items: OrderDetailItem[];
+  createdAt: string;
+}
 
 export interface InvoiceData {
   invoiceUrl: string;

@@ -1,29 +1,60 @@
 import { Button } from "@/components/base/button/Button";
 import { QuantitySelector } from "@/components/base/QuantitySelector";
 import { cartQueries } from "@/features/cart/cartQueries";
-import { useUpdateCartItemMutation } from "@/features/cart/cartMutations";
+import { useDeleteCartItemMutation, useUpdateCartItemMutation } from "@/features/cart/cartMutations";
 import { AddToCartButton } from "./AddToCartButton";
 import { useQuery } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { toast } from "@/utils/toast";
 
 interface ProductActionButtonsProps {
+  productId: string;
   variantId: string | undefined;
   quantity: number;
   disabled?: boolean;
+  min?: number;
   max?: number;
   currentPrice?: number;
   originalPrice?: number;
+  affiliateCode?: string;
 }
 
 export function ProductActionButtons({
+  productId,
   variantId,
   quantity,
   disabled,
+  min,
   max,
+  affiliateCode,
 }: ProductActionButtonsProps) {
-  const { data: cart } = useQuery(cartQueries.detail());
+  const { data: cart, isLoading: isCartLoading } = useQuery(
+    cartQueries.detail(),
+  );
   const updateCartItemMutation = useUpdateCartItemMutation();
+  const deleteCartItemMutation = useDeleteCartItemMutation();
+  const navigate = useNavigate();
 
   const cartItem = cart?.items.find((item) => item.variantId === variantId);
+
+  const handleBuyNow = () => {
+    if (!variantId) {
+      return toast.error("No variant selected");
+    }
+    navigate({
+      to: "/buy-now",
+      search: { productId, variantId, quantity, ...(affiliateCode && { affiliateCode }) },
+    });
+  };
+
+  if (isCartLoading) {
+    return (
+      <div className="flex gap-3">
+        <div className="shimmer h-9 flex-1 rounded-lg" />
+        <div className="shimmer h-9 flex-1 rounded-lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex gap-3 fixed bottom-0 left-0 right-0 p-4 lg:relative bg-white z-10 border-t border-t-n-500 lg:border-transparent lg:p-0">
@@ -32,14 +63,30 @@ export function ProductActionButtons({
           Out of Stock
         </Button>
       ) : cartItem ? (
-        <QuantitySelector
-          value={cartItem.quantity}
-          max={max}
-          disabled={disabled}
-          onChange={(newQty) =>
-            updateCartItemMutation.mutate({ id: cartItem.id, quantity: newQty })
-          }
-        />
+        <div className="flex items-center justify-center gap-2 w-full">
+          <QuantitySelector
+            value={cartItem.quantity}
+            min={min}
+            max={max}
+            disabled={disabled}
+            quantityActionsWrapperClassName="w-full p-0.75"
+            className="w-full"
+            onChange={(newQty) =>
+              updateCartItemMutation.mutate({
+                variantId: cartItem.variantId,
+                quantity: newQty,
+              })
+            }
+            onRemove={() =>
+              deleteCartItemMutation.mutate({ variantId: cartItem.variantId })
+            }
+          />
+          <Link to="/cart" className="w-full">
+            <Button variant="outline" fullWidth>
+              Go to cart
+            </Button>
+          </Link>
+        </div>
       ) : (
         <>
           <AddToCartButton
@@ -47,7 +94,13 @@ export function ProductActionButtons({
             quantity={quantity}
             disabled={disabled}
           />
-          <Button color="secondary" size="lg" disabled={disabled} fullWidth>
+          <Button
+            color="secondary"
+            size="lg"
+            disabled={disabled}
+            fullWidth
+            onClick={handleBuyNow}
+          >
             Buy Now
           </Button>
         </>

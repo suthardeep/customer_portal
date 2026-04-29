@@ -62,6 +62,7 @@ function CollectionDetailComponent() {
   if (isLoading) {
     return <CollectionDetailSkeleton />;
   }
+  console.log(products, "collections");
 
   return (
     <div className="space-y-6">
@@ -98,14 +99,18 @@ function CollectionDetailComponent() {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {products.map((product) => {
               if (!product?.name) return;
+              const productForCard = {
+                ...product,
+                id: product.productId,
+              } as unknown as Product;
               return (
                 <Link
-                  to="/product/$productId"
+                  to="/products/$productId"
                   params={{ productId: product?.productId }}
                   key={product?.id}
                 >
                   <ProductCard
-                    product={product as unknown as Product}
+                    product={productForCard}
                     disableDetailPageRedirection
                   />
                 </Link>

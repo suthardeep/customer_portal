@@ -11,15 +11,20 @@ import { Link, useParams, useSearch } from "@tanstack/react-router";
 
 interface ProductTopBarProps {
   brandName?: string;
+  brandId?: string;
   productName: string;
 }
 
-export function ProductTopBar({ brandName, productName }: ProductTopBarProps) {
+export function ProductTopBar({
+  brandName,
+  productName,
+  brandId,
+}: ProductTopBarProps) {
   const { productId } = useParams({
-    from: "/_public/product/$productId",
+    from: "/_public/products/$productId",
   });
   const { variantId } = useSearch({
-    from: "/_public/product/$productId",
+    from: "/_public/products/$productId",
   });
   const { isAuthenticated } = useAuth();
   const loginDialog = useLoginDialog();
@@ -58,9 +63,9 @@ export function ProductTopBar({ brandName, productName }: ProductTopBarProps) {
     <div className="flex gap-2 justify-between items-center">
       {brandName && (
         <Link
-          to="."
+          to="/products"
+          search={{ brandId, brandName }}
           className="text-sm text-n-800 hover:text-p-700 group"
-          onClick={(e) => e.preventDefault()}
         >
           View all products of{" "}
           <span className="text-sm font-semibold text-n-800 group-hover:text-p-700">

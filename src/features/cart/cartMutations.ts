@@ -10,6 +10,7 @@ import {
 import { cartKeys } from "./cartQueryFactory";
 import type {
   AddCartItemRequest,
+  Cart,
   DeleteCartItemRequest,
   UpdateCartItemRequest,
 } from "./types/types";
@@ -36,11 +37,34 @@ export const useUpdateCartItemMutation = () => {
       const response = await updateCartItem({ data });
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: cartKeys.all });
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
+      const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
+      queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          items: old.items.map((item) =>
+            item.variantId === variables.variantId
+              ? {
+                  ...item,
+                  quantity: variables.quantity,
+                  subtotal: item.sellingPrice * variables.quantity,
+                }
+              : item,
+          ),
+        };
+      });
+      return { previous };
     },
-    onError: (error) => {
+    onError: (error, _vars, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(cartKeys.detail(), context.previous);
+      }
       showErrorToasts(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartKeys.detail() });
     },
   });
 };
@@ -51,11 +75,29 @@ export const useDeleteCartItemMutation = () => {
       const response = await deleteCartItem({ data });
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: cartKeys.all });
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
+      const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
+      queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          items: old.items.filter(
+            (item) => item.variantId !== variables.variantId,
+          ),
+          totalItems: old.totalItems - 1,
+        };
+      });
+      return { previous };
     },
-    onError: (error) => {
+    onError: (error, _vars, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(cartKeys.detail(), context.previous);
+      }
       showErrorToasts(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartKeys.detail() });
     },
   });
 };
@@ -66,11 +108,23 @@ export const useClearCartMutation = () => {
       const response = await clearCart();
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: cartKeys.all });
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
+      const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
+      queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
+        if (!old) return old;
+        return { ...old, items: [], totalItems: 0 };
+      });
+      return { previous };
     },
-    onError: (error) => {
+    onError: (error, _vars, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(cartKeys.detail(), context.previous);
+      }
       showErrorToasts(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartKeys.detail() });
     },
   });
 };

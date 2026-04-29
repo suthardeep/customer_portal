@@ -15,7 +15,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ onClose }) => {
   if (!suggestions.length) return null;
 
   const handleSelect = (q: string) => {
-    navigate({ to: "/search", search: { q } });
+    navigate({ to: "/products", search: { search: q } });
     onClose?.();
   };
 

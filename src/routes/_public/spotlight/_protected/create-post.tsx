@@ -120,6 +120,7 @@ function CreateReelPage() {
     const results = await uploadAsync(files);
     const type =
       results[0].type === "video" ? UgcPostType.VIDEO : UgcPostType.IMAGE;
+    console.log(selectedProductIds, "selectedProductIds");
 
     if (type === UgcPostType.VIDEO) {
       createPostMutation.mutate(

@@ -21,15 +21,19 @@ export const Route = createFileRoute("/_public/subscription")({
   errorComponent: SubscriptionErrorComponent,
   staticData: {
     maxWidth: "none",
+    hideHeader: "all",
   },
 });
 
 function SubscriptionPage() {
   const router = useRouter();
   const { data: plans } = useSuspenseQuery(subscriptionQueries.plans());
-  const { data: currentSubscription } = useSuspenseQuery(subscriptionQueries.current());
+  const { data: currentSubscription } = useSuspenseQuery(
+    subscriptionQueries.current(),
+  );
 
-  const hasActivePlan = currentSubscription?.isPremiumActive ||
+  const hasActivePlan =
+    currentSubscription?.isPremiumActive ||
     currentSubscription?.status === SubscriptionStatus.CANCELLED;
 
   return (
@@ -54,7 +58,13 @@ function SubscriptionPage() {
         {/* Badge + floating stars */}
         <div className="relative flex items-center justify-center w-52 h-56">
           {/* Small star — top-left */}
-          <div className="absolute top-3 left-3">
+          <div
+            className="absolute top-3 left-3"
+            style={{
+              animation: "starFloat1 4s ease-in-out infinite",
+              animationDelay: "0.5s",
+            }}
+          >
             <Icon
               name="Star"
               size="sm"
@@ -62,7 +72,10 @@ function SubscriptionPage() {
             />
           </div>
           {/* Large star — top-right (biggest) */}
-          <div className="absolute -top-2 right-2">
+          <div
+            className="absolute -top-2 right-2"
+            style={{ animation: "starFloat2 5s ease-in-out infinite" }}
+          >
             <Icon
               name="Star"
               size="lg"
@@ -70,7 +83,13 @@ function SubscriptionPage() {
             />
           </div>
           {/* Tiny star — mid-left */}
-          <div className="absolute top-14 -left-1">
+          <div
+            className="absolute top-14 -left-1"
+            style={{
+              animation: "starFloat3 3.5s ease-in-out infinite",
+              animationDelay: "1s",
+            }}
+          >
             <Icon
               name="Star"
               size="xs"
@@ -94,9 +113,7 @@ function SubscriptionPage() {
           {hasActivePlan ? (
             <>
               <h2 className="font-bold text-n-50">You're on Prime</h2>
-              <p className="text-n-700 px-2">
-                Manage your subscription below.
-              </p>
+              <p className="text-n-700 px-2">Manage your subscription below.</p>
             </>
           ) : (
             <>

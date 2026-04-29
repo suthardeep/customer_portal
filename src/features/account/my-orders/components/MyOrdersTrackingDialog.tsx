@@ -2,18 +2,21 @@ import Dialog from "@/components/base/Dialog";
 import { Icon } from "@/components/base/icon/Icon";
 import { prettyDate } from "@/utils/formatDateTime";
 import type { TrackingEvent } from "../types/types";
+import { OrderLifecycleStatus } from "../types/types";
 import { cn } from "@/utils/cssHelpers";
 
 interface MyOrdersTrackingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   trackingEvents: TrackingEvent[];
+  currentStatus: OrderLifecycleStatus;
 }
 
 export function MyOrdersTrackingDialog({
   isOpen,
   onClose,
   trackingEvents,
+  currentStatus,
 }: MyOrdersTrackingDialogProps) {
   return (
     <Dialog
@@ -31,7 +34,7 @@ export function MyOrdersTrackingDialog({
       ) : (
         <div className="flex flex-col">
           {trackingEvents.map((event, index) => {
-            const isFirst = index === 0;
+            const isCurrent = event.status === currentStatus;
             const isLast = index === trackingEvents.length - 1;
 
             return (
@@ -44,7 +47,7 @@ export function MyOrdersTrackingDialog({
                 {/* Bullet */}
                 <div
                   className={
-                    isFirst
+                    isCurrent
                       ? "z-10 mt-1 size-3.5 shrink-0 rounded-full bg-p-500"
                       : "z-10 mt-1 size-3.5 shrink-0 rounded-full border-2 border-n-400 bg-n-50"
                   }
@@ -54,7 +57,7 @@ export function MyOrdersTrackingDialog({
                 <div className="flex flex-col gap-0.5">
                   <p
                     className={cn(
-                      isFirst
+                      isCurrent
                         ? "font-semibold text-n-900"
                         : "text-sm font-medium text-n-800",
                     )}

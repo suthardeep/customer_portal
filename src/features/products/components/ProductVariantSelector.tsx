@@ -1,52 +1,50 @@
-import { Image } from "@/components/base/Image";
 import { cn } from "@/utils/cssHelpers";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import type { ProductVariant } from "../types";
-import type { VariantAttribute, VariantAttributeValue } from "../types/types";
+import type { ProductOptionGroup } from "../types/types";
 
 interface ProductVariantSelectorProps {
-  variantAttributes: VariantAttribute[];
+  optionGroups: ProductOptionGroup[];
   variants: ProductVariant[];
 }
 
-function isValueUnavailable(
-  attributeName: string,
-  attributeValue: string,
+function findMatchingVariant(
   variants: ProductVariant[],
-  selectedAttributes: Record<string, string>,
+  selectedValues: Record<string, string>,
+): ProductVariant | undefined {
+  return variants.find((v) =>
+    v.optionValues.every((ov) => selectedValues[ov.groupId] === ov.id),
+  );
+}
+
+function isValueUnavailable(
+  groupId: string,
+  valueId: string,
+  variants: ProductVariant[],
+  selectedValues: Record<string, string>,
 ): boolean {
-  const candidateAttributes = {
-    ...selectedAttributes,
-    [attributeName]: attributeValue,
-  };
-  return !variants.some((variant) => {
-    const matchesCandidate = Object.entries(candidateAttributes).every(
-      ([name, value]) => variant.combination[name] === value,
-    );
-    const hasStock = variant?.inStock && (variant.quantity ?? 0) > 0;
-    return matchesCandidate && hasStock;
-  });
+  const candidate = { ...selectedValues, [groupId]: valueId };
+  return !variants.some(
+    (v) =>
+      v.optionValues.every((ov) => candidate[ov.groupId] === ov.id) &&
+      v.quantity > 0,
+  );
 }
 
 interface ChipProps {
-  attrValue: VariantAttributeValue;
+  label: string;
   isSelected: boolean;
   isUnavailable: boolean;
   onClick: () => void;
 }
 
-function LabelChip({
-  attrValue,
-  isSelected,
-  isUnavailable,
-  onClick,
-}: ChipProps) {
+function LabelChip({ label, isSelected, isUnavailable, onClick }: ChipProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={isSelected}
-      aria-label={`Select ${attrValue.label}`}
+      aria-label={`Select ${label}`}
       className={cn(
         "relative px-3 py-1.5 rounded-lg border-2 font-medium transition-all capitalize cursor-pointer",
         isSelected && "border-p-500 bg-p-50 text-p-800",
@@ -79,78 +77,33 @@ function LabelChip({
           </svg>
         </span>
       )}
-      <p>{attrValue.label}</p>
+      <p>{label}</p>
     </button>
   );
 }
 
-function ImageChip({
-  attrValue,
-  isSelected,
-  isUnavailable,
-  onClick,
-}: ChipProps) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={isSelected}
-      aria-label={`Select ${attrValue.label}`}
-      className={cn(
-        "flex flex-col items-center gap-1 transition-all",
-        isUnavailable && "opacity-60",
-      )}
-    >
-      <div
-        className={cn(
-          "relative size-16 rounded-lg border-2 overflow-hidden",
-          isSelected && "border-p-500",
-          !isSelected && !isUnavailable && "border-n-300 hover:border-n-400",
-          !isSelected && isUnavailable && "border-n-300",
-        )}
-      >
-        <Image
-          src={attrValue?.image}
-          alt={attrValue.label}
-          className="size-full object-cover"
-        />
-        {isUnavailable && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/60">
-            <span className="text-xs font-medium text-danger-600">
-              Sold out
-            </span>
-          </div>
-        )}
-      </div>
-      <span className="w-full text-center text-wrap text-n-800 truncate">
-        {attrValue.label}
-      </span>
-    </button>
-  );
-}
-
-interface AttributeGroupProps {
-  attribute: VariantAttribute;
+interface OptionGroupSelectorProps {
+  group: ProductOptionGroup;
   variants: ProductVariant[];
-  selectedAttributes: Record<string, string>;
-  onAttributeChange: (name: string, value: string) => void;
+  selectedValues: Record<string, string>;
+  onValueChange: (groupId: string, valueId: string) => void;
 }
 
-function AttributeGroup({
-  attribute,
+function OptionGroupSelector({
+  group,
   variants,
-  selectedAttributes,
-  onAttributeChange,
-}: AttributeGroupProps) {
-  const selectedValue = selectedAttributes[attribute.name];
-  const selectedLabel = attribute.values.find(
-    (v) => v.value === selectedValue,
-  )?.label;
+  selectedValues,
+  onValueChange,
+}: OptionGroupSelectorProps) {
+  const selectedValueId = selectedValues[group.id];
+  const selectedLabel = group.values.find(
+    (v) => v.id === selectedValueId,
+  )?.value;
 
   return (
     <div className="space-y-2">
       <p className="font-medium text-n-950">
-        {attribute.label}
+        {group.name}
         {selectedLabel && (
           <span className="ml-1 text-sm capitalize text-p-800 font-semibold">
             : {selectedLabel}
@@ -158,36 +111,22 @@ function AttributeGroup({
         )}
       </p>
       <div className="flex flex-wrap gap-3">
-        {attribute.values.map((attrValue) => {
-          const isSelected = selectedValue === attrValue.value;
-          const isUnavailable = isValueUnavailable(
-            attribute.name,
-            attrValue.value,
+        {group.values.map((optValue) => {
+          const isSelected = selectedValueId === optValue.id;
+          const unavailable = isValueUnavailable(
+            group.id,
+            optValue.id,
             variants,
-            selectedAttributes,
+            selectedValues,
           );
-
-          if (attribute.displayImage) {
-            return (
-              <ImageChip
-                key={attrValue.value}
-                attrValue={attrValue}
-                isSelected={isSelected}
-                isUnavailable={isUnavailable}
-                onClick={() =>
-                  onAttributeChange(attribute.name, attrValue.value)
-                }
-              />
-            );
-          }
 
           return (
             <LabelChip
-              key={attrValue.value}
-              attrValue={attrValue}
+              key={optValue.id}
+              label={optValue.value}
               isSelected={isSelected}
-              isUnavailable={isUnavailable}
-              onClick={() => onAttributeChange(attribute.name, attrValue.value)}
+              isUnavailable={unavailable}
+              onClick={() => onValueChange(group.id, optValue.id)}
             />
           );
         })}
@@ -197,33 +136,32 @@ function AttributeGroup({
 }
 
 export function ProductVariantSelector({
-  variantAttributes,
+  optionGroups,
   variants,
 }: ProductVariantSelectorProps) {
   const { variantId } = useSearch({
-    from: "/_public/product/$productId",
+    from: "/_public/products/$productId",
   });
   const navigate = useNavigate();
 
-  if (!variantAttributes || variantAttributes.length === 0) return null;
+  if (!optionGroups || optionGroups.length === 0) return null;
 
   const selectedVariant =
     variants.find((v) => v.id === variantId) ?? variants[0];
-  const selectedAttributes = selectedVariant?.combination ?? {};
 
-  const handleAttributeChange = (name: string, value: string) => {
-    const newAttributes = { ...selectedAttributes, [name]: value };
-    const matchedVariant = variants.find((v) =>
-      Object.entries(newAttributes).every(
-        ([attrName, attrValue]) => v.combination[attrName] === attrValue,
-      ),
-    );
+  const selectedValues: Record<string, string> = Object.fromEntries(
+    selectedVariant?.optionValues.map((ov) => [ov.groupId, ov.id]) ?? [],
+  );
+
+  const handleValueChange = (groupId: string, valueId: string) => {
+    const newSelectedValues = { ...selectedValues, [groupId]: valueId };
+    const matched = findMatchingVariant(variants, newSelectedValues);
 
     navigate({
       to: ".",
       search: (prev) => ({
         ...prev,
-        variantId: matchedVariant?.id,
+        variantId: matched?.id,
       }),
       replace: true,
     });
@@ -231,13 +169,13 @@ export function ProductVariantSelector({
 
   return (
     <div className="space-y-5">
-      {variantAttributes.map((attribute) => (
-        <AttributeGroup
-          key={attribute.name}
-          attribute={attribute}
+      {optionGroups.map((group) => (
+        <OptionGroupSelector
+          key={group.id}
+          group={group}
           variants={variants}
-          selectedAttributes={selectedAttributes}
-          onAttributeChange={handleAttributeChange}
+          selectedValues={selectedValues}
+          onValueChange={handleValueChange}
         />
       ))}
     </div>

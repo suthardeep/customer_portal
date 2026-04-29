@@ -77,12 +77,12 @@ const DetailsStep = ({
                       className="size-12 shrink-0 rounded-lg object-cover"
                     />
                   </div>
-                  <div className="space-y-0.5">
+                  <div className="space-y-0.5 min-w-0">
                     <p className="truncate font-medium text-n-900">
                       {product.productName}
                     </p>
                     <p className="text-n-800 font-medium">
-                      {formatCurrency(product.amount)}
+                      {formatCurrency(product.sellingPrice)}
                     </p>
                   </div>
                 </div>

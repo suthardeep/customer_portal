@@ -1,4 +1,5 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
+import { OptionValuesRenderer } from "@/components/base/OptionValuesRenderer";
 import Divider from "@/components/base/Divider";
 import { Image } from "@/components/base/Image";
 import { StarRatingDisplay } from "@/components/base/StarRatingDisplay";
@@ -8,26 +9,23 @@ import { useCreateReviewMutation } from "@/features/reviews/reviewsMutations";
 import { reviewQueries } from "@/features/reviews/reviewsQueries";
 import { useToggle } from "@/hooks/useToggle";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { getOrderStatusDateLabel } from "../utils";
 import type { OrderItem } from "../types/types";
+import { getOrderStatusDateLabel } from "../utils";
 import MyOrderCardHeader from "./MyOrderCardHeader";
 
 interface MyOrdersCardProps {
   order: OrderItem;
   enableRating?: boolean;
-  allowRedirectToProductPage?: boolean;
 }
 
 export function MyOrdersCard({
   order,
   enableRating = false,
-  allowRedirectToProductPage = false,
 }: MyOrdersCardProps) {
   const reviewSheet = useToggle();
-  const navigate = useNavigate();
   const [triggerRating, setTriggerRating] = useState(0);
   const createReviewMutation = useCreateReviewMutation();
   const { data: myReviewsData } = useQuery(reviewQueries.myReviews());
@@ -47,16 +45,6 @@ export function MyOrdersCard({
     reviewSheet.close();
   };
 
-  const handleProductClick = (e: React.MouseEvent) => {
-    if (allowRedirectToProductPage) {
-      e.preventDefault();
-      navigate({
-        to: "/product/$productId",
-        params: { productId: order.orderItemId },
-      });
-    }
-  };
-
   return (
     <Link
       to="/account/my-orders/$orderItemId"
@@ -65,7 +53,7 @@ export function MyOrdersCard({
     >
       <MyOrderCardHeader order={order} />
       <Divider />
-      <div className="px-4 py-3 flex gap-4" onClick={handleProductClick}>
+      <div className="px-4 py-3 flex gap-4">
         <div className="size-24 shrink-0 overflow-hidden">
           <Image
             src={order.productImage}
@@ -78,9 +66,20 @@ export function MyOrdersCard({
           <h6 className="line-clamp-1 font-medium group-hover:text-p-800">
             {order.productName}
           </h6>
-          <p className="line-clamp-1 font-medium text-n-800">
-            {formatCurrency(order.amount)}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-n-900">
+              {formatCurrency(order.sellingPrice)}
+            </p>
+            {order.quantity > 1 && (
+              <>
+                <p className="text-n-800 font-medium">×{order.quantity}</p>
+                <p className="font-semibold ml-1">
+                  {formatCurrency(order.sellingPrice * order.quantity)}
+                </p>
+              </>
+            )}
+          </div>
+          <OptionValuesRenderer optionValues={order.optionValues} />
           <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-5">
             {order.customerEarnedCoins > 0 && (
               <AavakCoinsChip
@@ -117,7 +116,7 @@ export function MyOrdersCard({
             )}
           </div>
           <AddEditReviewSheet
-            key={existingReview?.reviewId ?? triggerRating}
+            key={existingReview?.id ?? triggerRating}
             mode={existingReview ? "edit" : "add"}
             isOpen={reviewSheet.isOpen}
             onClose={handleClose}
@@ -141,7 +140,7 @@ export function MyOrdersCard({
                   title: data.title,
                   description: data.description,
                   rating: data.rating,
-                  mediaUrls: [],
+                  mediaUrls: data.mediaUrls,
                 });
               }
               reviewSheet.close();

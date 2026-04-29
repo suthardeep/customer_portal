@@ -122,13 +122,15 @@ function CategoryDetailComponent() {
               fallbackIcon="PackageRemove"
             >
               <>
-                {query?.data?.data.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    className="w-48 shrink-0"
-                  />
-                ))}
+                {query?.data?.data.map((product) => {
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      className="w-48 shrink-0"
+                    />
+                  );
+                })}
               </>
             </QueryStateHandler>
           </HorizontalScrollSection>

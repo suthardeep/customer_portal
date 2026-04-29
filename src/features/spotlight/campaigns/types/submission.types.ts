@@ -3,6 +3,18 @@ import type { UgcPostType } from "@/features/spotlight/types/enums";
 import type { Product } from "@/features/products/types/product.types";
 import type { CampaignSubmissionStatus } from "./enums";
 
+export interface EditCampaignSubmissionRequest {
+  title?: string;
+  caption?: string;
+  tags?: string[];
+  images?: string[];
+  imageFileIds?: string[];
+  productIds?: string[];
+  instagramShareUrl?: string;
+  youtubeShareUrl?: string;
+  facebookShareUrl?: string;
+}
+
 export interface CreateCampaignSubmissionRequest {
   type: UgcPostType;
   videoFileId?: string;

@@ -49,7 +49,7 @@ export function TabSelector({
     <div
       ref={containerRef}
       className={cn(
-        "relative inline-flex items-center gap-0.5 rounded-xl bg-n-300 p-0.5",
+        "relative flex items-center gap-0.5 rounded-xl bg-n-300 p-0.5",
         className,
       )}
     >
@@ -67,7 +67,7 @@ export function TabSelector({
           type="button"
           onClick={() => onChange(item.value)}
           className={cn(
-            "relative z-10 cursor-pointer rounded-xl font-medium transition-colors duration-150",
+            "relative z-10 flex-1 cursor-pointer rounded-xl font-medium transition-colors duration-150",
             sizeClasses[size],
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-p-500 focus-visible:ring-offset-1",
             item.value === value

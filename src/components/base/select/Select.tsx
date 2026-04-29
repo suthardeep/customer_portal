@@ -177,7 +177,7 @@ const triggerDisabledStyles =
 
 // Content styles
 const contentStyles =
-  "z-50 max-h-[300px] overflow-hidden rounded-lg border border-n-400 bg-white shadow-md/5 data-[state=open]:animate-popover-show data-[state=closed]:animate-popover-hide";
+  "z-110 max-h-[300px] overflow-hidden rounded-lg border border-n-400 bg-white shadow-md/5 data-[state=open]:animate-popover-show data-[state=closed]:animate-popover-hide";
 
 // Item styles
 const itemBaseStyles =

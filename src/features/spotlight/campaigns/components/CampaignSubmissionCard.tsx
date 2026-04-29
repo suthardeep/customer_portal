@@ -12,10 +12,12 @@ import { prettyDate } from "@/utils/formatDateTime";
 
 interface CampaignSubmissionCardProps {
   submission: CampaignSubmission;
+  onClick?: () => void;
 }
 
 export function CampaignSubmissionCard({
   submission,
+  onClick,
 }: CampaignSubmissionCardProps) {
   const {
     post,
@@ -30,7 +32,7 @@ export function CampaignSubmissionCard({
   const thumbnail = post.media.thumbnail;
 
   return (
-    <div className="rounded-xl border border-n-400 bg-white overflow-hidden">
+    <div className="rounded-xl border border-n-400 bg-white overflow-hidden cursor-pointer" onClick={onClick}>
       <div className="flex gap-3 p-3">
         <div className="relative shrink-0 size-20 rounded-lg overflow-hidden bg-n-200">
           {thumbnail ? (

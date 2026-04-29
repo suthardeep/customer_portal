@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   Copy01Icon,
+  FilterHorizontalIcon,
   AddSquareIcon,
   Alert01Icon,
   Analytics01Icon,
@@ -84,6 +85,7 @@ import {
   VolumeOffIcon,
   VolumeHighIcon,
   Mail01Icon,
+  Invoice01Icon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -188,9 +190,12 @@ export const iconRegistry = {
   // Social icons
   Instagram: InstagramIcon,
   Youtube: YoutubeIcon,
+  // Filter icons
+  Filter: FilterHorizontalIcon,
   // Utility icons
   Copy: Copy01Icon,
   Mail: Mail01Icon,
+  Invoice: Invoice01Icon,
 } as const;
 
 export type IconName = keyof typeof iconRegistry;

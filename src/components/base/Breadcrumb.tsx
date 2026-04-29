@@ -12,7 +12,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
+    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm">
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
 
@@ -32,7 +32,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
             )}
 
             {!isLast && (
-              <Icon name="ChevronRight" size="md" className="text-n-600" />
+              <Icon name="ChevronRight" size="md" className="text-n-600 shrink-0" />
             )}
           </div>
         );

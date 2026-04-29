@@ -32,16 +32,45 @@ export interface ProductQueryParams extends GeneralQueryParams {
   targetGender?: "Unisex" | "Male" | "Female";
   sortBy?: "price" | "rating" | "popularity" | "newest";
   source?: string;
+  filters?: string;
 }
 
-export type ProductListResponse = BaseApiResponse<PaginatedResponse<Product>>;
+export interface ProductFilterOptionGroup {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface ProductFilterOptionValue {
+  id: string;
+  optionGroupId: string;
+  value: string;
+  slug: string;
+  sortOrder: number;
+}
+
+export interface ProductFilters {
+  optionGroups: ProductFilterOptionGroup[];
+  optionValues: ProductFilterOptionValue[];
+}
+
+export type ProductListResponse = BaseApiResponse<
+  PaginatedResponse<Product> & { filters?: ProductFilters }
+>;
 
 export interface AutocompleteParams {
   q: string;
 }
 
+export type AutocompleteSuggestion = {
+  type: string;
+  keyword: string;
+  productImage: string;
+  productId: string;
+};
+
 export type AutocompleteSuggestionsResponse = BaseApiResponse<{
-  suggestions: string[];
+  suggestions: AutocompleteSuggestion[];
 }>;
 
 export type SearchSuggestion = {

@@ -1,8 +1,8 @@
 import { Button } from "@/components/base/button/Button";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import { MyOrderHeaderDetails } from "@/features/account/my-orders/components/MyOrderDetailsHeader";
 import { MyOrdersCancelDialog } from "@/features/account/my-orders/components/MyOrdersCancelDialog";
-import { MyOrdersCard } from "@/features/account/my-orders/components/MyOrdersCard";
 import { MyOrdersDetailPaymentSection } from "@/features/account/my-orders/components/MyOrdersDetailPaymentSection";
 import { MyOrdersTrackingDialog } from "@/features/account/my-orders/components/MyOrdersTrackingDialog";
 import { MyOrdersTrackingTimeline } from "@/features/account/my-orders/components/MyOrdersTrackingTimeline";
@@ -40,16 +40,15 @@ function OrderDetailComponent() {
 
   const hasActions = order.canCancel || order.canReturn;
   const isDelivered = order.lifecycleStatus === OrderLifecycleStatus.DELIVERED;
+  const isCancelled = order.lifecycleStatus === OrderLifecycleStatus.CANCELLED;
+  const canReorder = isDelivered || isCancelled;
+  console.log(order, "order");
 
   return (
     <div className="space-y-4">
       <AccountPageHeader title="Order Details" />
 
-      <MyOrdersCard
-        order={{ ...order, amount: order.totalPrice }}
-        enableRating
-        allowRedirectToProductPage
-      />
+      <MyOrderHeaderDetails order={order} enableRating />
 
       <div className="rounded-xl border border-n-400 bg-n-50 p-4">
         <p className="mb-8 font-semibold">Order Tracking</p>
@@ -70,6 +69,18 @@ function OrderDetailComponent() {
       <MyOrdersDetailPaymentSection order={order} />
 
       {isDelivered && <InvoiceDownloadButton orderItemId={orderItemId} />}
+
+      {canReorder && (
+        <Link
+          to="/products/$productId"
+          params={{ productId: order.productId }}
+          search={{ variantId: order.variantId, quantity: order.quantity }}
+        >
+          <Button variant="outline" color="neutral" fullWidth>
+            Order Again
+          </Button>
+        </Link>
+      )}
 
       {hasActions && (
         <div className="flex gap-3 pt-1">
@@ -105,6 +116,7 @@ function OrderDetailComponent() {
         isOpen={trackingDialog.isOpen}
         onClose={trackingDialog.close}
         trackingEvents={order.trackingEvents}
+        currentStatus={order.lifecycleStatus}
       />
       <MyOrdersCancelDialog
         orderItemId={orderItemId}

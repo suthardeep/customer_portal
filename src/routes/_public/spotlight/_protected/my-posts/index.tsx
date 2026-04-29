@@ -37,7 +37,9 @@ function RouteComponent() {
     <div>
       <AccountPageHeader title="My Posts" />
       <div className="mt-8">
-        {posts.length > 0 ? (
+        {posts.length === 0 ? (
+          <MyPostsEmptyState />
+        ) : (
           <SpotlightPostGrid isLoading={isFetchingNextPage}>
             {posts.map((post) => (
               <SpotlightPostCard

@@ -31,9 +31,10 @@ function CartComponent() {
   const { isAuthenticated } = useAuth();
 
   const hasItems = cart.items.length > 0;
+  console.log(cart, "cart");
 
   return (
-    <div className="flex flex-col gap-6 p-4">
+    <div className="flex flex-col gap-6 p-4 pb-28 lg:pb-4">
       {hasItems && (
         <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_400px] lg:items-start">
           <div className="flex flex-col gap-3">
@@ -47,7 +48,7 @@ function CartComponent() {
       {!hasItems && isLoading && <CartSkeleton />}
       {!hasItems && !isLoading && <CartEmptyState />}
 
-      {isAuthenticated && <RecentlyViewedSection />}
+      {false && isAuthenticated && <RecentlyViewedSection />}
     </div>
   );
 }

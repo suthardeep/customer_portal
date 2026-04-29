@@ -21,8 +21,10 @@ export function SubscriptionPlanCard({
       type="button"
       onClick={() => onSelect(plan.id)}
       className={cn(
-        "relative w-full rounded-2xl p-5 text-left cursor-pointer transition-all duration-200",
-        isSelected ? "bg-linear-to-r from-p-400 to-p-600" : "bg-s-950",
+        "relative w-full rounded-2xl p-5 text-left cursor-pointer transition-all duration-200 ring-3",
+        isSelected
+          ? "bg-linear-to-r from-p-400 to-p-600 ring-p-200"
+          : "bg-s-950 ring-transparent",
       )}
     >
       {isYearly && (
@@ -42,7 +44,9 @@ export function SubscriptionPlanCard({
         </div>
 
         <div className="flex items-baseline gap-0.5 shrink-0">
-          <h4 className="font-bold text-n-50">{formatCurrency(plan.item.amount / 100)}</h4>
+          <h4 className="font-bold text-n-50">
+            {formatCurrency(plan.item.amount / 100)}
+          </h4>
         </div>
       </div>
     </button>

@@ -10,6 +10,7 @@ interface ReferralCodeInputProps {
   code: string;
   onCodeChange: (value: string) => void;
   onValidated?: (code: string | null) => void;
+  autoVerify?: boolean;
 }
 
 const ReferralCodeInput = ({
@@ -17,6 +18,7 @@ const ReferralCodeInput = ({
   code,
   onCodeChange,
   onValidated,
+  autoVerify,
 }: ReferralCodeInputProps) => {
   const toggle = useToggle(!!defaultCode);
   const validateMutation = useValidateReferralMutation();
@@ -24,6 +26,16 @@ const ReferralCodeInput = ({
   useEffect(() => {
     if (defaultCode) {
       onCodeChange(defaultCode);
+      if (autoVerify) {
+        validateMutation.mutate(
+          { code: defaultCode },
+          {
+            onSuccess: (data) => {
+              onValidated?.(data?.data?.valid ? defaultCode : null);
+            },
+          },
+        );
+      }
     }
   }, []);
 

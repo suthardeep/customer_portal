@@ -89,7 +89,7 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
         <div className="flex items-center justify-between pb-2! px-3! pt-2!">
           <p className="font-semibold">Collections</p>
           <Button variant="ghost" size="sm" onClick={createDialog.open}>
-            New Collections
+            New Collection
           </Button>
         </div>
         <QueryStateHandler
@@ -100,28 +100,30 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
           isLoading={isLoading}
         >
           <div className="flex flex-col gap-2 px-3!">
-            {wishlistCollectionQuery?.data?.data?.map((collection) => {
-              return (
-                <WishlistCollectionTile
-                  collection={collection}
-                  key={collection.id}
-                  // isLoading={
-                  //   (addToWishlistMutation.isPending &&
-                  //     addToWishlistMutation.variables?.collectionIds?.includes(
-                  //       collection.id,
-                  //     )) ||
-                  //   (removeItemFromCollectionMutation.isPending &&
-                  //     removeItemFromCollectionMutation.variables
-                  //       ?.collectionId === collection.id)
-                  // }
-                  onAdd={() => handleAddToCollection(collection.id)}
-                  onRemove={() => handleRemoveFromCollection(collection.id)}
-                  alreadyHasThisProduct={wishlistCollectionIds?.includes(
-                    collection.id,
-                  )}
-                />
-              );
-            })}
+            {wishlistCollectionQuery?.data?.data
+              ?.filter((e) => e?.id !== "ALL")
+              ?.map((collection) => {
+                return (
+                  <WishlistCollectionTile
+                    collection={collection}
+                    key={collection.id}
+                    // isLoading={
+                    //   (addToWishlistMutation.isPending &&
+                    //     addToWishlistMutation.variables?.collectionIds?.includes(
+                    //       collection.id,
+                    //     )) ||
+                    //   (removeItemFromCollectionMutation.isPending &&
+                    //     removeItemFromCollectionMutation.variables
+                    //       ?.collectionId === collection.id)
+                    // }
+                    onAdd={() => handleAddToCollection(collection.id)}
+                    onRemove={() => handleRemoveFromCollection(collection.id)}
+                    alreadyHasThisProduct={wishlistCollectionIds?.includes(
+                      collection.id,
+                    )}
+                  />
+                );
+              })}
           </div>
         </QueryStateHandler>
       </Sheet>

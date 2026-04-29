@@ -10,6 +10,7 @@ const registerSearchSchema = z.object({
   redirectTo: z.string().optional(),
   referralCode: z.string().optional(),
   validatedReferralCode: z.string().optional(),
+  autoVerifyReferCode: z.boolean().optional(),
 });
 
 export const Route = createFileRoute("/_auth/register")({
@@ -25,6 +26,7 @@ function RegisterRouteComponent() {
     redirectTo,
     referralCode: defaultReferralCode,
     validatedReferralCode,
+    autoVerifyReferCode,
   } = Route.useSearch();
   const phone = rawPhone?.replace(/^\+91/, "");
 
@@ -62,6 +64,7 @@ function RegisterRouteComponent() {
           isLoading={sendOtpMutation.isPending}
           defaultMobileNumber={phone}
           defaultReferralCode={validatedReferralCode ?? defaultReferralCode}
+          autoVerifyReferCode={autoVerifyReferCode}
           onReferralValidated={(code) =>
             navigate({
               to: "/register",

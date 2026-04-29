@@ -10,16 +10,18 @@ export interface CreateReviewRequest {
 }
 
 export interface Review {
-  reviewId: string;
+  id: string;
   productId: string;
+  customerId: string;
   orderId: string;
-  productName: string;
-  productImage: string;
   title: string;
   description: string;
   rating: number;
   mediaUrls: string[];
+  isVerified: boolean;
+  isVisible: boolean;
   createdAt: string;
+  updatedAt: string;
 }
 
 export type MyReviewsResponse = BaseApiResponse<PaginatedResponse<Review>>;
@@ -28,6 +30,14 @@ export interface ReviewStats {
   averageRating: number;
   totalReviews: number;
   ratingDistribution: Record<"1" | "2" | "3" | "4" | "5", number>;
+}
+
+export interface UpdateReviewRequest {
+  id: string;
+  title?: string;
+  description?: string;
+  rating?: number;
+  mediaUrls?: string[];
 }
 
 export interface ProductReviewsParams {

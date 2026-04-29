@@ -13,6 +13,10 @@ import type {
 } from "./types/types";
 import { walletKeys } from "../account/wallet/walletQueryFactory";
 import { toast } from "@/utils/toast";
+import { migrateCart } from "@/features/cart/cartService";
+import { cartKeys } from "@/features/cart/cartQueryFactory";
+import type { Cart } from "@/features/cart/types/types";
+import { getSessionId } from "@/utils/getSessionId";
 
 export const useSendOtpMutation = () => {
   return useMutation({
@@ -44,6 +48,12 @@ export const useVerifyOtpMutation = () => {
       return verifyOtp({ data });
     },
     onSuccess: async () => {
+      const cachedCart = queryClient.getQueryData<Cart>(cartKeys.detail());
+      if (cachedCart && cachedCart.totalItems > 0) {
+        const sessionId = getSessionId();
+        await migrateCart({ data: { sessionId } }).catch(() => {});
+        await queryClient.invalidateQueries({ queryKey: cartKeys.all });
+      }
       await queryClient.refetchQueries({ queryKey: authKeys.profile() });
       await queryClient.invalidateQueries({ queryKey: walletKeys.balance() });
       await queryClient.invalidateQueries({

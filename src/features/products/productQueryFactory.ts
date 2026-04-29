@@ -11,6 +11,8 @@ export const productKeys = {
     [...productKeys.all, "similar", id, params] as const,
   similarInfinite: (id: string) =>
     [...productKeys.all, "similar-infinite", id] as const,
+  filters: (search: string) =>
+    [...productKeys.all, "filters", search] as const,
   autocomplete: (q: string) =>
     [...productKeys.all, "autocomplete", q] as const,
   searchSuggestions: () =>

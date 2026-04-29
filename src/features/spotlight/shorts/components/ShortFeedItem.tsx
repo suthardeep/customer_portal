@@ -38,6 +38,7 @@ const ShortFeedItem = forwardRef<ShortsVideoPlayerHandle, ShortFeedItemProps>(
         {isVideo && (state === "active" || state === "preload" || state === "cached") ? (
           <ShortsVideoPlayer
             ref={playerRef}
+            postId={post.id}
             hlsUrl={post.media.playUrl}
             thumbnail={post.media.thumbnail}
             alt={post.caption}

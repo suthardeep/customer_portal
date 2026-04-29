@@ -3,6 +3,7 @@ import { Icon } from "@/components/base/icon/Icon";
 import { useToggle } from "@/hooks/useToggle";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { prettyDate } from "@/utils/formatDateTime";
+import dayjs from "dayjs";
 import { useCancelSubscriptionMutation } from "../subscriptionMutations";
 import { SubscriptionStatus } from "../types/enums";
 import type { CurrentSubscription } from "../types/types";
@@ -19,6 +20,7 @@ export function ActiveSubscriptionView({
   const cancelMutation = useCancelSubscriptionMutation();
 
   const isCancelled = subscription.status === SubscriptionStatus.CANCELLED;
+  const isPeriodPast = dayjs(subscription.currentPeriodEnd).isBefore(dayjs());
 
   const handleCancel = () => {
     cancelMutation.mutate(undefined, {
@@ -56,7 +58,9 @@ export function ActiveSubscriptionView({
         {/* Details */}
         <div className="flex flex-col gap-3 p-6 pt-1">
           <div className="flex items-center justify-between">
-            <p className="text-n-700">Current period ends</p>
+            <p className="text-n-700">
+              {isPeriodPast ? "Period ended" : "Current period ends"}
+            </p>
             <p className="text-n-50 font-medium">
               {prettyDate(subscription.currentPeriodEnd)}
             </p>

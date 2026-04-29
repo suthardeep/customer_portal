@@ -8,7 +8,7 @@ interface ProductQuantitySelectorProps {
 }
 
 export function ProductQuantitySelector({ max }: ProductQuantitySelectorProps) {
-  const { quantity } = useSearch({ from: "/_public/product/$productId" });
+  const { quantity } = useSearch({ from: "/_public/products/$productId" });
   const navigate = useNavigate();
 
   const limit = Math.min(

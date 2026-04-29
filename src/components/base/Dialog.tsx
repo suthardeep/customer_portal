@@ -108,10 +108,10 @@ const Dialog: React.FC<DialogProps> = (props) => {
   return (
     <RadixDialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed inset-0 z-10 bg-n-900/40 backdrop-blur-[1.5px] data-[state=open]:animate-overlay-show data-[state=closed]:animate-overlay-hide" />
+        <RadixDialog.Overlay className="fixed inset-0 z-102 bg-n-900/40 backdrop-blur-[1.5px] data-[state=open]:animate-overlay-show data-[state=closed]:animate-overlay-hide" />
         <RadixDialog.Content
           className={cn(
-            "fixed left-1/2 top-1/2 z-11",
+            "fixed left-1/2 top-1/2 z-103",
             "flex flex-col rounded-2xl border bg-n-50 shadow-xl/5 overflow-hidden",
             "border-n-300 outline-none",
             "data-[state=open]:animate-content-show data-[state=closed]:animate-content-hide",

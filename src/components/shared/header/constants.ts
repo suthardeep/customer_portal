@@ -1,0 +1,1 @@
+export const ADDRESS_MATCH_THRESHOLD_METERS = 200;

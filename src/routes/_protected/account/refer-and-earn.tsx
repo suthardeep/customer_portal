@@ -18,13 +18,14 @@ function RouteComponent() {
   const referredByCode = user?.referredByCode;
   const referralCount = user?.referralCount ?? 0;
   const handleCopyClick = () => {
-    const url = `${window.location.origin}/register?referralCode=${referralCode}`;
+    const url = `${window.location.origin}/register?referralCode=${referralCode}&autoVerifyReferCode=true`;
     navigator.clipboard.writeText(url);
     copyToggle.open();
     setTimeout(() => {
       copyToggle.close();
     }, 1000);
   };
+  console.log(user, "user");
 
   return (
     <div>
@@ -84,7 +85,9 @@ function RouteComponent() {
             {isLoading ? (
               <div className="mt-1 h-7 w-12 shimmer rounded" />
             ) : (
-              <p className="text-p-900 font-bold text-xl mt-1">{referralCount}</p>
+              <p className="text-p-900 font-bold text-xl mt-1">
+                {referralCount}
+              </p>
             )}
           </div>
           <div className="border border-n-500 rounded-2xl px-4 py-3">
@@ -92,8 +95,10 @@ function RouteComponent() {
             {isLoading ? (
               <div className="mt-1 h-7 w-20 shimmer rounded" />
             ) : (
-              <p className="text-p-900 font-bold text-xl mt-1">
-                {referredByCode ?? <span className="text-n-500 text-base font-medium">None</span>}
+              <p className="text-p-900 font-bold text-base mt-1">
+                {referredByCode ?? (
+                  <span className="text-n-700 text-base font-medium">None</span>
+                )}
               </p>
             )}
           </div>

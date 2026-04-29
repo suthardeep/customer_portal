@@ -119,8 +119,8 @@ function EventLogTimeline({ events }: { events: TrackingEvent[] }) {
           {/* Content */}
           <div className="flex flex-col gap-0.5">
             <p className="text-sm font-medium">{event.status}</p>
-            <p className="text-xs text-n-600">{event.description}</p>
-            <p className="text-xs text-n-500">
+            <p className="text-xs text-n-900">{event.description}</p>
+            <p className="text-xs text-n-800">
               {prettyDate(event.timestamp, { showTime: true })}
             </p>
           </div>

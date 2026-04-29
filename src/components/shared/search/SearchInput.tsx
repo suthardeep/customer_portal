@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 interface SearchInputProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({ onClose }) => {
@@ -14,8 +14,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ onClose }) => {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    navigate({ to: "/search", search: { q: query } });
-    onClose();
+    navigate({ to: "/products", search: { search: query, filters: "" } });
+    onClose?.();
   };
 
   return (

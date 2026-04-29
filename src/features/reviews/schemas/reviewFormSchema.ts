@@ -7,5 +7,5 @@ export const reviewFormSchema = z.object({
 });
 
 export type ReviewFormData = z.infer<typeof reviewFormSchema> & {
-  images?: File[];
+  mediaUrls: string[];
 };

@@ -14,7 +14,7 @@ import type { ProductDetailResponse } from "./types/types";
 export const getProductList = createServerFn({ method: "GET" })
   .inputValidator((data: ProductQueryParams) => data)
   .handler(async ({ data }): Promise<ProductListResponse> => {
-    return apiRequest<ProductListResponse>("/v1/products/public/list", {
+    return apiRequest<ProductListResponse>("/v2/products/public/list", {
       params: data,
     });
   });
@@ -26,10 +26,10 @@ export const getProductById = createServerFn({ method: "GET" })
     const token = getToken();
 
     return apiRequest<ProductDetailResponse>(
-      `/v1/products/public/details/${productId}`,
+      `/v2/products/public/details/${productId}`,
       {
         token,
-      }
+      },
     );
   });
 

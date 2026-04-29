@@ -74,6 +74,18 @@ export const productQueries = {
         lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
     }),
 
+  filters: (search: string) =>
+    queryOptions({
+      queryKey: productKeys.filters(search),
+      queryFn: async () => {
+        const response = await getProductList({
+          data: { search, currentPage: 1, pageSize: 1 },
+        });
+        return response.data.filters;
+      },
+      staleTime: 5 * 60 * 1000,
+    }),
+
   autocomplete: (params: AutocompleteParams) =>
     queryOptions({
       queryKey: productKeys.autocomplete(params.q),

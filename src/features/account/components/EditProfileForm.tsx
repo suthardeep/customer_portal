@@ -1,14 +1,14 @@
 import { Button } from "@/components/base/button/Button";
 import { Input } from "@/components/base/input/Input";
-import { MediaUploader } from "@/components/base/media-uploader/MediaUploader";
 import {
   profileFormSchema,
   type ProfileFormData,
 } from "@/features/auth/schemas/profileFormSchema";
 import ProfileEmailVerify from "./ProfileEmailVerify";
+import { ProfileImageSection } from "./ProfileImageSection";
 import type { User } from "@/types/user.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 interface EditProfileFormProps {
   user: User;
@@ -33,67 +33,53 @@ const EditProfileForm = ({
     },
   });
 
-  const { register, handleSubmit, setValue, control, formState: { errors } } = methods;
-
-  const profileImageUrl = useWatch({ control, name: "profileImageUrl" });
-
-  const handlePhotoUpload = (url: string) => {
-    setValue("profileImageUrl", url, { shouldDirty: true });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Profile image row */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="rounded-full overflow-hidden shrink-0 border border-n-500">
-          <MediaUploader
-            onUpload={handlePhotoUpload}
-            buttonText="Upload new"
-            variant="outline"
+        <ProfileImageSection />
+
+        <div className="grid grid-cols-1 gap-4 mb-4">
+          <Input
+            {...register("fullName")}
+            label="Full Name"
+            placeholder="Enter your full name"
+            error={errors.fullName?.message}
             disabled={isMutating}
-            defaultImage={profileImageUrl}
-            placeholderClassName="size-32"
+            fullWidth
           />
+
+          <Input
+            {...register("dateOfBirth")}
+            label="Date of Birth"
+            type="date"
+            error={errors.dateOfBirth?.message}
+            disabled={isMutating}
+            fullWidth
+          />
+          <ProfileEmailVerify />
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-4 mb-4">
-        <Input
-          {...register("fullName")}
-          label="Full Name"
-          placeholder="Enter your full name"
-          error={errors.fullName?.message}
-          disabled={isMutating}
-          fullWidth
-        />
-
-        <Input
-          {...register("dateOfBirth")}
-          label="Date of Birth"
-          type="date"
-          error={errors.dateOfBirth?.message}
-          disabled={isMutating}
-          fullWidth
-        />
-        <ProfileEmailVerify />
-      </div>
-
-      <div className="flex gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          color="neutral"
-          fullWidth
-          disabled={isMutating}
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button type="submit" fullWidth isLoading={isMutating}>
-          Save
-        </Button>
-      </div>
+        <div className="flex gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            color="neutral"
+            fullWidth
+            disabled={isMutating}
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" fullWidth isLoading={isMutating}>
+            Save
+          </Button>
+        </div>
       </form>
     </FormProvider>
   );

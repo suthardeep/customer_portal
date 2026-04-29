@@ -61,7 +61,7 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
           <Icon
             name="User"
             size="lg"
-            className={cn(iconClassName, isActive && "text-p-600")}
+            className={cn(iconClassName, isActive ? "text-p-600 group-hover:text-p-600" : "group-hover:text-n-950")}
           />
         )}
 
@@ -78,4 +78,4 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
   );
 }
 
-const iconClassName = "text-n-900 group-hover:text-n-950";
+const iconClassName = "text-n-900";

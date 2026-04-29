@@ -23,7 +23,11 @@ export function SpotlightTaggedProductCard({
   const imageUrl = product.mediaUrls?.[0];
 
   return (
-    <Link to="/product/$productId" params={{ productId: product.id }}>
+    <Link
+      to="/products/$productId"
+      params={{ productId: product.id }}
+      search={{ affiliateCode: product.affiliateCode }}
+    >
       <div className="flex overflow-hidden rounded-lg border border-n-400 bg-white">
         {/* Image */}
         <div className="relative aspect-square size-22 shrink-0 overflow-hidden">

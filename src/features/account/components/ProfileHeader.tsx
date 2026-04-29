@@ -19,7 +19,6 @@ function ProfileHeaderContent() {
   const initials = getInitials(displayName);
   const hasSubscription =
     user?.subscriptionType === SubscriptionType.PREMIUM || false;
-  console.log(user);
 
   return (
     <div className="flex items-center gap-3 border-b border-n-200">

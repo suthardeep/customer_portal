@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function CartCountBadge() {
   const { data } = useQuery(cartQueries.detail());
-  const count = data?.totalItems ?? 0;
+  const count = data?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
 
   return <Badge count={count} />;
 }

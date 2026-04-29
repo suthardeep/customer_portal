@@ -38,6 +38,11 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     title: "Earn & Grow",
     items: [
       {
+        label: "Spotlight",
+        icon: "VideoCameraSpark",
+        to: "/spotlight/buy-clips",
+      },
+      {
         label: "Become a Seller",
         icon: "Store",
         to: "/",
@@ -55,7 +60,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Coupons",
         icon: "Coupon",
-        to: "/",
+        to: "/account/coupons",
       },
     ],
   },

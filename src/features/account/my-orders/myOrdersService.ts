@@ -6,6 +6,7 @@ import type {
   CancelOrderItemRequest,
   InvoiceData,
   MyOrdersQueryParams,
+  OrderDetail,
   OrderItem,
   OrderItemDetail,
   ReturnOrderItemRequest,
@@ -42,6 +43,13 @@ export const getMyOrderItemInvoice = createServerFn({ method: "GET" })
       return apiRequest(`/v1/orders/items/${itemId}/invoice`, { token });
     },
   );
+
+export const getOrderById = createServerFn({ method: "GET" })
+  .inputValidator((id: string) => id)
+  .handler(async ({ data: id }): Promise<BaseApiResponse<OrderDetail>> => {
+    const token = getToken();
+    return apiRequest(`/v1/orders/${id}`, { token });
+  });
 
 export const cancelMyOrderItem = createServerFn({ method: "POST" })
   .inputValidator((data: CancelOrderItemRequest) => data)

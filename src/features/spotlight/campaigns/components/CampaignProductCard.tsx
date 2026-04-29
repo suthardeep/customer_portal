@@ -1,21 +1,24 @@
 import { Icon } from "@/components/base/icon/Icon";
 import { Image } from "@/components/base/Image";
-import type { Product } from "@/features/products/types/product.types";
+import type { CampaignProduct } from "../types/types";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { Link } from "@tanstack/react-router";
 
 interface CampaignProductCardProps {
-  product: Product;
-  notEligibleForShort: boolean;
+  product: CampaignProduct;
 }
 
-export function CampaignProductCard({
-  product,
-  notEligibleForShort,
-}: CampaignProductCardProps) {
+export function CampaignProductCard({ product }: CampaignProductCardProps) {
+  const notEligibleForShort = product.isLocked;
   const imageUrl = product.mediaUrls?.[0];
 
   return (
-    <div className="flex flex-col gap-1 rounded-lg border border-n-400 bg-white p-2">
+    <Link
+      to="/products/$productId"
+      params={{ productId: product.id }}
+      search={{ variantId: product.variantId }}
+      className="flex flex-col gap-1 rounded-lg border border-n-400 bg-white p-2 group"
+    >
       <div className="flex items-center gap-3">
         <div className="relative aspect-square size-16 shrink-0 overflow-hidden rounded-md">
           <Image
@@ -25,7 +28,9 @@ export function CampaignProductCard({
           />
         </div>
         <div className="flex flex-1 flex-col gap-0.5 min-w-0">
-          <p className="line-clamp-1 font-medium text-n-900">{product.name}</p>
+          <p className="line-clamp-1 font-medium text-n-900 group-hover:text-p-500">
+            {product.name}
+          </p>
           {product.brandName && (
             <span className="text-n-800">{product.brandName}</span>
           )}
@@ -40,10 +45,13 @@ export function CampaignProductCard({
         />
       </div>
       {notEligibleForShort && (
-        <div className="p-1 border border-p-500 bg-p-50 rounded-lg fall mt-1 text-n-900">
-          <p>You can't create Spotlight content without buying a product.</p>
+        <div className="p-1 border text-center border-p-500 bg-p-50 rounded-lg fall mt-1 text-n-900">
+          <p>
+            You must purchase and receive this product before creating Spotlight
+            content.
+          </p>
         </div>
       )}
-    </div>
+    </Link>
   );
 }

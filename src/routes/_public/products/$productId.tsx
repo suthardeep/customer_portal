@@ -18,20 +18,33 @@ import {
 import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 
 const productDetailSearchSchema = z.object({
   variantId: z.string().optional(),
   quantity: z.number().int().min(1).optional().default(1),
+  affiliateCode: z.string().optional(),
 });
 
-export const Route = createFileRoute("/_public/product/$productId")({
+export const Route = createFileRoute("/_public/products/$productId")({
   validateSearch: productDetailSearchSchema,
-  loader: async ({ context, params }) => {
-    await context.queryClient.ensureQueryData(
+  loaderDeps: ({ search }) => ({ variantId: search.variantId }),
+  loader: async ({ context, params, deps }) => {
+    const product = await context.queryClient.ensureQueryData(
       productQueries.detail(params.productId),
     );
+    if (!deps.variantId && product.variants.length > 0) {
+      throw redirect({
+        to: ".",
+        search: (prev) => ({
+          ...prev,
+          variantId: product.variants[0].id,
+          quantity: product.minOrderQuantity ?? 1,
+        }),
+        replace: true,
+      });
+    }
   },
   pendingComponent: ProductDetailSkeleton,
   component: ProductDetailComponent,
@@ -40,30 +53,29 @@ export const Route = createFileRoute("/_public/product/$productId")({
 
 function ProductDetailComponent() {
   const { productId } = Route.useParams();
-  const { variantId, quantity } = Route.useSearch();
+  const { variantId: searchVariantId, quantity, affiliateCode } = Route.useSearch();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId));
+
+  const variantId = searchVariantId ?? product.variants[0];
 
   const selectedVariant: ProductVariant | undefined = (() => {
     if (!product.variants?.length) return undefined;
     if (variantId) {
-      return (
-        product.variants.find((v) => v.id === variantId) ?? product.variants[0]
-      );
+      return product.variants.find((v) => v.id === variantId);
     }
     return product.variants[0];
   })();
 
-  const isOutOfStock = selectedVariant
-    ? !selectedVariant.inStock || selectedVariant.quantity <= 0
-    : false;
+  const isOutOfStock = selectedVariant ? selectedVariant.quantity <= 0 : false;
 
   // Use mock data for features not yet available from API
-  const features = product.features || MOCK_PRODUCT_FEATURES;
-  const offers = product.offers || MOCK_PRODUCT_OFFERS;
+  const features = MOCK_PRODUCT_FEATURES;
+  const offers = MOCK_PRODUCT_OFFERS;
 
   const galleryImages = selectedVariant?.mediaUrls?.length
     ? selectedVariant.mediaUrls
     : (product.mediaUrls ?? []);
+  console.log(product, "product");
 
   return (
     <div className="container mx-auto px-4 pt-6 pb-28 lg:pb-6">
@@ -76,17 +88,15 @@ function ProductDetailComponent() {
           {/* Left: Image Gallery */}
           <ProductImageGallery images={galleryImages} />
           <div className="mt-8 hidden lg:block">
-            <ProductTabs
-              highlights={product.highlights}
-              specifications={product.specifications}
-            />
+            <ProductTabs />
           </div>
         </div>
 
         {/* Right: Product Details */}
         <div className="flex flex-col gap-6">
           <ProductTopBar
-            brandName={product.brandName}
+            brandName={product.brand?.name}
+            brandId={product.brand?.id}
             productName={product.name}
           />
           <div className="flex flex-col xl:flex-row gap-8">
@@ -98,10 +108,13 @@ function ProductDetailComponent() {
 
               {/* Action Buttons */}
               <ProductActionButtons
+                productId={productId}
                 variantId={selectedVariant?.id}
                 quantity={quantity}
                 disabled={isOutOfStock}
+                min={product.minOrderQuantity}
                 max={selectedVariant?.quantity}
+                affiliateCode={affiliateCode}
               />
               <Button variant="outline" className="mt-2" fullWidth>
                 Create Affiliate
@@ -114,8 +127,8 @@ function ProductDetailComponent() {
           </div>
 
           <ProductVariantSelector
-            variantAttributes={product.variantAttributes ?? []}
-            variants={product.variants ?? []}
+            optionGroups={product.optionGroups}
+            variants={product.variants}
           />
           <OffersList offers={offers} />
         </div>

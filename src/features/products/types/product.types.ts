@@ -42,6 +42,7 @@ export interface Product {
   reviewCount: number;
   viewCount: number;
   soldCount: number;
+  inStock: boolean;
   approvedAt?: string;
   approvedBy?: string;
   rejectedAt?: string;

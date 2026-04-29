@@ -140,11 +140,11 @@ export function SubscriptionPlanSelector({
         ))}
       </div>
       <Button
-        className="mt-10 bg-s-500 text-n-50 font-bold"
+        className="mt-10 text-n-50 font-bold"
         size="lg"
         fullWidth
         variant="filled"
-        color="primary"
+        color="secondary"
         onClick={handleSubscribe}
         isLoading={isLoading}
         disabled={isLoading}

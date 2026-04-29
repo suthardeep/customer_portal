@@ -26,7 +26,7 @@ const SearchTrending: React.FC<SearchTrendingProps> = ({ onSelect }) => {
         {products.map((product) => (
           <Link
             key={product.id}
-            to="/product/$productId"
+            to="/products/$productId"
             params={{ productId: product.id }}
             onClick={onSelect ?? undefined}
             className="flex flex-col gap-1.5 group"

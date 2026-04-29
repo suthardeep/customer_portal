@@ -48,7 +48,7 @@ const VerifyOtpForm = ({
 
   const handleOtpComplete = (otp: string) => {
     verifyOtpMutation.mutate(
-      { phone, otp, fullName, referralCode },
+      { phone, otp, fullName, referredByCode: referralCode },
       {
         onSuccess: () => {
           setIsVerified(true);

@@ -22,7 +22,6 @@ export function TransactionHistory() {
 
   const transactions =
     transactionsQuery.data?.pages.flatMap((page) => page.data) ?? [];
-  console.log(transactions);
 
   return (
     <QueryStateHandler

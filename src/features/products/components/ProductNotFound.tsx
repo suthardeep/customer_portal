@@ -15,24 +15,19 @@ export function ProductNotFound() {
       </div>
 
       <h4 className="text-n-900">Product Not Found</h4>
-      <p className="mt-2 max-w-sm text-n-500">
+      <p className="mt-2 max-w-sm text-n-800">
         The product you're looking for may have been removed, is temporarily
         unavailable, or the link might be incorrect.
       </p>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Link to="/">
-          <Button variant="filled" color="primary" size="lg">
+          <Button variant="filled" color="primary">
             Browse Products
           </Button>
         </Link>
         <Link to="/">
-          <Button
-            variant="outline"
-            color="primary"
-            size="lg"
-            startIcon="Search"
-          >
+          <Button variant="outline" color="primary" startIcon="Search">
             Search Products
           </Button>
         </Link>

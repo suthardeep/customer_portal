@@ -177,6 +177,9 @@
   /* Max Width */
   --max-width-8xl: 1568px;
 
+  /* Easing */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   /* Danger Color Scale */
   --color-danger-50: var(--danger-50);
   --color-danger-100: var(--danger-100);

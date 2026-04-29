@@ -1,11 +1,12 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import type { PaginatedResponse } from "@/types/baseApi.types";
-import type { InvoiceData, MyOrdersInfiniteParams, MyOrdersQueryParams, OrderItem, OrderItemDetail } from "./types/types";
+import type { InvoiceData, MyOrdersInfiniteParams, MyOrdersQueryParams, OrderDetail, OrderItem, OrderItemDetail } from "./types/types";
 import { myOrderKeys } from "./myOrdersQueryFactory";
 import {
   getMyOrders,
   getMyOrderItemDetail,
   getMyOrderItemInvoice,
+  getOrderById,
 } from "./myOrdersService";
 
 export const myOrderQueries = {
@@ -46,6 +47,15 @@ export const myOrderQueries = {
       queryKey: myOrderKeys.invoice(itemId),
       queryFn: async (): Promise<InvoiceData> => {
         const response = await getMyOrderItemInvoice({ data: itemId });
+        return response.data;
+      },
+    }),
+
+  order: (id: string) =>
+    queryOptions({
+      queryKey: myOrderKeys.order(id),
+      queryFn: async (): Promise<OrderDetail> => {
+        const response = await getOrderById({ data: id });
         return response.data;
       },
     }),

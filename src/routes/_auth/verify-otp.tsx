@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_auth/verify-otp")({
 function VerifyOtpRouteComponent() {
   const { phone, fullName, referralCode, redirectTo } = Route.useSearch();
   const navigate = useNavigate();
-  const routeToNavigate = redirectTo || "/categories";
+  const routeToNavigate = redirectTo || "/";
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 max-w-lg mx-auto">

@@ -50,14 +50,24 @@ export function StarRatingDisplay({
   // Add half star if applicable
   if (hasHalfStar) {
     stars.push(
-      <Icon
-        key="half"
-        name="StarHalf"
-        size={iconSize}
-        className={
-          sizeClass ? `text-yellow-500 ${sizeClass}` : "text-yellow-500"
-        }
-      />,
+      <span key="half" className="relative inline-flex">
+        <Icon
+          name="Star"
+          size={iconSize}
+          className={sizeClass ? `text-n-500 ${sizeClass}` : "text-n-500"}
+        />
+        <span className="absolute inset-0 overflow-hidden w-1/2">
+          <Icon
+            name="Star"
+            size={iconSize}
+            className={
+              sizeClass
+                ? `text-yellow-500 fill-yellow-500 ${sizeClass}`
+                : "text-yellow-500 fill-yellow-500"
+            }
+          />
+        </span>
+      </span>,
     );
   }
 

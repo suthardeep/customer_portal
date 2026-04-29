@@ -1,5 +1,4 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
-import { Button } from "@/components/base/button/Button";
 import { Image } from "@/components/base/Image";
 import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
 import { WishlistButton } from "@/features/wishlist/components/WishlistButton";
@@ -12,17 +11,16 @@ import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
 import { useAddItemToCollectionMutation } from "@/features/wishlist/wishlistMutations";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
+import { ProductCardAddToCart } from "./ProductCardAddToCart";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCartSuccess?: (productId: string) => void;
   className?: string;
   disableDetailPageRedirection?: boolean;
 }
 
 export function ProductCard({
   product,
-  onAddToCartSuccess,
   className,
   disableDetailPageRedirection = false,
 }: ProductCardProps) {
@@ -70,13 +68,6 @@ export function ProductCard({
     });
   };
 
-  const handleAddToCartClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (onAddToCartSuccess) {
-      onAddToCartSuccess?.(product.id);
-    }
-  };
-
   const openWishlistSheet = useWishlistSheetStore((state) => state.open);
 
   const content = () => (
@@ -97,15 +88,15 @@ export function ProductCard({
         />
 
         {/* Add to Cart Button */}
-        <Button
-          onClick={handleAddToCartClick}
-          className="absolute bottom-0 right-0 rounded-md bg-white! hover:text-p-600"
-          aria-label="Add to cart"
-          size="xs"
-          variant="outline"
+        <div
+          className="absolute bottom-0 right-0"
+          onClick={(e) => e.preventDefault()}
         >
-          Add
-        </Button>
+          <ProductCardAddToCart
+            variantId={product.variantId}
+            outOfStock={!product.inStock}
+          />
+        </div>
       </div>
 
       {/* Content Section */}
@@ -144,7 +135,11 @@ export function ProductCard({
   }
 
   return (
-    <Link to="/product/$productId" params={{ productId: product?.id }}>
+    <Link
+      to="/products/$productId"
+      params={{ productId: product?.id }}
+      search={{ variantId: product?.variantId ?? undefined }}
+    >
       {content()}
     </Link>
   );

@@ -33,7 +33,7 @@ export function CartItemList({ items }: CartItemListProps) {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedIds(new Set(items.map((i) => i.id)));
+      setSelectedIds(new Set(items.map((i) => i.variantId)));
     } else {
       setSelectedIds(new Set());
     }
@@ -55,7 +55,7 @@ export function CartItemList({ items }: CartItemListProps) {
     if (quantity === 0) {
       handleDelete(id);
     } else {
-      updateMutation.mutate({ id, quantity });
+      updateMutation.mutate({ variantId: id, quantity });
     }
   };
 
@@ -65,12 +65,12 @@ export function CartItemList({ items }: CartItemListProps) {
       next.delete(id);
       return next;
     });
-    deleteMutation.mutate({ id });
+    deleteMutation.mutate({ variantId: id });
   };
 
   const handleBulkRemove = () => {
     selectedIds.forEach((id) => {
-      deleteMutation.mutate({ id });
+      deleteMutation.mutate({ variantId: id });
     });
     setSelectedIds(new Set());
   };
@@ -107,7 +107,7 @@ export function CartItemList({ items }: CartItemListProps) {
         <CartItemCard
           key={item.id}
           item={item}
-          isSelected={selectedIds.has(item.id)}
+          isSelected={selectedIds.has(item.variantId)}
           onSelectChange={handleSelectItem}
           onQuantityChange={handleQuantityChange}
           onDelete={handleDelete}

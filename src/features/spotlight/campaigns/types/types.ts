@@ -47,15 +47,22 @@ export interface CampaignListItem extends Campaign {
 export interface CampaignListParams {
   currentPage?: number;
   pageSize?: number;
+  search?: string;
+  sortByField?: string;
+  isAscending?: boolean;
+  status?: CampaignStatus;
 }
 
 export type CampaignListResponse = BaseApiResponse<PaginatedResponse<CampaignListItem>>;
 
+export type CampaignProduct = Product & { isLocked: boolean };
+
 export interface CampaignDetailResponse extends Campaign {
   productIds: string[];
-  products: Product[];
+  products: CampaignProduct[];
   submissionCount: number;
   creatorCount: number;
+  rewardedCreatorCount: number;
 }
 
 export type CampaignDetailApiResponse = BaseApiResponse<CampaignDetailResponse>;

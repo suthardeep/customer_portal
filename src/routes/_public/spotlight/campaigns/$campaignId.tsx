@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { campaignQueries } from "@/features/spotlight/campaigns/campaignsQueries";
 import CampaignHero from "@/features/spotlight/campaigns/components/CampaignHero";
 import CampaignDescription from "@/features/spotlight/campaigns/components/CampaignDescription";
@@ -11,6 +12,7 @@ import CampaignGuidelineDownload from "@/features/spotlight/campaigns/components
 import CampaignJoinButton from "@/features/spotlight/campaigns/components/CampaignJoin";
 import CampaignProducts from "@/features/spotlight/campaigns/components/CampaignProducts";
 import MyCampaignSubmissions from "@/features/spotlight/campaigns/components/MyCampaignSubmissions";
+import ErrorText from "@/components/base/ErrorText";
 
 export const Route = createFileRoute(
   "/_public/spotlight/campaigns/$campaignId",
@@ -34,6 +36,10 @@ function RouteComponent() {
   const { data: submissions } = useSuspenseQuery(
     campaignQueries.myCampaignSubmissions(params.campaignId, {}),
   );
+
+  const isCampaignEnded = dayjs().isAfter(dayjs(data.endDate));
+  const isRewardsFull = data.rewardedCreatorCount >= data.numberOfInfluencers;
+  console.log(submissions, "submissions");
 
   return (
     <div className="relative">
@@ -59,12 +65,28 @@ function RouteComponent() {
         <CampaignRules rules={data.rules} />
         <CampaignProducts products={data.products} />
         <CampaignGuidelineDownload guidelinePdfUrl={data.guidelinePdfUrl} />
-        <MyCampaignSubmissions submissions={submissions.data} />
+        <MyCampaignSubmissions
+          campaignId={data.id}
+          submissions={submissions.data}
+        />
       </div>
-      <CampaignJoinButton
-        campaignId={params.campaignId}
-        products={data.products}
-      />
+      {isCampaignEnded ? (
+        <ErrorText withBgCard className="text-center">
+          This campaign has ended and is no longer accepting submissions.
+        </ErrorText>
+      ) : isRewardsFull ? (
+        <div className="p-2 bg-amber-50 rounded-md">
+          <p className="text-center text-amber-800 font-medium">
+            All reward slots have been filled. No new submissions are being
+            accepted.
+          </p>
+        </div>
+      ) : (
+        <CampaignJoinButton
+          campaignId={params.campaignId}
+          products={data.products}
+        />
+      )}
     </div>
   );
 }

@@ -57,15 +57,7 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
           {title || "No data found"}
         </h6>
         {subtitle && (
-          <p
-            className={cn(
-              styles.text,
-              "opacity-70 mt-1",
-              isCompact && "text-xs",
-            )}
-          >
-            {subtitle}
-          </p>
+          <p className={cn(styles.text, "opacity-70 mt-1")}>{subtitle}</p>
         )}
         {footer && footer}
       </div>

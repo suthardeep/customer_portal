@@ -2,20 +2,47 @@ import { Icon } from "@/components/base/icon/Icon";
 import AddressSelectorSheet from "@/features/account/my-address/components/AddressSelectorSheet";
 import { ADDRESS_TYPE_CONFIG } from "@/features/account/my-address/constants";
 import { useDetectLocation } from "@/features/account/my-address/hooks/useDetectLocation";
+import { addressQueries } from "@/features/account/my-address/addressQueries";
 import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
 import type { Address } from "@/features/account/my-address/types/types";
 import { formatAddress } from "@/utils/formatAddress";
+import { haversineDistance } from "@/utils/haversine";
 import { useToggle } from "@/hooks/useToggle";
+import { useQuery } from "@tanstack/react-query";
+import { ADDRESS_MATCH_THRESHOLD_METERS } from "./constants";
+import { useRef } from "react";
 
 export function HeaderLocation() {
   const { activeAddress, selectSavedAddress, setDetectedAddress } =
     useSelectedAddressStore();
   const selectedAddressId = activeAddress?.id ?? null;
   const sheetToggle = useToggle();
+  const { data: savedAddresses } = useQuery(addressQueries.list());
+  const savedAddressesRef = useRef(savedAddresses);
+  savedAddressesRef.current = savedAddresses;
+
+  const hasSavedAddresses = !!savedAddresses?.length;
 
   const { detect, isDetecting, error } = useDetectLocation(
-    (detected) => setDetectedAddress(detected),
-    { autoDetect: !activeAddress },
+    (detected) => {
+      const match = savedAddressesRef.current?.find(
+        (addr) =>
+          addr.latitude != null &&
+          addr.longitude != null &&
+          haversineDistance(
+            detected.latitude,
+            detected.longitude,
+            addr.latitude,
+            addr.longitude,
+          ) <= ADDRESS_MATCH_THRESHOLD_METERS,
+      );
+      if (match) {
+        selectSavedAddress(match);
+      } else {
+        setDetectedAddress(detected);
+      }
+    },
+    { autoDetect: !activeAddress && !hasSavedAddresses },
   );
 
   const typeLabel = activeAddress?.addressType

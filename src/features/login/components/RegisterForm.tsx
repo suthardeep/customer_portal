@@ -13,6 +13,7 @@ interface RegisterFormProps {
   isLoading?: boolean;
   defaultMobileNumber?: string;
   defaultReferralCode?: string;
+  autoVerifyReferCode?: boolean;
   onReferralValidated?: (code: string | null) => void;
   loginHref?: string;
   onLoginClick?: () => void;
@@ -23,6 +24,7 @@ const RegisterForm = ({
   isLoading = false,
   defaultMobileNumber,
   defaultReferralCode,
+  autoVerifyReferCode,
   onReferralValidated,
   loginHref,
   onLoginClick,
@@ -82,6 +84,7 @@ const RegisterForm = ({
         code={referralCode}
         onCodeChange={setReferralCode}
         onValidated={onReferralValidated}
+        autoVerify={autoVerifyReferCode}
       />
 
       <Controller

@@ -28,11 +28,6 @@ export const Route = createFileRoute("/_protected")({
     }
   },
   loader: ({ context }) => {
-    context.queryClient.prefetchQuery(
-      wishlistQueries.collectionsProducts("ALL", {
-        pageSize: 100,
-      }),
-    );
     context.queryClient.prefetchQuery(authQueries.profile());
     context.queryClient.prefetchQuery(reviewQueries.myReviews());
   },

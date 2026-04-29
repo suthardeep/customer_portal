@@ -7,9 +7,16 @@ import type {
   AddCartItemRequest,
   Cart,
   CartItem,
+  CartSummaryParams,
+  CartSummaryResponse,
   DeleteCartItemRequest,
+  MigrateCartRequest,
   UpdateCartItemRequest,
 } from "./types/types";
+import type {
+  AvailableCouponsParams,
+  AvailableCouponsResponse,
+} from "./types/coupon.types";
 
 export const getCart = createServerFn({ method: "GET" }).handler(
   async (): Promise<BaseApiResponse<Cart>> => {
@@ -37,12 +44,13 @@ export const addCartItem = createServerFn({ method: "POST" })
 export const updateCartItem = createServerFn({ method: "POST" })
   .inputValidator((data: UpdateCartItemRequest) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<CartItem>> => {
-    const { id, quantity } = data;
+    const { variantId, quantity } = data;
     const token = getToken();
     const sessionId = getSessionId();
-    return apiRequest(`/v1/cart/items/${id}`, {
+    return apiRequest(`/v1/cart/items/${variantId}`, {
       method: "PATCH",
-      body: { quantity, sessionId },
+      body: { quantity },
+      params: { sessionId },
       token,
     });
   });
@@ -50,12 +58,12 @@ export const updateCartItem = createServerFn({ method: "POST" })
 export const deleteCartItem = createServerFn({ method: "POST" })
   .inputValidator((data: DeleteCartItemRequest) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<void>> => {
-    const { id } = data;
+    const { variantId } = data;
     const token = getToken();
     const sessionId = getSessionId();
-    return apiRequest(`/v1/cart/items/${id}`, {
+    return apiRequest(`/v1/cart/items/${variantId}`, {
       method: "DELETE",
-      body: { sessionId },
+      params: { sessionId },
       token,
     });
   });
@@ -66,8 +74,40 @@ export const clearCart = createServerFn({ method: "POST" }).handler(
     const sessionId = getSessionId();
     return apiRequest("/v1/cart", {
       method: "DELETE",
-      body: { sessionId },
+      params: { sessionId },
       token,
     });
   },
 );
+
+export const getCartSummary = createServerFn({ method: "GET" })
+  .inputValidator((data: CartSummaryParams) => data)
+  .handler(async ({ data }): Promise<BaseApiResponse<CartSummaryResponse>> => {
+    const token = getToken();
+    const sessionId = getSessionId();
+    return apiRequest("/v1/orders/checkout/summary", {
+      params: { ...data, cartSessionId: data.cartSessionId ?? sessionId },
+      token,
+    });
+  });
+
+export const migrateCart = createServerFn({ method: "POST" })
+  .inputValidator((data: MigrateCartRequest) => data)
+  .handler(async ({ data }): Promise<BaseApiResponse<void>> => {
+    const token = getToken();
+    return apiRequest("/v1/cart/migrate", {
+      method: "POST",
+      body: data,
+      token,
+    });
+  });
+
+export const getAvailableCoupons = createServerFn({ method: "GET" })
+  .inputValidator((data: AvailableCouponsParams) => data)
+  .handler(async ({ data }): Promise<AvailableCouponsResponse> => {
+    const token = getToken();
+    return apiRequest("/v1/discounts/coupons/available", {
+      params: data,
+      token,
+    });
+  });

@@ -32,15 +32,11 @@ export const Route = createFileRoute("/_public/spotlight/create-profile")({
       });
     }
 
-    try {
-      const data = await context.queryClient.ensureQueryData(
-        spotlightQueries.profile(),
-      );
-      if (data?.profile?.id) {
-        throw redirect({ to: "/spotlight" });
-      }
-    } catch (e) {
-      if (isRedirect(e)) throw e;
+    const data = context.queryClient.getQueryData(
+      spotlightQueries.profile().queryKey,
+    );
+    if (data?.profile?.id) {
+      throw redirect({ to: "/spotlight" });
     }
   },
 });

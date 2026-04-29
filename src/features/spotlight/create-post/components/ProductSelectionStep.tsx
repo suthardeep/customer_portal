@@ -78,7 +78,7 @@ const ProductSelectionStep = ({
                     {product.productName}
                   </p>
                   <span className="text-sm text-n-800">
-                    {formatCurrency(product.amount)}
+                    {formatCurrency(product.sellingPrice)}
                   </span>
                 </div>
               </div>

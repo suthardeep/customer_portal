@@ -44,7 +44,7 @@ function CartItemCardSkeleton() {
   );
 }
 
-function CartSummarySkeleton() {
+export function CartSummarySkeleton() {
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-n-400 bg-n-50">
       {/* Coupons section */}

@@ -25,7 +25,7 @@ export function ProductDetailHeader({
       : undefined;
 
   const discount = selectedVariant?.discountPercent;
-  const earnCoins = selectedVariant?.aavakCoinsEarned ?? 0;
+  const earnCoins = selectedVariant?.totalAavakCoinForUser ?? 0;
 
   return (
     <div className="space-y-4">
@@ -36,7 +36,7 @@ export function ProductDetailHeader({
       {product.avgRating !== undefined && (
         <StarRatingDisplay
           rating={product.avgRating}
-          reviewCount={product.reviewCount}
+          reviewCount={product.totalReviews}
           size="sm"
         />
       )}
@@ -52,7 +52,7 @@ export function ProductDetailHeader({
       {/* Stock availability */}
       {selectedVariant && (
         <div className="mb-2">
-          {!selectedVariant.inStock ? (
+          {selectedVariant.quantity <= 0 ? (
             <p className="text-sm font-medium text-danger-600">Out of stock</p>
           ) : selectedVariant.quantity <= 5 ? (
             <p className="text-sm font-medium text-warning-600">
