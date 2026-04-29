@@ -5,9 +5,13 @@ import type { EditProfileFormData } from "../schemas/editProfileFormSchema";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import { AddEditSpotlightProfile } from "./AddEditSpotlightProfile";
 import { CreatorTierCard } from "./CreatorTierCard";
+import ErrorText from "@/components/base/ErrorText";
 
 export function EditProfileForm() {
   const { data } = useSuspenseQuery(spotlightQueries.profile());
+
+  if (!data) return <ErrorText>Profile not found.</ErrorText>;
+
   const { profile, tierProgress } = data;
 
   const updateMutation = useUpdateSpotlightProfileMutation();

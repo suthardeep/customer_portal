@@ -1,7 +1,6 @@
 import Header from "@/components/shared/header/Header";
 import { authQueries } from "@/features/auth/authQueries";
 import { reviewQueries } from "@/features/reviews/reviewsQueries";
-import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected")({

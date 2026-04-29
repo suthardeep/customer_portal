@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_public/spotlight/_protected")({
       const data = await context.queryClient.fetchQuery(
         spotlightQueries.profile(),
       );
-      if (!data.profile?.id) {
+      if (!data?.profile?.id) {
         throw redirect({ to: "/spotlight/buy-clips" });
       }
     } catch (e) {
