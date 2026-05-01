@@ -2,6 +2,7 @@ import Pagination from "@/components/compound/Pagination";
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import CouponCard from "@/features/account/coupons/components/CouponCard";
 import { CouponsListSkeleton } from "@/features/account/coupons/components/skeletons/CouponsListSkeleton";
 import { couponQueries } from "@/features/account/coupons/couponsQueries";
@@ -33,7 +34,7 @@ function CouponsComponent() {
   const couponsQuery = useQuery(couponQueries.list({ currentPage }));
 
   return (
-    <div>
+    <AccountPageWrapper>
       <AccountPageHeader title="Coupons" />
       <QueryStateHandler
         query={couponsQuery}
@@ -51,6 +52,6 @@ function CouponsComponent() {
           <Pagination {...couponsQuery.data.meta} scrollToTopOnPageChange />
         )}
       </QueryStateHandler>
-    </div>
+    </AccountPageWrapper>
   );
 }

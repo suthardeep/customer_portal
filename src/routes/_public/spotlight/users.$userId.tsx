@@ -12,12 +12,10 @@ import { useEffect } from "react";
 
 export const Route = createFileRoute("/_public/spotlight/users/$userId")({
   loader: async ({ context, params }) => {
-    context.queryClient.ensureQueryData(
-      spotlightQueries.userProfile(params.userId),
-    );
-    context.queryClient.ensureInfiniteQueryData(
-      spotlightQueries.userPosts(params.userId),
-    );
+    await Promise.all([
+      context.queryClient.ensureQueryData(spotlightQueries.userProfile(params.userId)),
+      context.queryClient.ensureInfiniteQueryData(spotlightQueries.userPosts(params.userId)),
+    ]);
   },
   component: RouteComponent,
 });

@@ -48,7 +48,7 @@ export function MenuDrawer() {
         onClick={drawer.open}
         variant="ghost"
         color="neutral"
-        size="md"
+        size="lg"
       />
 
       <Sheet

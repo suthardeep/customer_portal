@@ -1,4 +1,5 @@
 import Header from "@/components/shared/header/Header";
+import Footer from "@/components/shared/footer/Footer";
 import { cn } from "@/utils/cssHelpers";
 import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 
@@ -24,6 +25,7 @@ function RouteComponent() {
       <div className={cn("mx-auto", maxWidth === "none" ? "" : "max-w-8xl")}>
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 }

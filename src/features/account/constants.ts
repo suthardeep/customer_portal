@@ -70,12 +70,17 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         label: "Support",
         icon: "Support",
-        to: "/",
+        to: "/account/support",
       },
       {
-        label: "Feedback & Suggestion",
-        icon: "Feedback",
-        to: "/",
+        label: "Terms & Conditions",
+        icon: "Copyright",
+        to: "/terms-and-conditions",
+      },
+      {
+        label: "Privacy Policy",
+        icon: "Shield",
+        to: "/privacy-policy",
       },
     ],
   },

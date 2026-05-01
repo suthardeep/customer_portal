@@ -167,7 +167,7 @@ const variantStateStyles: Record<
 // Base input styles — nude, no border, no background
 const baseInputStyles =
   "flex-1 min-w-0 bg-transparent border-none outline-none " +
-  "text-n-925 placeholder:text-n-600 " +
+  "text-base text-n-925 placeholder:text-n-600 " +
   "disabled:cursor-not-allowed disabled:text-n-700";
 
 // Size styles on wrapper (padding + text size)

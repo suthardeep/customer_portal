@@ -11,6 +11,7 @@ import type {
   Address,
   AddressFormData,
 } from "@/features/account/my-address/types/types";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { useToggle } from "@/hooks/useToggle";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -56,7 +57,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="account-root">
+    <AccountPageWrapper>
       <AccountPageHeader
         title="My Address"
         trailingTitleComponent={
@@ -103,6 +104,6 @@ function RouteComponent() {
         isOpen={deleteDialog.isOpen}
         onClose={deleteDialog.close}
       />
-    </div>
+    </AccountPageWrapper>
   );
 }

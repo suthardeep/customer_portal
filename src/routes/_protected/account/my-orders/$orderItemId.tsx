@@ -1,6 +1,7 @@
 import { Button } from "@/components/base/button/Button";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { MyOrderHeaderDetails } from "@/features/account/my-orders/components/MyOrderDetailsHeader";
 import { MyOrdersCancelDialog } from "@/features/account/my-orders/components/MyOrdersCancelDialog";
 import { MyOrdersDetailPaymentSection } from "@/features/account/my-orders/components/MyOrdersDetailPaymentSection";
@@ -45,7 +46,7 @@ function OrderDetailComponent() {
   console.log(order, "order");
 
   return (
-    <div className="space-y-4">
+    <AccountPageWrapper className="space-y-4">
       <AccountPageHeader title="Order Details" />
 
       <MyOrderHeaderDetails order={order} enableRating />
@@ -123,7 +124,7 @@ function OrderDetailComponent() {
         isOpen={cancelDialog.isOpen}
         onClose={cancelDialog.close}
       />
-    </div>
+    </AccountPageWrapper>
   );
 }
 

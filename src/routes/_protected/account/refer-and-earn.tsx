@@ -4,6 +4,7 @@ import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useToggle } from "@/hooks/useToggle";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { cn } from "@/utils/cssHelpers";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -28,7 +29,7 @@ function RouteComponent() {
   console.log(user, "user");
 
   return (
-    <div>
+    <AccountPageWrapper>
       <AccountPageHeader title="Refer & Earn" />
       <div className="lg:max-w-2xl mx-auto mt-6">
         <div className="w-full lg:max-w-sm mx-auto">
@@ -112,7 +113,7 @@ function RouteComponent() {
           ))}
         </ul>
       </div>
-    </div>
+    </AccountPageWrapper>
   );
 }
 

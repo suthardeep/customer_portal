@@ -1,10 +1,11 @@
 import { Button } from "@/components/base/button/Button";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { AccountSidebarContent } from "@/features/account/components/AccountSidebarContent";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/account/")({
   component: () => (
-    <>
+    <AccountPageWrapper>
       <div className="space-y-5 block lg:hidden">
         <AccountSidebarContent />
       </div>
@@ -13,6 +14,6 @@ export const Route = createFileRoute("/_protected/account/")({
           <Button>Go to my orders</Button>
         </Link>
       </div>
-    </>
+    </AccountPageWrapper>
   ),
 });

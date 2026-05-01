@@ -3,6 +3,7 @@ import { IconButton } from "@/components/base/icon-button/IconButton";
 import Spinner from "@/components/compound/spinner/Spinner";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import type { Product } from "@/features/products/types";
 import { DeleteCollectionDialog } from "@/features/wishlist/components/DeleteCollectionDialog";
@@ -45,7 +46,6 @@ function CollectionDetailComponent() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(wishlistQueries.collectionProductsInfinite(collectionId));
 
-  // Intersection Observer for infinite scroll
   const [loadMoreRef, entry] = useIntersectionObserver({ threshold: 0.5 });
 
   useEffect(() => {
@@ -54,9 +54,7 @@ function CollectionDetailComponent() {
     }
   }, [entry?.isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Flatten pages into single array
   const products = data?.pages.flatMap((page) => page.data) ?? [];
-
   const hasProducts = (collection?.itemCount ?? 0) > 0;
 
   if (isLoading) {
@@ -65,7 +63,7 @@ function CollectionDetailComponent() {
   console.log(products, "collections");
 
   return (
-    <div className="space-y-6">
+    <AccountPageWrapper className="space-y-6">
       <div className="flex items-center justify-between">
         <AccountPageHeader
           title={collection?.name ?? "Collection"}
@@ -118,7 +116,6 @@ function CollectionDetailComponent() {
             })}
           </div>
 
-          {/* Loading indicator at bottom */}
           {hasNextPage && (
             <div ref={loadMoreRef} className="flex justify-center py-8">
               {isFetchingNextPage && <Spinner />}
@@ -154,6 +151,6 @@ function CollectionDetailComponent() {
           />
         </>
       )}
-    </div>
+    </AccountPageWrapper>
   );
 }

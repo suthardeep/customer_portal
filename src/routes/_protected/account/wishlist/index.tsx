@@ -1,5 +1,6 @@
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { CollectionCard } from "@/features/wishlist/components/CollectionCard";
 import { CreateCollectionCard } from "@/features/wishlist/components/CreateCollectionCard";
 import { CreateCollectionDialog } from "@/features/wishlist/components/CreateCollectionDialog";
@@ -33,7 +34,7 @@ function WishlistCollectionsComponent() {
   const hasCollections = data?.meta?.totalRows > 0;
 
   return (
-    <div className="space-y-6">
+    <AccountPageWrapper className="space-y-6">
       <AccountPageHeader title="My Wishlist" />
 
       {hasCollections ? (
@@ -58,6 +59,6 @@ function WishlistCollectionsComponent() {
         isOpen={createDialog.isOpen}
         onClose={createDialog.close}
       />
-    </div>
+    </AccountPageWrapper>
   );
 }

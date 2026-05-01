@@ -130,7 +130,7 @@ const contentHeights: Record<ButtonSize, string> = {
 const sizeStyles: Record<ButtonSize, string> = {
   xs: "px-2 py-0.5 text-xs gap-1",
   sm: "px-3 py-1 text-sm gap-1.5",
-  md: "px-3 py-1 text-sm gap-2",
+  md: "px-3 py-2 text-base gap-2",
   lg: "px-5 py-2.5 text-base gap-2.5",
 };
 

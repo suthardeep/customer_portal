@@ -50,7 +50,7 @@ function RegisterRouteComponent() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-n-200">
+    <div className="flex items-center justify-center h-screen overflow-hidden bg-n-200">
       <div className="w-full max-w-md shadow-md rounded-2xl p-8 bg-white border border-n-300">
         {phone && (
           <div className="mb-4">

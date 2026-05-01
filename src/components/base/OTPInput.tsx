@@ -131,7 +131,7 @@ const OTPInput = forwardRef<OTPInputHandle, OTPInputProps>(
     };
 
     return (
-      <div className="flex items-center justify-center space-x-3">
+      <div className="flex items-center justify-center space-x-1 md:space-x-3">
         {Array.from({ length }, (_, index) => (
           <Input
             key={index}
@@ -144,7 +144,7 @@ const OTPInput = forwardRef<OTPInputHandle, OTPInputProps>(
             onKeyDown={(e) => handleKeyDown(e, index)}
             onPaste={index === 0 ? handlePaste : undefined}
             autoFocus={autoFocus && index === 0}
-            className="h-14 w-12 rounded-lg border border-gray-300 bg-gray-50 text-center text-base font-medium transition-all focus:border-primary-500 focus:outline-none"
+            className="md:h-14 md:w-12 h-12 w-10 rounded-lg border border-gray-300 bg-gray-50 text-center text-base font-medium transition-all focus:border-primary-500 focus:outline-none"
             aria-label={`OTP digit ${index + 1}`}
             wrapperClassName="[&>div]:p-1"
           />

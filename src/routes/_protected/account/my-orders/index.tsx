@@ -2,6 +2,7 @@ import Pagination from "@/components/compound/Pagination";
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { MyOrdersCard } from "@/features/account/my-orders/components/MyOrdersCard";
 import { MyOrdersListSkeleton } from "@/features/account/my-orders/components/skeletons/MyOrdersListSkeleton";
 import { MY_ORDERS_PAGE_SIZE } from "@/features/account/my-orders/constants";
@@ -40,7 +41,7 @@ function MyOrdersComponent() {
   const myOrdersQuery = useQuery(myOrderQueries.list(params));
 
   return (
-    <div>
+    <AccountPageWrapper>
       <AccountPageHeader title="My Orders" />
 
       <QueryStateHandler
@@ -59,6 +60,6 @@ function MyOrdersComponent() {
           )}
         </div>
       </QueryStateHandler>
-    </div>
+    </AccountPageWrapper>
   );
 }

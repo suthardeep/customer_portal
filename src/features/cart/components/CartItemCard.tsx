@@ -45,7 +45,7 @@ export function CartItemCard({
         <Image src={image} alt={item.name} />
       </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+      <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center justify-between gap-2">
           <Link
             to="/products/$productId"
@@ -66,14 +66,11 @@ export function CartItemCard({
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex md:items-center flex-col md:flex-row gap-2">
           <OptionValuesRenderer optionValues={item.optionValues} />
-          {(item.totalAavakCoinForUser ?? 0) > 0 && (
-            <AavakCoinsChip coins={item.totalAavakCoinForUser} />
-          )}
         </div>
 
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline py-2 gap-2">
           <h6 className="font-bold text-n-900">
             {formatCurrency(item.sellingPrice)}
           </h6>
@@ -85,13 +82,17 @@ export function CartItemCard({
         </div>
 
         <div className="flex justify-between items-center w-full">
-          <p className="text-xs text-n-900">7 Days Returnable</p>
-          <QuantitySelector
-            value={item.quantity}
-            onChange={(q) => onQuantityChange(item.variantId, q)}
-            disabled={isUpdating}
-            min={0}
-          />
+          {(item.totalAavakCoinForUser ?? 0) > 0 && (
+            <AavakCoinsChip coins={item.totalAavakCoinForUser} />
+          )}
+          <div className="ml-auto">
+            <QuantitySelector
+              value={item.quantity}
+              onChange={(q) => onQuantityChange(item.variantId, q)}
+              disabled={isUpdating}
+              min={0}
+            />
+          </div>
         </div>
       </div>
     </div>

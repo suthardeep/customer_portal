@@ -13,8 +13,10 @@ import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicTermsAndConditionsRouteImport } from './routes/_public/terms-and-conditions'
 import { Route as PublicSubscriptionRouteImport } from './routes/_public/subscription'
 import { Route as PublicSearchRouteImport } from './routes/_public/search'
+import { Route as PublicPrivacyPolicyRouteImport } from './routes/_public/privacy-policy'
 import { Route as PublicCartRouteImport } from './routes/_public/cart'
 import { Route as ProtectedOrderErrorRouteImport } from './routes/_protected/order-error'
 import { Route as ProtectedCheckoutRouteImport } from './routes/_protected/checkout'
@@ -41,6 +43,7 @@ import { Route as PublicSpotlightProtectedRouteRouteImport } from './routes/_pub
 import { Route as PublicSpotlightShortsIndexRouteImport } from './routes/_public/spotlight/shorts/index'
 import { Route as PublicSpotlightCampaignsIndexRouteImport } from './routes/_public/spotlight/campaigns/index'
 import { Route as ProtectedAccountWishlistIndexRouteImport } from './routes/_protected/account/wishlist/index'
+import { Route as ProtectedAccountSupportIndexRouteImport } from './routes/_protected/account/support/index'
 import { Route as ProtectedAccountMyOrdersIndexRouteImport } from './routes/_protected/account/my-orders/index'
 import { Route as PublicSpotlightUsersUserIdRouteImport } from './routes/_public/spotlight/users.$userId'
 import { Route as PublicSpotlightShortsIdRouteImport } from './routes/_public/spotlight/shorts/$id'
@@ -73,6 +76,12 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicRouteRoute,
 } as any)
+const PublicTermsAndConditionsRoute =
+  PublicTermsAndConditionsRouteImport.update({
+    id: '/terms-and-conditions',
+    path: '/terms-and-conditions',
+    getParentRoute: () => PublicRouteRoute,
+  } as any)
 const PublicSubscriptionRoute = PublicSubscriptionRouteImport.update({
   id: '/subscription',
   path: '/subscription',
@@ -81,6 +90,11 @@ const PublicSubscriptionRoute = PublicSubscriptionRouteImport.update({
 const PublicSearchRoute = PublicSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicPrivacyPolicyRoute = PublicPrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => PublicRouteRoute,
 } as any)
 const PublicCartRoute = PublicCartRouteImport.update({
@@ -221,6 +235,12 @@ const ProtectedAccountWishlistIndexRoute =
     path: '/wishlist/',
     getParentRoute: () => ProtectedAccountRouteRoute,
   } as any)
+const ProtectedAccountSupportIndexRoute =
+  ProtectedAccountSupportIndexRouteImport.update({
+    id: '/support/',
+    path: '/support/',
+    getParentRoute: () => ProtectedAccountRouteRoute,
+  } as any)
 const ProtectedAccountMyOrdersIndexRoute =
   ProtectedAccountMyOrdersIndexRouteImport.update({
     id: '/my-orders/',
@@ -316,8 +336,10 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof ProtectedCheckoutRoute
   '/order-error': typeof ProtectedOrderErrorRoute
   '/cart': typeof PublicCartRoute
+  '/privacy-policy': typeof PublicPrivacyPolicyRoute
   '/search': typeof PublicSearchRoute
   '/subscription': typeof PublicSubscriptionRoute
+  '/terms-and-conditions': typeof PublicTermsAndConditionsRoute
   '/account/coupons': typeof ProtectedAccountCouponsRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
   '/account/refer-and-earn': typeof ProtectedAccountReferAndEarnRoute
@@ -342,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
   '/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
+  '/account/support/': typeof ProtectedAccountSupportIndexRoute
   '/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
   '/spotlight/campaigns/': typeof PublicSpotlightCampaignsIndexRoute
   '/spotlight/shorts/': typeof PublicSpotlightShortsIndexRoute
@@ -358,8 +381,10 @@ export interface FileRoutesByTo {
   '/checkout': typeof ProtectedCheckoutRoute
   '/order-error': typeof ProtectedOrderErrorRoute
   '/cart': typeof PublicCartRoute
+  '/privacy-policy': typeof PublicPrivacyPolicyRoute
   '/search': typeof PublicSearchRoute
   '/subscription': typeof PublicSubscriptionRoute
+  '/terms-and-conditions': typeof PublicTermsAndConditionsRoute
   '/spotlight': typeof PublicSpotlightIndexRoute
   '/account/coupons': typeof ProtectedAccountCouponsRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
@@ -384,6 +409,7 @@ export interface FileRoutesByTo {
   '/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
   '/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/account/my-orders': typeof ProtectedAccountMyOrdersIndexRoute
+  '/account/support': typeof ProtectedAccountSupportIndexRoute
   '/account/wishlist': typeof ProtectedAccountWishlistIndexRoute
   '/spotlight/campaigns': typeof PublicSpotlightCampaignsIndexRoute
   '/spotlight/shorts': typeof PublicSpotlightShortsIndexRoute
@@ -405,8 +431,10 @@ export interface FileRoutesById {
   '/_protected/checkout': typeof ProtectedCheckoutRoute
   '/_protected/order-error': typeof ProtectedOrderErrorRoute
   '/_public/cart': typeof PublicCartRoute
+  '/_public/privacy-policy': typeof PublicPrivacyPolicyRoute
   '/_public/search': typeof PublicSearchRoute
   '/_public/subscription': typeof PublicSubscriptionRoute
+  '/_public/terms-and-conditions': typeof PublicTermsAndConditionsRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/spotlight/_protected': typeof PublicSpotlightProtectedRouteRouteWithChildren
   '/_protected/account/coupons': typeof ProtectedAccountCouponsRoute
@@ -433,6 +461,7 @@ export interface FileRoutesById {
   '/_public/spotlight/shorts/$id': typeof PublicSpotlightShortsIdRoute
   '/_public/spotlight/users/$userId': typeof PublicSpotlightUsersUserIdRoute
   '/_protected/account/my-orders/': typeof ProtectedAccountMyOrdersIndexRoute
+  '/_protected/account/support/': typeof ProtectedAccountSupportIndexRoute
   '/_protected/account/wishlist/': typeof ProtectedAccountWishlistIndexRoute
   '/_public/spotlight/campaigns/': typeof PublicSpotlightCampaignsIndexRoute
   '/_public/spotlight/shorts/': typeof PublicSpotlightShortsIndexRoute
@@ -453,8 +482,10 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/order-error'
     | '/cart'
+    | '/privacy-policy'
     | '/search'
     | '/subscription'
+    | '/terms-and-conditions'
     | '/account/coupons'
     | '/account/my-address'
     | '/account/refer-and-earn'
@@ -479,6 +510,7 @@ export interface FileRouteTypes {
     | '/spotlight/shorts/$id'
     | '/spotlight/users/$userId'
     | '/account/my-orders/'
+    | '/account/support/'
     | '/account/wishlist/'
     | '/spotlight/campaigns/'
     | '/spotlight/shorts/'
@@ -495,8 +527,10 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/order-error'
     | '/cart'
+    | '/privacy-policy'
     | '/search'
     | '/subscription'
+    | '/terms-and-conditions'
     | '/spotlight'
     | '/account/coupons'
     | '/account/my-address'
@@ -521,6 +555,7 @@ export interface FileRouteTypes {
     | '/spotlight/shorts/$id'
     | '/spotlight/users/$userId'
     | '/account/my-orders'
+    | '/account/support'
     | '/account/wishlist'
     | '/spotlight/campaigns'
     | '/spotlight/shorts'
@@ -541,8 +576,10 @@ export interface FileRouteTypes {
     | '/_protected/checkout'
     | '/_protected/order-error'
     | '/_public/cart'
+    | '/_public/privacy-policy'
     | '/_public/search'
     | '/_public/subscription'
+    | '/_public/terms-and-conditions'
     | '/_public/'
     | '/_public/spotlight/_protected'
     | '/_protected/account/coupons'
@@ -569,6 +606,7 @@ export interface FileRouteTypes {
     | '/_public/spotlight/shorts/$id'
     | '/_public/spotlight/users/$userId'
     | '/_protected/account/my-orders/'
+    | '/_protected/account/support/'
     | '/_protected/account/wishlist/'
     | '/_public/spotlight/campaigns/'
     | '/_public/spotlight/shorts/'
@@ -613,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRouteRoute
     }
+    '/_public/terms-and-conditions': {
+      id: '/_public/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof PublicTermsAndConditionsRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
     '/_public/subscription': {
       id: '/_public/subscription'
       path: '/subscription'
@@ -625,6 +670,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof PublicSearchRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/privacy-policy': {
+      id: '/_public/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PublicPrivacyPolicyRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_public/cart': {
@@ -809,6 +861,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAccountWishlistIndexRouteImport
       parentRoute: typeof ProtectedAccountRouteRoute
     }
+    '/_protected/account/support/': {
+      id: '/_protected/account/support/'
+      path: '/support'
+      fullPath: '/account/support/'
+      preLoaderRoute: typeof ProtectedAccountSupportIndexRouteImport
+      parentRoute: typeof ProtectedAccountRouteRoute
+    }
     '/_protected/account/my-orders/': {
       id: '/_protected/account/my-orders/'
       path: '/my-orders'
@@ -935,6 +994,7 @@ interface ProtectedAccountRouteRouteChildren {
   ProtectedAccountMyOrdersOrderItemIdRoute: typeof ProtectedAccountMyOrdersOrderItemIdRoute
   ProtectedAccountWishlistCollectionIdRoute: typeof ProtectedAccountWishlistCollectionIdRoute
   ProtectedAccountMyOrdersIndexRoute: typeof ProtectedAccountMyOrdersIndexRoute
+  ProtectedAccountSupportIndexRoute: typeof ProtectedAccountSupportIndexRoute
   ProtectedAccountWishlistIndexRoute: typeof ProtectedAccountWishlistIndexRoute
   ProtectedAccountMyOrdersReturnOrderItemIdRoute: typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
 }
@@ -950,6 +1010,7 @@ const ProtectedAccountRouteRouteChildren: ProtectedAccountRouteRouteChildren = {
   ProtectedAccountWishlistCollectionIdRoute:
     ProtectedAccountWishlistCollectionIdRoute,
   ProtectedAccountMyOrdersIndexRoute: ProtectedAccountMyOrdersIndexRoute,
+  ProtectedAccountSupportIndexRoute: ProtectedAccountSupportIndexRoute,
   ProtectedAccountWishlistIndexRoute: ProtectedAccountWishlistIndexRoute,
   ProtectedAccountMyOrdersReturnOrderItemIdRoute:
     ProtectedAccountMyOrdersReturnOrderItemIdRoute,
@@ -1042,8 +1103,10 @@ const PublicSpotlightRouteRouteWithChildren =
 interface PublicRouteRouteChildren {
   PublicSpotlightRouteRoute: typeof PublicSpotlightRouteRouteWithChildren
   PublicCartRoute: typeof PublicCartRoute
+  PublicPrivacyPolicyRoute: typeof PublicPrivacyPolicyRoute
   PublicSearchRoute: typeof PublicSearchRoute
   PublicSubscriptionRoute: typeof PublicSubscriptionRoute
+  PublicTermsAndConditionsRoute: typeof PublicTermsAndConditionsRoute
   PublicIndexRoute: typeof PublicIndexRoute
   PublicCategoriesCategoryIdRoute: typeof PublicCategoriesCategoryIdRoute
   PublicProductsProductIdRoute: typeof PublicProductsProductIdRoute
@@ -1055,8 +1118,10 @@ interface PublicRouteRouteChildren {
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicSpotlightRouteRoute: PublicSpotlightRouteRouteWithChildren,
   PublicCartRoute: PublicCartRoute,
+  PublicPrivacyPolicyRoute: PublicPrivacyPolicyRoute,
   PublicSearchRoute: PublicSearchRoute,
   PublicSubscriptionRoute: PublicSubscriptionRoute,
+  PublicTermsAndConditionsRoute: PublicTermsAndConditionsRoute,
   PublicIndexRoute: PublicIndexRoute,
   PublicCategoriesCategoryIdRoute: PublicCategoriesCategoryIdRoute,
   PublicProductsProductIdRoute: PublicProductsProductIdRoute,

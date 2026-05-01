@@ -70,13 +70,14 @@ export default function Header() {
             <HeaderSpotlightIcon className="hidden lg:flex" />
             <HeaderFintechIcon className="hidden lg:flex" />
             <HeaderProtectIcon className="hidden lg:flex" />
-            <div className="lg:hidden space-x-2">
+            <div className="lg:hidden flex items-center gap-1 shrink-0">
               <Link to="/search" search={{ q: "" }}>
                 <IconButton
                   icon="Search"
                   aria-label="Search"
                   variant="ghost"
                   color="neutral"
+                  size="lg"
                 />
               </Link>
               <MenuDrawer />

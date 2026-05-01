@@ -24,6 +24,7 @@ export const getRouter = () => {
 
     defaultPreload: "intent",
     defaultPreloadStaleTime: 1000 * 60 * 10,
+    defaultPendingMs: 300,
   });
 
   setupRouterSsrQueryIntegration({
@@ -51,5 +52,6 @@ declare module "@tanstack/react-router" {
     showSpotlightBottomBar?: boolean;
     maxWidth?: "max-w-7xl" | "max-w-8xl" | "none";
     hideHeader?: "all" | "desktop" | "mobile";
+    hideFooter?: boolean;
   }
 }

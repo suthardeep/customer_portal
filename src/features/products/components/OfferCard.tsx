@@ -103,7 +103,7 @@ export function OfferCard({ offer, onApply }: OfferCardProps) {
         title="Terms & Conditions"
         size="md"
       >
-        <div className="prose prose-sm">
+        <div className="prose-content">
           <p>
             Terms and conditions for this offer would be loaded from{" "}
             {offer.termsLink}

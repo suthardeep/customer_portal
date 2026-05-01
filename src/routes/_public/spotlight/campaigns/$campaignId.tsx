@@ -19,12 +19,14 @@ export const Route = createFileRoute(
 )({
   component: RouteComponent,
   loader: async ({ context, params }) => {
-    await context.queryClient.ensureQueryData(
-      campaignQueries.campaignDetail(params.campaignId),
-    );
-    context.queryClient.prefetchQuery(
-      campaignQueries.myCampaignSubmissions(params.campaignId, {}),
-    );
+    await Promise.all([
+      context.queryClient.ensureQueryData(
+        campaignQueries.campaignDetail(params.campaignId),
+      ),
+      context.queryClient.prefetchQuery(
+        campaignQueries.myCampaignSubmissions(params.campaignId, {}),
+      ),
+    ]);
   },
 });
 
@@ -39,7 +41,6 @@ function RouteComponent() {
 
   const isCampaignEnded = dayjs().isAfter(dayjs(data.endDate));
   const isRewardsFull = data.rewardedCreatorCount >= data.numberOfInfluencers;
-  console.log(submissions, "submissions");
 
   return (
     <div className="relative">

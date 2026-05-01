@@ -1,5 +1,6 @@
 import { Image } from "@/components/base/Image";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { ReturnProductForm } from "@/features/account/my-orders/components/ReturnProductForm";
 import { myOrderQueries } from "@/features/account/my-orders/myOrdersQueries";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -30,7 +31,7 @@ function RouteComponent() {
   };
 
   return (
-    <div>
+    <AccountPageWrapper>
       <AccountPageHeader title="Return Item" />
       <div className="p-2 rounded-xl border border-n-400 flex gap-4">
         <div className="size-16 shrink-0 overflow-hidden">
@@ -48,6 +49,6 @@ function RouteComponent() {
         </div>
       </div>
       <ReturnProductForm orderItemId={orderItemId} onSuccess={handleSuccess} />
-    </div>
+    </AccountPageWrapper>
   );
 }

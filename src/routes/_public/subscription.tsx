@@ -9,14 +9,18 @@ import { SubscriptionPlanSelector } from "@/features/account/subscription/compon
 import { SubscriptionSunburst } from "@/features/account/subscription/components/SubscriptionSunburst";
 import { SubscriptionStatus } from "@/features/account/subscription/types/enums";
 import { subscriptionQueries } from "@/features/account/subscription/subscriptionQueries";
+import SubscriptionSkeleton from "@/features/account/subscription/components/skeletons/SubscriptionSkeleton";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_public/subscription")({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(subscriptionQueries.plans());
-    await context.queryClient.prefetchQuery(subscriptionQueries.current());
+    await Promise.all([
+      context.queryClient.prefetchQuery(subscriptionQueries.plans()),
+      context.queryClient.prefetchQuery(subscriptionQueries.current()),
+    ]);
   },
+  pendingComponent: SubscriptionSkeleton,
   component: SubscriptionPage,
   errorComponent: SubscriptionErrorComponent,
   staticData: {

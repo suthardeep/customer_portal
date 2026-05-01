@@ -13,7 +13,7 @@ function RouteComponent() {
   return (
     <div className="flex gap-x-7 p-4 md:p-6 lg:py-8 items-start">
       <AccountSidebar />
-      <div className="rounded-xl bg-white lg:[&>div]:p-6 lg:border border-n-400 w-full">
+      <div className="rounded-xl bg-white lg:border border-n-400 w-full">
         <Outlet />
       </div>
     </div>

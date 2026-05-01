@@ -20,7 +20,7 @@ function VerifyOtpRouteComponent() {
   const routeToNavigate = redirectTo || "/";
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-4 max-w-lg mx-auto">
+    <div className="flex h-screen overflow-hidden flex-col items-center justify-center gap-4 max-w-lg mx-auto">
       <VerifyOtpForm
         phone={phone}
         fullName={fullName}

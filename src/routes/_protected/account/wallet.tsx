@@ -1,6 +1,7 @@
 import Divider from "@/components/base/Divider";
 import { Image } from "@/components/base/Image";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { HeldAmountCard } from "@/features/account/wallet/components/HeldAmountCard";
 import { RedeemAmountCard } from "@/features/account/wallet/components/RedeemAmountCard";
 import { TransactionHistory } from "@/features/account/wallet/components/TransactionHistory";
@@ -20,8 +21,8 @@ export const Route = createFileRoute("/_protected/account/wallet")({
 function RouteComponent() {
   const { data } = useSuspenseQuery(walletQueries.balance());
   return (
-    <div className="p-0!">
-      <div className="lg:p-6">
+    <div>
+      <AccountPageWrapper className="pb-6">
         <AccountPageHeader title="Aavak Balance" />
         <div className="fall gap-3 mt-8">
           <div className="size-10">
@@ -43,34 +44,14 @@ function RouteComponent() {
           <RedeemAmountCard earnedBalance={data?.earnedBalance} />
           <HeldAmountCard heldBalance={data?.heldBalance} />
         </div>
-      </div>
-      <Divider />
-      <div className="lg:p-6">
-        <div className="flex items-center justify-between mb-4">
+      </AccountPageWrapper>
+      <Divider className="-mx-4 md:-mx-6 w-auto lg:mx-0" />
+      <AccountPageWrapper className="mt-6 lg:mt-0">
+        <div className="flex items-center justify-between mb-2 md:mb-4">
           <h6 className="font-semibold">Transaction History</h6>
         </div>
         <TransactionHistory />
-      </div>
-      {/* <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h6 className="font-semibold">
-            {isTransactionHistory?.isOpen ? "Transaction" : "Withdrawal"}{" "}
-            History
-          </h6>
-          <Button
-            onClick={isTransactionHistory.toggle}
-            variant="ghost"
-            size="sm"
-          >
-            View {isTransactionHistory.isOpen ? "Transactions" : "Withdrawals"}
-          </Button>
-        </div>
-        {isTransactionHistory.isOpen ? (
-          <TransactionHistory />
-        ) : (
-          <WithdrawalHistory />
-        )}
-      </div> */}
+      </AccountPageWrapper>
     </div>
   );
 }
