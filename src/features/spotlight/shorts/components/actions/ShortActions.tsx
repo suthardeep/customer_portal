@@ -23,7 +23,7 @@ const ShortActions: React.FC<ShortActionsProps> = (props) => {
       )}
     >
       <ShortLike isLiked={isLiked} likes={stats.likes} postId={postId} />
-      <ShortShare shares={stats.shares} />
+      <ShortShare shares={stats.shares} postId={postId} />
       <ShortViews views={stats.views} />
       <ShortBookmark
         isBookmarked={isBookmarked}

@@ -35,6 +35,7 @@ function SubscriptionPage() {
   const { data: currentSubscription } = useSuspenseQuery(
     subscriptionQueries.current(),
   );
+  console.log(currentSubscription, "currentSubscription");
 
   const hasActivePlan =
     currentSubscription?.isPremiumActive ||

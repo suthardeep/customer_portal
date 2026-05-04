@@ -10,6 +10,7 @@ import {
   getMyPostById,
   getUserProfile,
   getUserPosts,
+  getCreatorStore,
 } from "./spotlightService";
 import { spotlightKeys } from "./spotlightQueryFactory";
 
@@ -122,5 +123,14 @@ export const spotlightQueries = {
       initialPageParam: 1,
       getNextPageParam: (lastPage) =>
         lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
+    }),
+
+  creatorStore: (customerId: string) =>
+    queryOptions({
+      queryKey: spotlightKeys.creatorStore(customerId),
+      queryFn: async () => {
+        const response = await getCreatorStore({ data: customerId });
+        return response.data;
+      },
     }),
 };

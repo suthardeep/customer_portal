@@ -8,6 +8,7 @@ import type {
   CreateDirectPostRequest,
   CreateSpotlightProfileRequest,
   CreatorAnalyticsResponse,
+  CreatorStoreResponse,
   FeedExploreParams,
   FeedExploreResponse,
   LikeToggleData,
@@ -134,6 +135,16 @@ export const getMyPostById = createServerFn({ method: "GET" })
     return apiRequest<PostDetailResponse>(`/v1/ugc/posts/me/${postId}`, {
       token,
     });
+  });
+
+export const getCreatorStore = createServerFn({ method: "GET" })
+  .inputValidator((data: string) => data)
+  .handler(async ({ data: customerId }): Promise<CreatorStoreResponse> => {
+    const token = getToken();
+    return apiRequest<CreatorStoreResponse>(
+      `/v1/ugc/creators/${customerId}/store`,
+      { token },
+    );
   });
 
 export const getUserProfile = createServerFn({ method: "GET" })

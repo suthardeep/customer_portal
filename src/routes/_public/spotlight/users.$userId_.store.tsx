@@ -1,26 +1,15 @@
 import { Image } from "@/components/base/Image";
 import { IconButton } from "@/components/base/icon-button/IconButton";
-import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
-import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
+import { CreatorStoreProductCard } from "@/features/spotlight/components/CreatorStoreProductCard";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
-import {
-  useSuspenseInfiniteQuery,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useCanGoBack } from "@tanstack/react-router";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
-import { useEffect } from "react";
 
-export const Route = createFileRoute("/_public/spotlight/users/$userId")({
+export const Route = createFileRoute("/_public/spotlight/users/$userId_/store")({
   loader: async ({ context, params }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(
-        spotlightQueries.userProfile(params.userId),
-      ),
-      context.queryClient.ensureInfiniteQueryData(
-        spotlightQueries.userPosts(params.userId),
-      ),
-    ]);
+    await context.queryClient.ensureQueryData(
+      spotlightQueries.creatorStore(params.userId),
+    );
   },
   component: RouteComponent,
 });
@@ -28,28 +17,14 @@ export const Route = createFileRoute("/_public/spotlight/users/$userId")({
 function RouteComponent() {
   const { userId } = Route.useParams();
 
-  const { data: profile } = useSuspenseQuery(
-    spotlightQueries.userProfile(userId),
-  );
-  console.log(profile, "profile");
+  const { data } = useSuspenseQuery(spotlightQueries.creatorStore(userId));
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useSuspenseInfiniteQuery(spotlightQueries.userPosts(userId));
-
-  const [loadMoreRef, entry] = useIntersectionObserver({ threshold: 0.5 });
-
-  useEffect(() => {
-    if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [entry?.isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const posts = data.pages.flatMap((page) => page.data);
+  const { creator, products } = data;
   const canGoBack = useCanGoBack();
 
   const stats = [
-    { value: profile.postCount, label: "Posts" },
-    { value: profile.totalViewCount, label: "Views" },
+    { value: creator.postCount, label: "Posts" },
+    { value: creator.followerCount, label: "Followers" },
   ];
 
   return (
@@ -58,9 +33,9 @@ function RouteComponent() {
       <div className="rounded-2xl overflow-hidden border border-n-300">
         {/* Banner */}
         <div className="relative h-36 bg-n-200">
-          {profile.bannerImageUrl && (
+          {creator.bannerImageUrl && (
             <Image
-              src={profile.bannerImageUrl}
+              src={creator.bannerImageUrl}
               alt="Banner"
               className="size-full object-cover"
             />
@@ -77,7 +52,7 @@ function RouteComponent() {
               />
             )}
             <IconButton
-              aria-label="Share creator"
+              aria-label="Share creator store"
               icon="Share"
               size="lg"
               className="bg-white hover:bg-p-100"
@@ -92,16 +67,16 @@ function RouteComponent() {
           <div className="flex justify-center -mt-10">
             <div className="size-28 shrink-0 overflow-hidden rounded-full border-4 border-white bg-n-100">
               <Image
-                src={profile.profileImageUrl}
-                alt={profile.name}
+                src={creator.profileImageUrl}
+                alt={creator.name}
                 className="size-full rounded-full object-cover"
               />
             </div>
           </div>
           <div className="mt-2 space-y-1.5 text-center">
-            <h5 className="font-semibold text-n-900">{profile.name}</h5>
-            {profile.bio && (
-              <p className="text-n-800 line-clamp-2">{profile.bio}</p>
+            <h5 className="font-semibold text-n-900">{creator.name}</h5>
+            {creator.bio && (
+              <p className="text-n-800 line-clamp-2">{creator.bio}</p>
             )}
             <div className="flex justify-center gap-2">
               {stats.map((stat) => (
@@ -118,14 +93,19 @@ function RouteComponent() {
         </div>
       </div>
 
-      {/* Posts grid */}
-      <SpotlightPostGrid isLoading={isFetchingNextPage}>
-        {posts.map((post) => (
-          <SpotlightPostCard key={post.id} post={post} />
-        ))}
-      </SpotlightPostGrid>
-
-      {hasNextPage && <div ref={loadMoreRef} />}
+      {/* Products grid */}
+      {products.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <p className="font-medium text-n-900">No products yet</p>
+          <p className="text-n-700">This creator hasn't added any products to their store.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {products.map((product) => (
+            <CreatorStoreProductCard key={product.productId} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
+import { useCreateProductShareLinkMutation } from "@/features/affiliate/affiliateMutations";
+import { useShareLink } from "@/features/affiliate/hooks/useShareLink";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
@@ -40,6 +42,18 @@ export function ProductTopBar({
 
   const openWishlistSheet = useWishlistSheetStore((state) => state.open);
   const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
+
+  const shareLink = useCreateProductShareLinkMutation();
+  const shareAction = useShareLink();
+
+  const handleShareClick = async () => {
+    if (!isAuthenticated) {
+      loginDialog.open();
+      return;
+    }
+    const link = await shareLink.mutateAsync({ productId, variantId });
+    await shareAction.share(link, productName);
+  };
 
   const handleAddToWishlist = () => {
     if (!isAuthenticated) {
@@ -89,7 +103,8 @@ export function ProductTopBar({
           size="lg"
           variant="ghost"
           color="neutral"
-          onClick={() => console.log("Share clicked")}
+          onClick={handleShareClick}
+          isLoading={shareLink.isPending}
           aria-label="Share product"
         />
       </div>

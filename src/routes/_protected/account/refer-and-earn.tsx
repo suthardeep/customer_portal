@@ -2,8 +2,9 @@ import { Icon } from "@/components/base/icon/Icon";
 import { Image } from "@/components/base/Image";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
+import { useCreateReferralShareLinkMutation } from "@/features/affiliate/affiliateMutations";
+import { useShareLink } from "@/features/affiliate/hooks/useShareLink";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useToggle } from "@/hooks/useToggle";
 import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { cn } from "@/utils/cssHelpers";
 import { createFileRoute } from "@tanstack/react-router";
@@ -14,19 +15,17 @@ export const Route = createFileRoute("/_protected/account/refer-and-earn")({
 
 function RouteComponent() {
   const { user, isLoading } = useAuth();
-  const copyToggle = useToggle();
+  const shareLink = useCreateReferralShareLinkMutation();
+  const { share, copied } = useShareLink();
   const referralCode = user?.referralCode ?? "";
   const referredByCode = user?.referredByCode;
   const referralCount = user?.referralCount ?? 0;
-  const handleCopyClick = () => {
-    const url = `${window.location.origin}/register?referralCode=${referralCode}&autoVerifyReferCode=true`;
-    navigator.clipboard.writeText(url);
-    copyToggle.open();
-    setTimeout(() => {
-      copyToggle.close();
-    }, 1000);
+
+  const handleCopyClick = async () => {
+    if (!referralCode) return;
+    const link = await shareLink.mutateAsync({ targetId: referralCode });
+    await share(link, "Join me on Aavak!");
   };
-  console.log(user, "user");
 
   return (
     <AccountPageWrapper>
@@ -60,12 +59,13 @@ function RouteComponent() {
                 <div
                   className={cn(
                     "transition-transform",
-                    copyToggle.isOpen ? "-translate-y-1/2" : "translate-y-0",
+                    copied.isOpen ? "-translate-y-1/2" : "translate-y-0",
                   )}
                 >
                   <button
-                    className="flex items-center gap-1.5 text-p-700 font-medium hover:bg-p-50 rounded-lg py-2 cursor-pointer px-3"
+                    className="flex items-center gap-1.5 text-p-700 font-medium hover:bg-p-50 rounded-lg py-2 cursor-pointer px-3 disabled:opacity-50"
                     onClick={handleCopyClick}
+                    disabled={shareLink.isPending}
                   >
                     <Icon name="Copy" size="lg" className="text-p-700" />
                     <span>Copy link</span>

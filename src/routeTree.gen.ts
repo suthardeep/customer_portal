@@ -13,6 +13,7 @@ import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as SCodeRouteImport } from './routes/s.$code'
 import { Route as PublicTermsAndConditionsRouteImport } from './routes/_public/terms-and-conditions'
 import { Route as PublicSubscriptionRouteImport } from './routes/_public/subscription'
 import { Route as PublicSearchRouteImport } from './routes/_public/search'
@@ -56,6 +57,7 @@ import { Route as PublicCategoriesProductsCategoryIdRouteImport } from './routes
 import { Route as ProtectedAccountWishlistCollectionIdRouteImport } from './routes/_protected/account/wishlist/$collectionId'
 import { Route as ProtectedAccountMyOrdersOrderItemIdRouteImport } from './routes/_protected/account/my-orders/$orderItemId'
 import { Route as PublicSpotlightProtectedMyPostsIndexRouteImport } from './routes/_public/spotlight/_protected/my-posts/index'
+import { Route as PublicSpotlightUsersUserIdStoreRouteImport } from './routes/_public/spotlight/users.$userId_.store'
 import { Route as PublicSpotlightProtectedMyPostsPostIdRouteImport } from './routes/_public/spotlight/_protected/my-posts/$postId'
 import { Route as ProtectedAccountMyOrdersReturnOrderItemIdRouteImport } from './routes/_protected/account/my-orders/return.$orderItemId'
 
@@ -75,6 +77,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PublicRouteRoute,
+} as any)
+const SCodeRoute = SCodeRouteImport.update({
+  id: '/s/$code',
+  path: '/s/$code',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PublicTermsAndConditionsRoute =
   PublicTermsAndConditionsRouteImport.update({
@@ -312,6 +319,12 @@ const PublicSpotlightProtectedMyPostsIndexRoute =
     path: '/my-posts/',
     getParentRoute: () => PublicSpotlightProtectedRouteRoute,
   } as any)
+const PublicSpotlightUsersUserIdStoreRoute =
+  PublicSpotlightUsersUserIdStoreRouteImport.update({
+    id: '/users/$userId_/store',
+    path: '/users/$userId/store',
+    getParentRoute: () => PublicSpotlightRouteRoute,
+  } as any)
 const PublicSpotlightProtectedMyPostsPostIdRoute =
   PublicSpotlightProtectedMyPostsPostIdRouteImport.update({
     id: '/my-posts/$postId',
@@ -340,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof PublicSearchRoute
   '/subscription': typeof PublicSubscriptionRoute
   '/terms-and-conditions': typeof PublicTermsAndConditionsRoute
+  '/s/$code': typeof SCodeRoute
   '/account/coupons': typeof ProtectedAccountCouponsRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
   '/account/refer-and-earn': typeof ProtectedAccountReferAndEarnRoute
@@ -370,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/spotlight/shorts/': typeof PublicSpotlightShortsIndexRoute
   '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
   '/spotlight/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/spotlight/users/$userId/store': typeof PublicSpotlightUsersUserIdStoreRoute
   '/spotlight/my-posts/': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -385,6 +400,7 @@ export interface FileRoutesByTo {
   '/search': typeof PublicSearchRoute
   '/subscription': typeof PublicSubscriptionRoute
   '/terms-and-conditions': typeof PublicTermsAndConditionsRoute
+  '/s/$code': typeof SCodeRoute
   '/spotlight': typeof PublicSpotlightIndexRoute
   '/account/coupons': typeof ProtectedAccountCouponsRoute
   '/account/my-address': typeof ProtectedAccountMyAddressRoute
@@ -415,6 +431,7 @@ export interface FileRoutesByTo {
   '/spotlight/shorts': typeof PublicSpotlightShortsIndexRoute
   '/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
   '/spotlight/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/spotlight/users/$userId/store': typeof PublicSpotlightUsersUserIdStoreRoute
   '/spotlight/my-posts': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRoutesById {
@@ -435,6 +452,7 @@ export interface FileRoutesById {
   '/_public/search': typeof PublicSearchRoute
   '/_public/subscription': typeof PublicSubscriptionRoute
   '/_public/terms-and-conditions': typeof PublicTermsAndConditionsRoute
+  '/s/$code': typeof SCodeRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/spotlight/_protected': typeof PublicSpotlightProtectedRouteRouteWithChildren
   '/_protected/account/coupons': typeof ProtectedAccountCouponsRoute
@@ -467,6 +485,7 @@ export interface FileRoutesById {
   '/_public/spotlight/shorts/': typeof PublicSpotlightShortsIndexRoute
   '/_protected/account/my-orders/return/$orderItemId': typeof ProtectedAccountMyOrdersReturnOrderItemIdRoute
   '/_public/spotlight/_protected/my-posts/$postId': typeof PublicSpotlightProtectedMyPostsPostIdRoute
+  '/_public/spotlight/users/$userId_/store': typeof PublicSpotlightUsersUserIdStoreRoute
   '/_public/spotlight/_protected/my-posts/': typeof PublicSpotlightProtectedMyPostsIndexRoute
 }
 export interface FileRouteTypes {
@@ -486,6 +505,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/subscription'
     | '/terms-and-conditions'
+    | '/s/$code'
     | '/account/coupons'
     | '/account/my-address'
     | '/account/refer-and-earn'
@@ -516,6 +536,7 @@ export interface FileRouteTypes {
     | '/spotlight/shorts/'
     | '/account/my-orders/return/$orderItemId'
     | '/spotlight/my-posts/$postId'
+    | '/spotlight/users/$userId/store'
     | '/spotlight/my-posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -531,6 +552,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/subscription'
     | '/terms-and-conditions'
+    | '/s/$code'
     | '/spotlight'
     | '/account/coupons'
     | '/account/my-address'
@@ -561,6 +583,7 @@ export interface FileRouteTypes {
     | '/spotlight/shorts'
     | '/account/my-orders/return/$orderItemId'
     | '/spotlight/my-posts/$postId'
+    | '/spotlight/users/$userId/store'
     | '/spotlight/my-posts'
   id:
     | '__root__'
@@ -580,6 +603,7 @@ export interface FileRouteTypes {
     | '/_public/search'
     | '/_public/subscription'
     | '/_public/terms-and-conditions'
+    | '/s/$code'
     | '/_public/'
     | '/_public/spotlight/_protected'
     | '/_protected/account/coupons'
@@ -612,6 +636,7 @@ export interface FileRouteTypes {
     | '/_public/spotlight/shorts/'
     | '/_protected/account/my-orders/return/$orderItemId'
     | '/_public/spotlight/_protected/my-posts/$postId'
+    | '/_public/spotlight/users/$userId_/store'
     | '/_public/spotlight/_protected/my-posts/'
   fileRoutesById: FileRoutesById
 }
@@ -619,6 +644,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
   PublicRouteRoute: typeof PublicRouteRouteWithChildren
+  SCodeRoute: typeof SCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -650,6 +676,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRouteRoute
+    }
+    '/s/$code': {
+      id: '/s/$code'
+      path: '/s/$code'
+      fullPath: '/s/$code'
+      preLoaderRoute: typeof SCodeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_public/terms-and-conditions': {
       id: '/_public/terms-and-conditions'
@@ -952,6 +985,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSpotlightProtectedMyPostsIndexRouteImport
       parentRoute: typeof PublicSpotlightProtectedRouteRoute
     }
+    '/_public/spotlight/users/$userId_/store': {
+      id: '/_public/spotlight/users/$userId_/store'
+      path: '/users/$userId/store'
+      fullPath: '/spotlight/users/$userId/store'
+      preLoaderRoute: typeof PublicSpotlightUsersUserIdStoreRouteImport
+      parentRoute: typeof PublicSpotlightRouteRoute
+    }
     '/_public/spotlight/_protected/my-posts/$postId': {
       id: '/_public/spotlight/_protected/my-posts/$postId'
       path: '/my-posts/$postId'
@@ -1081,6 +1121,7 @@ interface PublicSpotlightRouteRouteChildren {
   PublicSpotlightUsersUserIdRoute: typeof PublicSpotlightUsersUserIdRoute
   PublicSpotlightCampaignsIndexRoute: typeof PublicSpotlightCampaignsIndexRoute
   PublicSpotlightShortsIndexRoute: typeof PublicSpotlightShortsIndexRoute
+  PublicSpotlightUsersUserIdStoreRoute: typeof PublicSpotlightUsersUserIdStoreRoute
 }
 
 const PublicSpotlightRouteRouteChildren: PublicSpotlightRouteRouteChildren = {
@@ -1095,6 +1136,7 @@ const PublicSpotlightRouteRouteChildren: PublicSpotlightRouteRouteChildren = {
   PublicSpotlightUsersUserIdRoute: PublicSpotlightUsersUserIdRoute,
   PublicSpotlightCampaignsIndexRoute: PublicSpotlightCampaignsIndexRoute,
   PublicSpotlightShortsIndexRoute: PublicSpotlightShortsIndexRoute,
+  PublicSpotlightUsersUserIdStoreRoute: PublicSpotlightUsersUserIdStoreRoute,
 }
 
 const PublicSpotlightRouteRouteWithChildren =
@@ -1139,6 +1181,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
   PublicRouteRoute: PublicRouteRouteWithChildren,
+  SCodeRoute: SCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

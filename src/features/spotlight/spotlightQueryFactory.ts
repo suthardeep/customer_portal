@@ -10,4 +10,5 @@ export const spotlightKeys = {
   myPostDetail: (id: string) => [...spotlightKeys.all, "my-post", id] as const,
   userProfile: (userId: string) => [...spotlightKeys.all, "user-profile", userId] as const,
   userPosts: (userId: string) => [...spotlightKeys.all, "user-posts", userId] as const,
+  creatorStore: (userId: string) => [...spotlightKeys.all, "creator-store", userId] as const,
 };

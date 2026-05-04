@@ -15,6 +15,7 @@ export interface SpotlightProfile {
   customerId: string;
   name: string;
   profileImageUrl: string;
+  bannerImageUrl: string;
   email: string;
   bio: string;
   niches: string[];
@@ -50,3 +51,39 @@ export type SpotlightProfileResponse = BaseApiResponse<{
   profile: SpotlightProfile;
   tierProgress: SpotlightTierProgress;
 } | null>;
+
+export interface CreatorStoreProduct {
+  productId: string;
+  variantId: string;
+  name: string;
+  brand: { id: string; name: string; brandLogoUrl: string };
+  aavakSku: string;
+  price: number;
+  mrp: number;
+  discountPercent: number;
+  aavakCoins: number;
+  totalAavakCoinForUser: number;
+  mediaUrls: string[];
+  inStock: boolean;
+  affiliateCode: string;
+}
+
+export interface CreatorStoreCreator {
+  customerId: string;
+  name: string;
+  profileImageUrl: string;
+  bannerImageUrl: string;
+  bio: string;
+  instagramUrl: string;
+  youtubeUrl: string;
+  tier: string;
+  followerCount: number;
+  postCount: number;
+}
+
+export interface CreatorStoreData {
+  creator: CreatorStoreCreator;
+  products: CreatorStoreProduct[];
+}
+
+export type CreatorStoreResponse = BaseApiResponse<CreatorStoreData>;
