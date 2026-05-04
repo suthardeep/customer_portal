@@ -20,9 +20,9 @@ function RouteComponent() {
   });
 
   return (
-    <div>
+    <div className="flex min-h-dvh flex-col">
       <Header />
-      <div className={cn("mx-auto", maxWidth === "none" ? "" : "max-w-8xl")}>
+      <div className={cn("mx-auto flex-1", maxWidth === "none" ? "" : "max-w-8xl")}>
         <Outlet />
       </div>
       <Footer />

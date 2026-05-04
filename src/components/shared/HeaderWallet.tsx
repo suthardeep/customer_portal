@@ -1,5 +1,6 @@
 import { Image } from "@/components/base/Image";
 import { walletQueries } from "@/features/account/wallet/walletQueries";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +11,11 @@ interface HeaderWalletProps {
 }
 
 export function HeaderWallet({ className }: HeaderWalletProps) {
-  const { data: balance, isLoading } = useQuery(walletQueries.balance());
+  const { isAuthenticated } = useAuth();
+  const { data: balance, isLoading } = useQuery({
+    ...walletQueries.balance(),
+    enabled: isAuthenticated,
+  });
 
   return (
     <Link

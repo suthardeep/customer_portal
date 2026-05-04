@@ -7,6 +7,7 @@ import {
   useRemoveItemFromWishlistMutation,
 } from "@/features/wishlist/wishlistMutations";
 import { wishlistQueries } from "@/features/wishlist/wishlistQueries";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useToggle } from "@/hooks/useToggle";
 import { useQuery } from "@tanstack/react-query";
 import WishlistCollectionTile from "./WishlistCollectionTile";
@@ -27,22 +28,26 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
   props,
 ) => {
   const { isOpen, onClose, productId, variantId, productName } = props;
+  const { isAuthenticated } = useAuth();
   const createDialog = useToggle();
 
-  const wishlistCollectionQuery = useQuery(wishlistQueries.collections());
+  const wishlistCollectionQuery = useQuery({
+    ...wishlistQueries.collections(),
+    enabled: isAuthenticated,
+  });
   const addToWishlistMutation = useAddItemToCollectionMutation();
-  const wishlistItems = useQuery(
-    wishlistQueries.collectionsProducts("ALL", {
-      pageSize: 100,
-    }),
-  );
+  const wishlistItems = useQuery({
+    ...wishlistQueries.collectionsProducts("ALL", { pageSize: 100 }),
+    enabled: isAuthenticated,
+  });
   const isWishlisted = wishlistItems?.data?.data?.some(
     (item) => item?.productId === productId,
   );
   const removeItemFromCollectionMutation = useRemoveItemFromWishlistMutation();
-  const { data: wishlistCollectionIds, isLoading } = useQuery(
-    wishlistQueries.collectionsByProduct(productId),
-  );
+  const { data: wishlistCollectionIds, isLoading } = useQuery({
+    ...wishlistQueries.collectionsByProduct(productId),
+    enabled: isAuthenticated,
+  });
 
   const removeDialog = useToggle();
 

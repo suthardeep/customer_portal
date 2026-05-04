@@ -45,9 +45,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
 
   shellComponent: RootDocument,
-  loader: ({ context }) => {
-    context.queryClient.prefetchQuery(authQueries.profile());
-    context.queryClient.prefetchQuery(spotlightQueries.profile());
+  loader: async ({ context }) => {
+    const user = await context.queryClient.fetchQuery(authQueries.profile()).catch(() => null);
+    if (user) {
+      context.queryClient.prefetchQuery(spotlightQueries.profile());
+    }
     context.queryClient.prefetchQuery(cartQueries.detail());
   },
 });

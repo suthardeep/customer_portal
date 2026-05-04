@@ -5,6 +5,7 @@ import { useDetectLocation } from "@/features/account/my-address/hooks/useDetect
 import { addressQueries } from "@/features/account/my-address/addressQueries";
 import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
 import type { Address } from "@/features/account/my-address/types/types";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { formatAddress } from "@/utils/formatAddress";
 import { haversineDistance } from "@/utils/haversine";
 import { useToggle } from "@/hooks/useToggle";
@@ -13,11 +14,15 @@ import { ADDRESS_MATCH_THRESHOLD_METERS } from "./constants";
 import { useRef } from "react";
 
 export function HeaderLocation() {
+  const { isAuthenticated } = useAuth();
   const { activeAddress, selectSavedAddress, setDetectedAddress } =
     useSelectedAddressStore();
   const selectedAddressId = activeAddress?.id ?? null;
   const sheetToggle = useToggle();
-  const { data: savedAddresses } = useQuery(addressQueries.list());
+  const { data: savedAddresses } = useQuery({
+    ...addressQueries.list(),
+    enabled: isAuthenticated,
+  });
   const savedAddressesRef = useRef(savedAddresses);
   savedAddressesRef.current = savedAddresses;
 

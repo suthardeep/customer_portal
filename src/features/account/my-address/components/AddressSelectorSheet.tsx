@@ -20,7 +20,10 @@ const AddressSelectorSheet = ({
   selectedAddressId,
   onSelect,
 }: AddressSelectorSheetProps) => {
-  const addressListQuery = useQuery(addressQueries.list());
+  const addressListQuery = useQuery({
+    ...addressQueries.list(),
+    enabled: isOpen,
+  });
   const navigate = useNavigate();
 
   const handleManageAddress = () => {

@@ -34,9 +34,9 @@ export const Route = createFileRoute("/_protected")({
 
 function RouteComponent() {
   return (
-    <div>
+    <div className="flex min-h-dvh flex-col">
       <Header />
-      <div className="max-w-8xl mx-auto">
+      <div className="mx-auto max-w-8xl flex-1">
         <Outlet />
       </div>
     </div>

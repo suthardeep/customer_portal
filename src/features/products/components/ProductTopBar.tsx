@@ -31,11 +31,10 @@ export function ProductTopBar({
   const { isAuthenticated } = useAuth();
   const loginDialog = useLoginDialog();
 
-  const wishlistItems = useQuery(
-    wishlistQueries.collectionsProducts("ALL", {
-      pageSize: 100,
-    }),
-  );
+  const wishlistItems = useQuery({
+    ...wishlistQueries.collectionsProducts("ALL", { pageSize: 100 }),
+    enabled: isAuthenticated,
+  });
   const isWishlisted = wishlistItems?.data?.data?.some(
     (item) => item?.productId === productId,
   );
