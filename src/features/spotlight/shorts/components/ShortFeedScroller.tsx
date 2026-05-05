@@ -107,7 +107,7 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
   return (
     <div
       ref={containerRef}
-      className="overflow-y-auto snap-y p-0! snap-mandatory no-scrollbar h-dvh lg:h-[calc(100dvh-180px)]"
+      className="overflow-y-auto overflow-x-hidden touch-pan-y snap-y p-0! snap-mandatory no-scrollbar h-dvh lg:h-[calc(100dvh-180px)]"
       style={ready ? undefined : { visibility: "hidden" }}
     >
       {posts.map((post: FeedPost, index: number) => {
@@ -129,7 +129,7 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
               else itemRefs.current.delete(post.id);
             }}
             data-post-id={post.id}
-            className="snap-start snap-always h-dvh lg:h-[calc(100dvh-200px)] w-full shrink-0"
+            className="snap-start snap-always h-dvh lg:h-[calc(100dvh-200px)] w-full max-w-full shrink-0 overflow-hidden"
           >
             {isAlive ? (
               <ShortFeedScrollerItem

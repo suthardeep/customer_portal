@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_public/spotlight")({
 
 function RouteComponent() {
   return (
-    <div className="flex gap-x-7 md:p-6 lg:py-8 items-stretch">
+    <div className="flex gap-x-7 overflow-x-hidden md:p-6 lg:py-8 items-stretch">
       <SpotlightProfileSidebar />
       <SpotlightNavbar />
       <div className="rounded-xl bg-white lg:[&>div]:p-6 lg:border border-n-400 w-full">

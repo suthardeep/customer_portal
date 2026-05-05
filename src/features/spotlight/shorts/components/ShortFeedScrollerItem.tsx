@@ -101,7 +101,7 @@ export function ShortFeedScrollerItem({
   }
 
   return (
-    <div className="relative size-full bg-black lg:bg-transparent lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:gap-4 lg:items-start lg:p-6">
+    <div className="relative size-full overflow-hidden bg-black lg:bg-transparent lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:gap-4 lg:items-start lg:p-6">
       {/* Desktop: left column (back button + tagged products) */}
       <div className="hidden xl:flex flex-col h-full justify-between">
         <SpotlightBackButton />

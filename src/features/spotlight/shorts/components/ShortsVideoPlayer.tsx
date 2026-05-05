@@ -42,7 +42,17 @@ const ShortsVideoPlayer = forwardRef<
   ShortsVideoPlayerHandle,
   ShortsVideoPlayerProps
 >(function ShortsVideoPlayer(
-  { hlsUrl, thumbnail, alt, className, postId, isActive, isPreload, onHlsReady, onVideoReady },
+  {
+    hlsUrl,
+    thumbnail,
+    alt,
+    className,
+    postId,
+    isActive,
+    isPreload,
+    onHlsReady,
+    onVideoReady,
+  },
   ref,
 ) {
   const { isOpen: isPaused, open: pause, close: resume } = useToggle();
@@ -100,15 +110,29 @@ const ShortsVideoPlayer = forwardRef<
 
         if (!preloadOnly) {
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play().catch(() => {});
+            video.muted = true;
+            video
+              .play()
+              .then(() => {
+                video.muted = isMuted;
+              })
+              .catch(() => {});
           });
         }
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = hlsUrl;
-        if (!preloadOnly) video.play().catch(() => {});
+        if (!preloadOnly) {
+          video.muted = true;
+          video
+            .play()
+            .then(() => {
+              video.muted = isMuted;
+            })
+            .catch(() => {});
+        }
       }
     },
-    [hlsUrl, destroyHls, onHlsReady],
+    [hlsUrl, destroyHls, onHlsReady, isMuted],
   );
 
   const handleVolumeClick = () => {
@@ -251,7 +275,7 @@ const ShortsVideoPlayer = forwardRef<
         ref={videoRefCallback}
         loop
         playsInline
-        muted={isMuted}
+        muted
         className="relative size-full object-cover"
         onTimeUpdate={handleTimeUpdate}
         onClick={handleVideoClick}
@@ -294,14 +318,22 @@ const ShortsVideoPlayer = forwardRef<
             }
           >
             <div>
-              <MenuItem startIcon="Report" className="text-n-900" onClick={reportDialog.open}>
+              <MenuItem
+                startIcon="Report"
+                className="text-n-900"
+                onClick={reportDialog.open}
+              >
                 Report
               </MenuItem>
             </div>
           </Popover>
         </div>
       )}
-      <ReportPostDialog isOpen={reportDialog.isOpen} onClose={reportDialog.close} postId={postId} />
+      <ReportPostDialog
+        isOpen={reportDialog.isOpen}
+        onClose={reportDialog.close}
+        postId={postId}
+      />
       {/* Mute button — always visible */}
       {isPaused && (
         <ShortActionIconButton
