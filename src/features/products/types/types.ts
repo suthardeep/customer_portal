@@ -4,6 +4,11 @@ import type { ProductVariant } from './variant.types';
 
 export type { ProductVariant } from './variant.types';
 
+export enum ProductCustomFieldInputType {
+  STRING = 'STRING',
+  FILE = 'FILE',
+}
+
 export interface ProductOptionValue {
   id: string;
   value: string;
@@ -38,7 +43,15 @@ export interface ProductDetail {
   mediaUrls: string[];
   bulletPoints?: string[];
   tags?: string[];
-  customFields?: Array<{ groupName: string; fields: Record<string, string> }>;
+  customFields?: Array<{
+    groupName: string;
+    fields: Array<{
+      id: string;
+      name: string;
+      inputValueType: ProductCustomFieldInputType;
+      value: string;
+    }>;
+  }>;
   hsnCode?: string;
   gstRate?: number;
   cessCode?: string;

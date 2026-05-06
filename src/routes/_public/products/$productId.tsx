@@ -1,12 +1,12 @@
-import { Button } from "@/components/base/button/Button";
-import { ProductNotFound } from "@/features/products/components/ProductNotFound";
+import { CreateAffiliateButton } from "@/features/products/components/CreateAffiliateButton";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
-import { OffersList } from "@/features/products/components/OffersList";
 import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
 import { ProductBadges } from "@/features/products/components/ProductBadges";
 import { ProductBreadcrumb } from "@/features/products/components/ProductBreadcrumb";
 import { ProductDetailHeader } from "@/features/products/components/ProductDetailHeader";
 import { ProductImageGallery } from "@/features/products/components/ProductImageGallery";
+import { ProductNotFound } from "@/features/products/components/ProductNotFound";
+import { ProductSellerInfo } from "@/features/products/components/ProductSellerInfo";
 import { ProductTabs } from "@/features/products/components/ProductTabs";
 import { ProductTopBar } from "@/features/products/components/ProductTopBar";
 import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
@@ -53,7 +53,11 @@ export const Route = createFileRoute("/_public/products/$productId")({
 
 function ProductDetailComponent() {
   const { productId } = Route.useParams();
-  const { variantId: searchVariantId, quantity, affiliateCode } = Route.useSearch();
+  const {
+    variantId: searchVariantId,
+    quantity,
+    affiliateCode,
+  } = Route.useSearch();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId));
 
   const variantId = searchVariantId ?? product.variants[0];
@@ -75,7 +79,6 @@ function ProductDetailComponent() {
   const galleryImages = selectedVariant?.mediaUrls?.length
     ? selectedVariant.mediaUrls
     : (product.mediaUrls ?? []);
-  console.log(product, "product");
 
   return (
     <div className="container mx-auto px-4 pt-6 pb-28 lg:pb-6">
@@ -88,7 +91,11 @@ function ProductDetailComponent() {
           {/* Left: Image Gallery */}
           <ProductImageGallery images={galleryImages} />
           <div className="mt-8 hidden lg:block">
-            <ProductTabs />
+            <ProductTabs
+              description={product.description}
+              bulletPoints={product.bulletPoints}
+              customFields={product.customFields}
+            />
           </div>
         </div>
 
@@ -116,9 +123,13 @@ function ProductDetailComponent() {
                 max={selectedVariant?.quantity}
                 affiliateCode={affiliateCode}
               />
-              <Button variant="outline" className="mt-2" fullWidth>
-                Create Affiliate
-              </Button>
+              <div className="mt-2">
+                <CreateAffiliateButton
+                  productId={productId}
+                  variantId={selectedVariant?.id}
+                  productName={product.name}
+                />
+              </div>
             </div>
             <div className="w-full space-y-3">
               <DeliveryInfo />
@@ -130,8 +141,18 @@ function ProductDetailComponent() {
             optionGroups={product.optionGroups}
             variants={product.variants}
           />
-          <OffersList offers={offers} />
+          {/* <OffersList offers={offers} /> */}
+          {product.seller && <ProductSellerInfo seller={product.seller} />}
         </div>
+      </div>
+
+      {/* Mobile-only tabs */}
+      <div className="mt-6 lg:hidden">
+        <ProductTabs
+          description={product.description}
+          bulletPoints={product.bulletPoints}
+          customFields={product.customFields}
+        />
       </div>
     </div>
   );

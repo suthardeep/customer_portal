@@ -71,7 +71,7 @@ export const SPOTLIGHT_SIDEBAR_SECTIONS: SpotlightSidebarSection[] = [
         to: "/spotlight/analytics",
       },
       {
-        label: "My Post",
+        label: "My Posts",
         icon: "MyPost",
         to: "/spotlight/my-posts",
       },

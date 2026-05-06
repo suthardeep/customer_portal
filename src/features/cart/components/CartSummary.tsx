@@ -343,6 +343,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
           isOpen={applyCouponToggle.isOpen}
           onClose={applyCouponToggle.close}
           params={{ cartId: cart.id }}
+          summaryParams={summaryParams}
           onApply={(code) => {
             applyCoupon(code);
             applyCouponToggle.close();

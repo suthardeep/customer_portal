@@ -1,20 +1,15 @@
 import { Image } from "@/components/base/Image";
+import { TRENDING_PRODUCTS_PARAMS } from "@/features/products/constants";
 import { productQueries } from "@/features/products/productQueries";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-
-const TRENDING_PARAMS = {
-  sortBy: "popularity" as const,
-  pageSize: 6,
-  currentPage: 1,
-};
 
 interface SearchTrendingProps {
   onSelect?: () => void;
 }
 
 const SearchTrending: React.FC<SearchTrendingProps> = ({ onSelect }) => {
-  const { data } = useQuery(productQueries.list(TRENDING_PARAMS));
+  const { data } = useQuery(productQueries.list(TRENDING_PRODUCTS_PARAMS));
   const products = data?.data ?? [];
 
   if (!products.length) return null;
@@ -28,7 +23,8 @@ const SearchTrending: React.FC<SearchTrendingProps> = ({ onSelect }) => {
             key={product.id}
             to="/products/$productId"
             params={{ productId: product.id }}
-            onClick={onSelect ?? undefined}
+            search={{ variantId: product?.variantId }}
+            onClick={onSelect}
             className="flex flex-col gap-1.5 group"
           >
             <div className="aspect-square rounded-lg overflow-hidden border border-n-200">

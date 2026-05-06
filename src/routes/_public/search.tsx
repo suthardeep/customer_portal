@@ -18,7 +18,7 @@ function SearchPageComponent() {
   return (
     <div>
       <SearchInput />
-      <div className="px-4 flex flex-col lg:flex-row gap-6 mt-3">
+      <div className="px-4 pb-4 flex flex-col lg:flex-row gap-6 mt-3">
         <SearchAutocomplete />
         <SearchSuggestions />
         <SearchTrending />

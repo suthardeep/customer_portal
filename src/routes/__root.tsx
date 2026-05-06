@@ -16,6 +16,8 @@ import appCss from "../styles/styles.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { authQueries } from "@/features/auth/authQueries";
 import { cartQueries } from "@/features/cart/cartQueries";
+import { TRENDING_PRODUCTS_PARAMS } from "@/features/products/constants";
+import { productQueries } from "@/features/products/productQueries";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 
 interface MyRouterContext {
@@ -51,6 +53,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       context.queryClient.prefetchQuery(spotlightQueries.profile());
     }
     context.queryClient.prefetchQuery(cartQueries.detail());
+    context.queryClient.prefetchQuery(productQueries.searchSuggestions());
+    context.queryClient.prefetchQuery(productQueries.list(TRENDING_PRODUCTS_PARAMS));
   },
 });
 

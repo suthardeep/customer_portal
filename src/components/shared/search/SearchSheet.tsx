@@ -32,8 +32,14 @@ const SearchSheet: React.FC<SearchSheetProps> = ({ isOpen, onClose }) => {
         </div>
         <div className="px-4 flex flex-col lg:flex-row gap-6 mt-6">
           <SearchAutocomplete onClose={onClose} />
-          <SearchSuggestions onClose={onClose} />
-          <SearchTrending onSelect={onClose} />
+          <div className="flex flex-col lg:flex-row gap-6 flex-1">
+            <div className="flex-1">
+              <SearchSuggestions onClose={onClose} />
+            </div>
+            <div className="flex-1">
+              <SearchTrending onSelect={onClose} />
+            </div>
+          </div>
         </div>
       </div>
     </Sheet>

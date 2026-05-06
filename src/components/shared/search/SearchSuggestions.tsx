@@ -22,13 +22,13 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ onClose }) => {
   return (
     <div className="flex flex-col gap-4">
       <p className="font-semibold text-n-900">Popular Searches</p>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {suggestions.map((item) => (
           <button
             key={item.productId}
             type="button"
             onClick={() => handleSelect(item.keyword)}
-            className="flex items-center gap-2 p-1 rounded-full border border-n-400 hover:border-n-500 cursor-pointer max-w-1/2"
+            className="flex items-center gap-2 p-1 rounded-full border border-n-400 hover:border-n-500 cursor-pointer"
           >
             <div className="size-7 rounded-full overflow-hidden shrink-0">
               <Image src={item.productImage} alt={item.keyword} />

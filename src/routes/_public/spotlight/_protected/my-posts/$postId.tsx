@@ -42,27 +42,24 @@ function RouteComponent() {
   const deletePostMutation = useDeletePostMutation();
 
   return (
-    <div>
+    <div className="p-4">
       <AccountPageHeader
         title={"My Posts"}
         trailingTitleComponent={
           <div className="flex items-center gap-1">
-            <Button size="sm" variant="ghost">
-              Edit
-            </Button>
             <Button
               color="danger"
               size="sm"
               variant="ghost"
               onClick={deleteDialog.open}
             >
-              Delete
+              Delete Post
             </Button>
           </div>
         }
       />
 
-      <div className="flex flex-col md:flex-row gap-6 items-start mt-8">
+      <div className="flex flex-col md:flex-row gap-6 items-start mt-4 md:mt-8">
         {/* Center — media */}
         <div className="aspect-9/16 w-full max-w-110 mx-auto md:w-80 max-h-[70vh] overflow-hidden rounded-xl relative">
           {post.media.status === MediaStatus.READY ? (

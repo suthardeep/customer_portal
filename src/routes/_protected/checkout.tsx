@@ -105,6 +105,7 @@ function CheckoutContent({ cart }: { cart: Cart }) {
       }),
     ),
   );
+  console.log(sessionQuery?.data, "validSummary");
 
   if (sessionQuery.data?.isExpired) {
     return (

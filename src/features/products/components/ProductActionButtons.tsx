@@ -1,7 +1,10 @@
 import { Button } from "@/components/base/button/Button";
 import { QuantitySelector } from "@/components/base/QuantitySelector";
 import { cartQueries } from "@/features/cart/cartQueries";
-import { useDeleteCartItemMutation, useUpdateCartItemMutation } from "@/features/cart/cartMutations";
+import {
+  useDeleteCartItemMutation,
+  useUpdateCartItemMutation,
+} from "@/features/cart/cartMutations";
 import { AddToCartButton } from "./AddToCartButton";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -43,7 +46,12 @@ export function ProductActionButtons({
     }
     navigate({
       to: "/buy-now",
-      search: { productId, variantId, quantity, ...(affiliateCode && { affiliateCode }) },
+      search: {
+        productId,
+        variantId,
+        quantity,
+        ...(affiliateCode && { affiliateCode }),
+      },
     });
   };
 
@@ -69,6 +77,7 @@ export function ProductActionButtons({
             min={min}
             max={max}
             disabled={disabled}
+            iconSize="lg"
             quantityActionsWrapperClassName="w-full p-0.75"
             className="w-full"
             onChange={(newQty) =>

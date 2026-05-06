@@ -141,7 +141,7 @@ export default function Footer() {
             <FooterAddressSection />
           </div>
         </div>
-        <div className="mt-12 border-t border-slate-700 pt-6">
+        <div className="mt-12 border-t border-slate-700/60 pt-6">
           <p className="text-n-700 text-xs text-center">
             © Aavak Marketplace Commerce Private Limited,2025
           </p>

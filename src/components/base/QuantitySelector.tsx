@@ -1,5 +1,6 @@
 import { PriceDisplay } from "@/features/products/components/PriceDisplay";
 import { IconButton } from "./icon-button/IconButton";
+import type { IconButtonSize } from "./icon-button/iconButton.types";
 import { cn } from "@/utils/cssHelpers";
 import { toast } from "@/utils/toast";
 
@@ -14,6 +15,7 @@ interface QuantitySelectorProps {
   originalPrice?: number;
   className?: string;
   quantityActionsWrapperClassName?: string;
+  iconSize?: IconButtonSize;
 }
 
 export function QuantitySelector({
@@ -27,6 +29,7 @@ export function QuantitySelector({
   originalPrice,
   className = "",
   quantityActionsWrapperClassName = "",
+  iconSize = "sm",
 }: QuantitySelectorProps) {
   const handleDecrement = () => {
     if (value > min) {
@@ -63,7 +66,7 @@ export function QuantitySelector({
       >
         <IconButton
           icon="Remove"
-          size="sm"
+          size={iconSize}
           variant="ghost"
           color="neutral"
           onClick={handleDecrement}
@@ -75,7 +78,7 @@ export function QuantitySelector({
         <p className="text-white font-medium">{value}</p>
         <IconButton
           icon="Add"
-          size="sm"
+          size={iconSize}
           variant="ghost"
           color="neutral"
           onClick={handleIncrement}
