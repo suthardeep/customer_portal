@@ -1,14 +1,14 @@
 import { Button } from "@/components/base/button/Button";
 import { QuantitySelector } from "@/components/base/QuantitySelector";
-import { cartQueries } from "@/features/cart/cartQueries";
 import {
   useDeleteCartItemMutation,
   useUpdateCartItemMutation,
 } from "@/features/cart/cartMutations";
-import { AddToCartButton } from "./AddToCartButton";
+import { cartQueries } from "@/features/cart/cartQueries";
+import { toast } from "@/utils/toast";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { toast } from "@/utils/toast";
+import { AddToCartButton } from "./AddToCartButton";
 
 interface ProductActionButtonsProps {
   productId: string;
@@ -63,7 +63,6 @@ export function ProductActionButtons({
       </div>
     );
   }
-
   return (
     <div className="flex gap-3 fixed bottom-0 left-0 right-0 p-4 lg:relative bg-white z-10 border-t border-t-n-500 lg:border-transparent lg:p-0">
       {disabled ? (

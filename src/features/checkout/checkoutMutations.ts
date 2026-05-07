@@ -1,4 +1,5 @@
 import { showErrorToasts } from "@/components/toast";
+import { haptic } from "@/utils/haptics";
 import { queryClient } from "@/queryClient";
 import { cartKeys } from "@/features/cart/cartQueryFactory";
 import { myOrderKeys } from "@/features/account/my-orders/myOrdersQueryFactory";
@@ -29,6 +30,7 @@ export const usePlaceCodOrderMutation = () => {
       return response.data;
     },
     onSuccess: (data) => {
+      haptic("heavy");
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
       queryClient.invalidateQueries({ queryKey: myOrderKeys.all });
       useCheckoutStore.getState().reset();
@@ -38,6 +40,7 @@ export const usePlaceCodOrderMutation = () => {
       });
     },
     onError: (error) => {
+      haptic("error");
       showErrorToasts(error);
       navigate({ to: "/order-error" });
     },
@@ -53,6 +56,7 @@ export const useVerifyPaymentMutation = () => {
       return response.data;
     },
     onSuccess: (data) => {
+      haptic("heavy");
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
       useCheckoutStore.getState().reset();
       navigate({
@@ -61,6 +65,7 @@ export const useVerifyPaymentMutation = () => {
       });
     },
     onError: (error) => {
+      haptic("error");
       showErrorToasts(error);
       navigate({ to: "/order-error" });
     },

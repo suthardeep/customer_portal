@@ -58,7 +58,7 @@ export function MenuDrawer() {
         direction="right"
         size="sm"
       >
-        <div>
+        <div className="py-0!">
           <nav className="flex flex-col divide-y divide-n-300">
             <DrawerItem
               icon="ShoppingCart"
@@ -67,7 +67,7 @@ export function MenuDrawer() {
             />
             <button
               onClick={handleAccountClick}
-              className="flex items-center gap-3 py-3.5 px-1 w-full text-left group"
+              className="flex items-center gap-3 py-5 px-1 w-full text-left group"
             >
               {isAuthenticated && user?.profileImageUrl ? (
                 <div className="size-5">
@@ -102,13 +102,13 @@ export function MenuDrawer() {
               label="Spotlight"
               onClick={handleSpotlightClick}
             />
-            <button className="flex items-center gap-3 py-3.5 px-1 w-full text-left group">
+            <button className="flex items-center gap-3 py-4.5 px-1 w-full text-left group">
               <AavakFinTechLogo />
               <p className="font-medium text-n-900 group-hover:text-p-600">
                 Fintech
               </p>
             </button>
-            <button className="flex items-center gap-3 py-3.5 px-1 w-full text-left group">
+            <button className="flex items-center gap-3 py-4.5 px-1 w-full text-left group">
               <AavakProtectLogo />
               <p className="font-medium text-n-900 group-hover:text-p-600">
                 Protect

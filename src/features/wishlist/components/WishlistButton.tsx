@@ -1,5 +1,6 @@
 import { Icon } from "@/components/base/icon";
 import { cn } from "@/utils/cssHelpers";
+import { haptic } from "@/utils/haptics";
 
 interface WishlistButtonProps {
   isWishlisted: boolean;
@@ -10,7 +11,7 @@ export function WishlistButton({ isWishlisted, onClick }: WishlistButtonProps) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={(e) => { haptic("medium"); onClick(e); }}
       aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
       className={cn(
         "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full group",

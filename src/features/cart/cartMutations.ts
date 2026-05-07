@@ -1,5 +1,6 @@
 import { showErrorToasts, toast } from "@/components/toast";
 import { queryClient } from "@/queryClient";
+import { haptic } from "@/utils/haptics";
 import { useMutation } from "@tanstack/react-query";
 import {
   addCartItem,
@@ -21,11 +22,15 @@ export const useAddCartItemMutation = () => {
       const response = await addCartItem({ data });
       return response.data;
     },
+    onMutate: () => {
+      haptic("medium");
+    },
     onSuccess: () => {
       toast.success("Item added to cart");
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
     },
     onError: (error) => {
+      haptic("error");
       showErrorToasts(error);
     },
   });
@@ -76,6 +81,7 @@ export const useDeleteCartItemMutation = () => {
       return response.data;
     },
     onMutate: async (variables) => {
+      haptic("medium");
       await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
       const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
       queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
@@ -109,6 +115,7 @@ export const useClearCartMutation = () => {
       return response.data;
     },
     onMutate: async () => {
+      haptic("heavy");
       await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
       const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
       queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {

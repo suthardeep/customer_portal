@@ -31,6 +31,7 @@ const config = defineConfig({
     }),
   ],
   server: {
+    host: true,
     proxy: {
       "/v1": {
         target: process.env.API_BASE_URL || "http://localhost:4000",
