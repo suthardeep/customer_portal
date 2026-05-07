@@ -67,9 +67,35 @@ export const useAddItemToCollectionMutation = () => {
       const response = await addItemToCollection({ data });
       return response.data;
     },
-    onSuccess: (_, payload) => {
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({
+        queryKey: wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+      });
+      const previous = queryClient.getQueryData<string[]>(
+        wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+      );
+      queryClient.setQueryData<string[]>(
+        wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+        (old) => {
+          const ids = old ?? [];
+          const toAdd = variables.collectionIds ?? [];
+          return [...new Set([...ids, ...toAdd])];
+        },
+      );
+      return { previous, productId: variables.productId, variantId: variables.variantId };
+    },
+    onError: (error, _variables, context) => {
+      if (context?.previous !== undefined) {
+        queryClient.setQueryData(
+          wishlistKeys.collectionsByProduct(context.productId, context.variantId),
+          context.previous,
+        );
+      }
+      showErrorToasts(error);
+    },
+    onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: wishlistKeys.collectionsByProduct(payload.productId),
+        queryKey: wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
       });
       queryClient.invalidateQueries({
         queryKey: wishlistKeys.collections({ currentPage: 1, pageSize: 20 }),
@@ -77,9 +103,6 @@ export const useAddItemToCollectionMutation = () => {
       queryClient.invalidateQueries({
         queryKey: wishlistKeys.collectionProducts("ALL", { pageSize: 100 }),
       });
-    },
-    onError: (error) => {
-      showErrorToasts(error);
     },
   });
 };
@@ -90,11 +113,35 @@ export const useRemoveItemFromWishlistMutation = () => {
       const response = await removeItemFromWishlist({ data });
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: wishlistKeys.all });
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({
+        queryKey: wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+      });
+      const previous = queryClient.getQueryData<string[]>(
+        wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+      );
+      queryClient.setQueryData<string[]>(
+        wishlistKeys.collectionsByProduct(variables.productId, variables.variantId),
+        (old) => {
+          if (!old) return old;
+          return variables.collectionId
+            ? old.filter((id) => id !== variables.collectionId)
+            : [];
+        },
+      );
+      return { previous, productId: variables.productId, variantId: variables.variantId };
     },
-    onError: (error) => {
+    onError: (error, _variables, context) => {
+      if (context?.previous !== undefined) {
+        queryClient.setQueryData(
+          wishlistKeys.collectionsByProduct(context.productId, context.variantId),
+          context.previous,
+        );
+      }
       showErrorToasts(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: wishlistKeys.all });
     },
   });
 };

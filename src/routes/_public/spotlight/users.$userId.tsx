@@ -31,8 +31,6 @@ function RouteComponent() {
   const { data: profile } = useSuspenseQuery(
     spotlightQueries.userProfile(userId),
   );
-  console.log(profile, "profile");
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery(spotlightQueries.userPosts(userId));
 

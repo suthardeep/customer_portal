@@ -227,6 +227,15 @@ function BuyNowComponent() {
         isOpen={couponDialog.isOpen}
         onClose={couponDialog.close}
         params={{ productId, variantId, quantity }}
+        summaryParams={{
+          variantId,
+          quantity,
+          addressId: addressId || undefined,
+          paymentMethod,
+          coinsToApply,
+          gstDetailsId,
+          couponCode,
+        }}
         onApply={(code) => {
           applyCoupon(code);
           couponDialog.close();

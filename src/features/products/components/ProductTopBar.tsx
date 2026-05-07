@@ -36,7 +36,7 @@ export function ProductTopBar({
     enabled: isAuthenticated,
   });
   const isWishlisted = wishlistItems?.data?.data?.some(
-    (item) => item?.productId === productId,
+    (item) => item?.variantId === variantId,
   );
 
   const openWishlistSheet = useWishlistSheetStore((state) => state.open);

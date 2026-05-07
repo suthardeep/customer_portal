@@ -45,7 +45,7 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
   );
   const removeItemFromCollectionMutation = useRemoveItemFromWishlistMutation();
   const { data: wishlistCollectionIds, isLoading } = useQuery({
-    ...wishlistQueries.collectionsByProduct(productId),
+    ...wishlistQueries.collectionsByProduct(productId, variantId),
     enabled: isAuthenticated,
   });
 
@@ -104,7 +104,7 @@ const ProductAddToWishlistSheet: React.FC<ProductAddToWishlistSheet> = (
           emptyTitle="No collections"
           isLoading={isLoading}
         >
-          <div className="flex flex-col gap-2 px-3!">
+          <div className="flex flex-col gap-1 px-3!">
             {wishlistCollectionQuery?.data?.data
               ?.filter((e) => e?.id !== "ALL")
               ?.map((collection) => {

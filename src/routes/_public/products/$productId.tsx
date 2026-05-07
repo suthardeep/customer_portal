@@ -11,10 +11,7 @@ import { ProductTabs } from "@/features/products/components/ProductTabs";
 import { ProductTopBar } from "@/features/products/components/ProductTopBar";
 import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
-import {
-  MOCK_PRODUCT_FEATURES,
-  MOCK_PRODUCT_OFFERS,
-} from "@/features/products/constants";
+import { MOCK_PRODUCT_FEATURES } from "@/features/products/constants";
 import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -74,7 +71,7 @@ function ProductDetailComponent() {
 
   // Use mock data for features not yet available from API
   const features = MOCK_PRODUCT_FEATURES;
-  const offers = MOCK_PRODUCT_OFFERS;
+
 
   const galleryImages = selectedVariant?.mediaUrls?.length
     ? selectedVariant.mediaUrls

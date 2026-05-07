@@ -60,7 +60,6 @@ function CollectionDetailComponent() {
   if (isLoading) {
     return <CollectionDetailSkeleton />;
   }
-  console.log(products, "collections");
 
   return (
     <AccountPageWrapper className="space-y-6">
@@ -105,6 +104,7 @@ function CollectionDetailComponent() {
                 <Link
                   to="/products/$productId"
                   params={{ productId: product?.productId }}
+                  search={{ variantId: product?.variantId }}
                   key={product?.id}
                 >
                   <ProductCard

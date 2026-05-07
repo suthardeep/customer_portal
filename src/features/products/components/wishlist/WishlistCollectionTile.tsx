@@ -32,7 +32,7 @@ const WishlistCollectionTile: React.FC<WishlistCollectionTile> = (props) => {
 
   return (
     <div
-      className="flex items-center gap-4 cursor-pointer p-1 rounded-lg hover:bg-n-300/70 transition-colors"
+      className="flex items-center gap-4 cursor-pointer p-2 rounded-lg hover:bg-n-300/70 transition-colors"
       onClick={handleClick}
     >
       <div className="size-10 rounded-lg overflow-hidden">

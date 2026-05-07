@@ -1,5 +1,7 @@
 import Sheet from "@/components/base/sheet/Sheet";
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { NotLoggedInEmptyState } from "@/features/spotlight/components/NotLoggedInEmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { addressQueries } from "../addressQueries";
@@ -20,9 +22,10 @@ const AddressSelectorSheet = ({
   selectedAddressId,
   onSelect,
 }: AddressSelectorSheetProps) => {
+  const { isAuthenticated } = useAuth();
   const addressListQuery = useQuery({
     ...addressQueries.list(),
-    enabled: isOpen,
+    enabled: isOpen && isAuthenticated,
   });
   const navigate = useNavigate();
 
@@ -37,39 +40,52 @@ const AddressSelectorSheet = ({
       onClose={onClose}
       title="Select Address"
       size="lg"
-      actions={[
-        {
-          label: "Manage My Address",
-          onClick: handleManageAddress,
-          variant: "ghost",
-          color: "neutral",
-          fullWidth: true,
-        },
-      ]}
+      actions={
+        isAuthenticated
+          ? [
+              {
+                label: "Manage My Address",
+                onClick: handleManageAddress,
+                variant: "ghost",
+                color: "neutral",
+                fullWidth: true,
+              },
+            ]
+          : []
+      }
     >
-      <div>
-        <QueryStateHandler
-          query={addressListQuery}
-          loadingSkeleton={<AddressSelectListSkeleton />}
-          emptyTitle="No saved addresses"
-          fallbackIcon="Location"
-          isEmpty={
-            Array.isArray(addressListQuery.data) &&
-            addressListQuery.data.length === 0
-          }
-        >
-          <div className="flex flex-col gap-3">
-            {addressListQuery.data?.map((address) => (
-              <AddressSelectCard
-                key={address.id}
-                address={address}
-                isSelected={selectedAddressId === address.id}
-                onSelect={onSelect}
-              />
-            ))}
-          </div>
-        </QueryStateHandler>
-      </div>
+      {!isAuthenticated ? (
+        <NotLoggedInEmptyState
+          icon="Location"
+          title="Login to view addresses"
+          subtitle="Please login to view and select your saved addresses."
+          onSuccess={onClose}
+        />
+      ) : (
+        <div>
+          <QueryStateHandler
+            query={addressListQuery}
+            loadingSkeleton={<AddressSelectListSkeleton />}
+            emptyTitle="No saved addresses"
+            fallbackIcon="Location"
+            isEmpty={
+              Array.isArray(addressListQuery.data) &&
+              addressListQuery.data.length === 0
+            }
+          >
+            <div className="flex flex-col gap-3">
+              {addressListQuery.data?.map((address) => (
+                <AddressSelectCard
+                  key={address.id}
+                  address={address}
+                  isSelected={selectedAddressId === address.id}
+                  onSelect={onSelect}
+                />
+              ))}
+            </div>
+          </QueryStateHandler>
+        </div>
+      )}
     </Sheet>
   );
 };

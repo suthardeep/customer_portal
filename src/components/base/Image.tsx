@@ -47,7 +47,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
       if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
         setIsLoading(false);
       }
-    });
+    }, [currentSrc]);
 
     const handleLoad = useCallback(() => {
       setIsLoading(false);

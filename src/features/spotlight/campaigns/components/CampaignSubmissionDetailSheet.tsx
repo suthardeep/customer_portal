@@ -75,7 +75,6 @@ export default function CampaignSubmissionDetailSheet({
   });
 
   if (!submission) return null;
-  console.log(submission, "submission");
 
   const {
     post,

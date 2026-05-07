@@ -19,6 +19,6 @@ export const wishlistKeys = {
       "infinite",
       params,
     ] as const,
-  collectionsByProduct: (productId: string) =>
-    [...wishlistKeys.all, "collections-by-product", productId] as const,
+  collectionsByProduct: (productId: string, variantId?: string) =>
+    [...wishlistKeys.all, "collections-by-product", productId, variantId] as const,
 };

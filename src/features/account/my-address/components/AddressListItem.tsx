@@ -33,7 +33,6 @@ const AddressListItem = ({
     popover.close();
     onDelete(address);
   };
-  console.log(address, "address");
 
   return (
     <div className="flex items-center gap-3 rounded-xl border border-n-400 bg-n-50 p-4">

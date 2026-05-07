@@ -64,7 +64,7 @@ function ProductsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-6 pb-28 lg:pb-6">
+    <div className="container mx-auto p-4 pt-6 pb-28 lg:pb-6">
       <div className="flex gap-2 justify-between items-center">
         <p className="mb-4 text-n-800">
           Showing all products from{" "}

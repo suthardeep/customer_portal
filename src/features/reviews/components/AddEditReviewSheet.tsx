@@ -251,7 +251,7 @@ export function AddEditReviewSheet({
                 key={item.previewUrl}
                 className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-n-300"
               >
-                <img
+                <Image
                   src={item.previewUrl}
                   alt={`Upload ${idx + 1}`}
                   className="size-full object-cover"

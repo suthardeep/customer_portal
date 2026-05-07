@@ -47,7 +47,6 @@ export const verifyPayment = createServerFn({ method: "POST" })
 export const createBuyNowSession = createServerFn({ method: "POST" })
   .inputValidator((data: BuyNowPayload) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<CheckoutSession>> => {
-    console.log("[BuyNow] payload:", data);
     return apiRequest("/v1/orders/buy-now", {
       method: "POST",
       body: data,

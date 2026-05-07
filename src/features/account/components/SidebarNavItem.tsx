@@ -10,7 +10,7 @@ export function SidebarNavItem({ item }: SidebarNavItemProps) {
   return (
     <Link
       to={item.to}
-      className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-n-300 text-n-900"
+      className="flex items-center gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-n-300 text-n-900"
       activeProps={{
         className: "text-p-700 bg-p-50/50!",
       }}

@@ -31,7 +31,7 @@ function RouteComponent() {
   const posts = data.pages.flatMap((page) => page.posts);
 
   return (
-    <div>
+    <div className="p-4">
       <SpotlightRouteHeader />
       <SpotlightPostGrid className="mt-8" isLoading={isFetchingNextPage}>
         {posts.map((post) => (

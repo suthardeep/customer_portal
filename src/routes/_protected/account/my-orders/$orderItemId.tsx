@@ -43,7 +43,6 @@ function OrderDetailComponent() {
   const isDelivered = order.lifecycleStatus === OrderLifecycleStatus.DELIVERED;
   const isCancelled = order.lifecycleStatus === OrderLifecycleStatus.CANCELLED;
   const canReorder = isDelivered || isCancelled;
-  console.log(order, "order");
 
   return (
     <AccountPageWrapper className="space-y-4">

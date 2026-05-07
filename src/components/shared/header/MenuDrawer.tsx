@@ -133,11 +133,11 @@ function DrawerItem({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-3 py-3.5 px-1 w-full text-left group"
+      className="flex items-center gap-3 py-5 px-1 w-full text-left group"
     >
       <Icon
         name={icon}
-        size="md"
+        size="lg"
         className="text-n-800 group-hover:text-p-600 shrink-0"
       />
       <p className="font-medium text-n-900 group-hover:text-p-600">{label}</p>

@@ -85,7 +85,7 @@ function CheckoutContent({ cart }: { cart: Cart }) {
         addressList.find((a) => a.isDefault) ?? addressList[0];
       selectSavedAddress(defaultAddress);
     }
-  }, []);
+  }, [activeAddress, addressList, selectSavedAddress]);
 
   const selectedAddress: Address | null =
     addressList?.find((a) => a.id === activeAddress?.id) ?? null;
@@ -105,8 +105,6 @@ function CheckoutContent({ cart }: { cart: Cart }) {
       }),
     ),
   );
-  console.log(sessionQuery?.data, "validSummary");
-
   if (sessionQuery.data?.isExpired) {
     return (
       <FallbackView

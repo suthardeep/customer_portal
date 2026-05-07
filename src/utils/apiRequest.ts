@@ -63,7 +63,7 @@ export async function apiRequest<T>(
   };
 
   // Add auth header if token provided
-  if (token || false) {
+  if (token) {
     requestHeaders.Authorization = `Bearer ${token}`;
   }
 
@@ -81,12 +81,12 @@ export async function apiRequest<T>(
   if (!response.ok) {
     // Attempt to parse error response body
     const errorData = await response.json().catch(() => ({}));
-    throw new ApiError(
-      errorData.message ||
-        `${method} ${endpoint} failed: ${response.statusText}`,
-      response.status,
-      errorData,
-    );
+    throw new ApiError(errorData.message);
+    // throw new ApiError(
+    //   `${errorData.message || response.statusText} [${method} ${endpoint}]`,
+    //   response.status,
+    //   errorData,
+    // );
   }
 
   const text = await response.text();

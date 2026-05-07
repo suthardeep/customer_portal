@@ -184,7 +184,6 @@ export const createPost = createServerFn({ method: "POST" })
   .inputValidator((data: CreateDirectPostRequest) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<{ id: string }>> => {
     const token = getToken();
-    console.log("[createPost] request body:", data);
     return apiRequest<BaseApiResponse<{ id: string }>>("/v1/ugc/posts", {
       method: "POST",
       body: data,

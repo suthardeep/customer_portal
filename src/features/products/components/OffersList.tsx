@@ -36,7 +36,7 @@ export function OffersList({ offers }: OffersListProps) {
             <OfferCard
               key={offer.id}
               offer={offer}
-              onApply={() => console.log("Apply offer:", offer.id)}
+              onApply={() => {}}
             />
           ))}
         </div>

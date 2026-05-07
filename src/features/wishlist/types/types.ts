@@ -17,6 +17,7 @@ export type WishlistProduct = Pick<
   | "categoryPath"
   | "categories"
   | "createdAt"
+  | "variantId"
 > & {
   id: string; // wishlist item id
   productId: string;

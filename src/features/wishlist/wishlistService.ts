@@ -66,8 +66,6 @@ export const createWishlistCollection = createServerFn({ method: "POST" })
   .inputValidator((data: CreateCollectionRequest) => data)
   .handler(async ({ data }): Promise<BaseApiResponse<WishlistCollection>> => {
     const token = getToken();
-    console.log(token, data, "hello cre coll");
-
     return apiRequest("/v1/wishlist/collections", {
       method: "POST",
       body: data,
@@ -124,11 +122,11 @@ export const deleteWishlistCollection = createServerFn({ method: "POST" })
   });
 
 export const getAllCollectionIdsFromProductId = createServerFn()
-  .inputValidator((productId: string) => productId)
-  .handler(async ({ data: productId }): Promise<BaseApiResponse<string[]>> => {
+  .inputValidator((data: { productId: string; variantId?: string }) => data)
+  .handler(async ({ data }): Promise<BaseApiResponse<string[]>> => {
     const token = getToken();
     return apiRequest(`/v1/wishlist/items/collections`, {
       token,
-      params: { productId },
+      params: data,
     });
   });

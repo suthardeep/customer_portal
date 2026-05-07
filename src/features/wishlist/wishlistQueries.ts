@@ -54,12 +54,12 @@ export const wishlistQueries = {
       },
     }),
 
-  collectionsByProduct: (productId: string) =>
+  collectionsByProduct: (productId: string, variantId?: string) =>
     queryOptions({
-      queryKey: wishlistKeys.collectionsByProduct(productId),
+      queryKey: wishlistKeys.collectionsByProduct(productId, variantId),
       queryFn: async (): Promise<string[]> => {
         const response = await getAllCollectionIdsFromProductId({
-          data: productId,
+          data: { productId, variantId },
         });
         return response.data;
       },
