@@ -1,6 +1,7 @@
 import SpotlightPostCard from "@/features/spotlight/components/SpotlightPostCard";
 import SpotlightPostGrid from "@/features/spotlight/components/SpotlightPostGrid";
 import SpotlightRouteHeader from "@/features/spotlight/components/SpotlightRouteHeader";
+import { BuyClipsSkeleton } from "@/features/spotlight/components/skeletons/BuyClipsSkeleton";
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/_public/spotlight/buy-clips")({
       spotlightQueries.feedExplore(),
     );
   },
+  pendingComponent: BuyClipsSkeleton,
   component: RouteComponent,
 });
 

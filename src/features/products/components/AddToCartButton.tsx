@@ -23,10 +23,9 @@ export function AddToCartButton({
     <Button
       variant="filled"
       color="primary"
-      size="lg"
       onClick={handleAddToCart}
       disabled={disabled || !variantId}
-      isLoading={addCartItemMutation.isPending}
+      // isLoading={addCartItemMutation.isPending}
       fullWidth
     >
       Add to Cart

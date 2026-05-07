@@ -150,15 +150,15 @@ const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
   },
   outline: {
     primary:
-      "border border-p-950 text-p-950 hover:bg-p-50/40 active:bg-p-100 active:border-p-700 focus-visible:ring-p-500 disabled:border-p-300 disabled:text-p-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-p-950 text-p-950 hover:bg-p-50/40 active:bg-p-100 active:border-p-700 focus-visible:ring-p-500 disabled:border-n-700 disabled:text-n-700 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     secondary:
-      "border border-s-500 text-s-600 hover:bg-s-50 hover:border-s-600 active:bg-s-100 active:border-s-700 focus-visible:ring-s-500 disabled:border-s-300 disabled:text-s-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-s-500 text-s-600 hover:bg-s-50 hover:border-s-600 active:bg-s-100 active:border-s-700 focus-visible:ring-s-500 disabled:border-n-700 disabled:text-n-700 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     neutral:
-      "border border-n-700 text-n-900 hover:border-n-900 active:bg-n-100 active:border-n-500 focus-visible:ring-n-500 disabled:border-n-200 disabled:text-n-400 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-n-700 text-n-900 hover:border-n-900 active:bg-n-100 active:border-n-500 focus-visible:ring-n-500 disabled:border-n-700 disabled:text-n-700 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     success:
-      "border border-success-500 text-success-600 hover:bg-success-50 hover:border-success-600 active:bg-success-100 active:border-success-700 focus-visible:ring-success-500 disabled:border-success-300 disabled:text-success-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-success-500 text-success-600 hover:bg-success-50 hover:border-success-600 active:bg-success-100 active:border-success-700 focus-visible:ring-success-500 disabled:border-n-700 disabled:text-n-700 disabled:cursor-not-allowed disabled:hover:bg-transparent",
     danger:
-      "border border-danger-500 text-danger-600 hover:bg-danger-50 hover:border-danger-600 active:bg-danger-100 active:border-danger-700 focus-visible:ring-danger-500 disabled:border-danger-300 disabled:text-danger-300 disabled:cursor-not-allowed disabled:hover:bg-transparent",
+      "border border-danger-500 text-danger-600 hover:bg-danger-50 hover:border-danger-600 active:bg-danger-100 active:border-danger-700 focus-visible:ring-danger-500 disabled:border-n-700 disabled:text-n-700 disabled:cursor-not-allowed disabled:hover:bg-transparent",
   },
   ghost: {
     primary:
@@ -188,4 +188,4 @@ const variantStyles: Record<ButtonVariant, Record<ButtonColor, string>> = {
 
 // Base button styles
 const baseStyles =
-  "inline-flex items-center justify-center font-semibold transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none cursor-pointer rounded-lg";
+  "inline-flex items-center justify-center font-semibold border border-transparent transition-[background-color,border-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none cursor-pointer rounded-lg";

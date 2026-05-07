@@ -21,10 +21,21 @@ import AddAddressDialog from "@/features/account/my-address/components/AddAddres
 import { stripIndianCountryCode } from "@/utils/stringHelpers";
 import type { AddressFormData } from "@/features/account/my-address/types/types";
 import { Input } from "@/components/base/input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { CartSummarySkeleton } from "./skeletons/CartSkeleton";
 import ErrorText from "@/components/base/ErrorText";
+
+const pincodeSchema = z.object({
+  pincode: z
+    .string()
+    .length(6, "Enter a valid 6-digit pincode")
+    .regex(/^\d+$/, "Digits only"),
+});
+type PincodeFormData = z.infer<typeof pincodeSchema>;
 
 export function CartSummary({ cart }: CartSummaryProps) {
   const gstToggle = useToggle();
@@ -47,10 +58,29 @@ export function CartSummary({ cart }: CartSummaryProps) {
   });
   const { activeAddress, selectSavedAddress } = useSelectedAddressStore();
   const createAddress = useCreateAddressMutation();
-  const [manualPincode, setManualPincode] = useState("");
-  const [confirmedPincode, setConfirmedPincode] = useState("");
 
-  const effectivePincode = confirmedPincode || activeAddress?.pincode || "";
+  const [confirmedPincode, setConfirmedPincode] = useState(
+    activeAddress?.pincode ?? "",
+  );
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<PincodeFormData>({
+    resolver: zodResolver(pincodeSchema),
+    defaultValues: { pincode: activeAddress?.pincode ?? "" },
+  });
+
+  useEffect(() => {
+    if (activeAddress?.pincode) {
+      reset({ pincode: activeAddress.pincode });
+      setConfirmedPincode(activeAddress.pincode);
+    }
+  }, [activeAddress?.pincode, reset]);
+
+  const effectivePincode = confirmedPincode;
 
   const summaryParams = {
     ...(activeAddress?.id
@@ -68,6 +98,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
   const summaryQuery = useQuery({
     ...cartQueries.summary(summaryParams),
     enabled: !!activeAddress?.id || !!effectivePincode,
+    refetchOnWindowFocus: false,
   });
 
   if (!authAndAddressReady || summaryQuery.isLoading)
@@ -176,22 +207,19 @@ export function CartSummary({ cart }: CartSummaryProps) {
           <p className="font-semibold text-n-900">Price Summary</p>
 
           {hasNoSavedAddresses && (
-            <div className="flex items-center gap-2">
+            <form
+              onSubmit={handleSubmit((data) =>
+                setConfirmedPincode(data.pincode),
+              )}
+              className="flex items-center gap-2"
+            >
               <Input
+                {...register("pincode")}
                 placeholder="Enter pincode"
                 size="sm"
+                type="tel"
                 maxLength={6}
                 inputMode="numeric"
-                value={manualPincode || activeAddress?.pincode || ""}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/\D/g, "");
-                  setManualPincode(val);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && manualPincode.length === 6) {
-                    setConfirmedPincode(manualPincode);
-                  }
-                }}
                 rightElement={
                   <IconButton
                     icon="ChevronRight"
@@ -199,13 +227,13 @@ export function CartSummary({ cart }: CartSummaryProps) {
                     color="neutral"
                     size="sm"
                     className="bg-gray-200"
-                    disabled={manualPincode.length !== 6}
-                    onClick={() => setConfirmedPincode(manualPincode)}
+                    disabled={!isValid}
+                    type="submit"
                   />
                 }
                 fullWidth
               />
-            </div>
+            </form>
           )}
           {summaryQuery?.isError && (
             <ErrorText withBgCard> {summaryQuery?.error?.message} </ErrorText>

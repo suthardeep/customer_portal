@@ -25,13 +25,23 @@ export const useAddCartItemMutation = () => {
     onMutate: () => {
       haptic("medium");
     },
-    onSuccess: () => {
+    onSuccess: (newItem) => {
       toast.success("Item added to cart");
-      queryClient.invalidateQueries({ queryKey: cartKeys.all });
+      queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          items: [...old.items, newItem],
+          totalItems: old.totalItems + 1,
+        };
+      });
     },
     onError: (error) => {
       haptic("error");
       showErrorToasts(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartKeys.all });
     },
   });
 };
@@ -43,6 +53,7 @@ export const useUpdateCartItemMutation = () => {
       return response.data;
     },
     onMutate: async (variables) => {
+      haptic("medium");
       await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
       const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
       queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {

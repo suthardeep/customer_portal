@@ -75,7 +75,7 @@ export function QuantitySelector({
           className="bg-transparent!"
           iconClassName="text-white"
         />
-        <p className="text-white font-medium">{value}</p>
+        <p className="text-white font-medium min-w-2.5">{value}</p>
         <IconButton
           icon="Add"
           size={iconSize}
