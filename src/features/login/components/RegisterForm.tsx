@@ -75,6 +75,7 @@ const RegisterForm = ({
         error={errors.mobileNumber?.message}
         type="tel"
         inputMode="numeric"
+        maxLength={10}
         disabled={isLoading}
         fullWidth
       />

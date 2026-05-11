@@ -1,5 +1,6 @@
 import { showErrorToasts } from "@/components/toast";
 import { queryClient } from "@/queryClient";
+import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import {
@@ -57,10 +58,12 @@ export const useVerifyEmailOtpMutation = () => {
 
 export const useLogoutMutation = () => {
   const router = useRouter();
+  const clearSelection = useSelectedAddressStore((s) => s.clearSelection);
 
   return useMutation({
     mutationFn: () => logout(),
     onSuccess: async () => {
+      clearSelection();
       queryClient.clear();
       router.navigate({ to: "/" });
     },

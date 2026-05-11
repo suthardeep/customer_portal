@@ -7,10 +7,9 @@ export const authQueries = {
   profile: () =>
     queryOptions({
       queryKey: authKeys.profile(),
-      queryFn: async (): Promise<User> => {
+      queryFn: async (): Promise<User | null> => {
         const response = await getCustomerProfile();
-        return response.data;
+        return response?.data ?? null;
       },
-      retry: false, // Don't retry on 401 - override global retry: 1
     }),
 };

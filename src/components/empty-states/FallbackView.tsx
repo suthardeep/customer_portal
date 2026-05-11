@@ -32,15 +32,16 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
         "flex w-full rounded-xl",
         styles.bg,
         isCompact
-          ? "flex-row items-center gap-3 p-3"
-          : "flex items-center justify-center flex-col gap-4 p-8",
+          ? "flex-row items-center gap-3 p-4"
+          : "flex flex-col items-center justify-center gap-4 p-8",
         classname,
       )}
     >
       {icon && (
         <div
           className={cn(
-            "flex size-24 items-center justify-center rounded-full",
+            "flex shrink-0 items-center justify-center rounded-full",
+            isCompact ? "size-10" : "size-24",
             styles.iconBg,
           )}
         >
@@ -52,14 +53,19 @@ const FallbackView: React.FC<FallbackViewProps> = (props) => {
           />
         </div>
       )}
-      <div className={cn(!isCompact && "text-center flex flex-col gap-1")}>
+      <div
+        className={cn(
+          "flex flex-col",
+          isCompact ? "gap-0.5" : "gap-1 text-center",
+        )}
+      >
         <h6 className={cn(styles.text, !isCompact && "font-medium")}>
           {title || "No data found"}
         </h6>
         {subtitle && (
-          <p className={cn(styles.text, "opacity-70 mt-1")}>{subtitle}</p>
+          <p className={cn(styles.text, "opacity-70")}>{subtitle}</p>
         )}
-        {footer && footer}
+        {footer && <div className="mt-3">{footer}</div>}
       </div>
     </div>
   );

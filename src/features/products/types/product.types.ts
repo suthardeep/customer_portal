@@ -33,9 +33,12 @@ export interface Product {
   cessCode?: string;
   countryOfOrigin?: string;
   price: number;
+  mrp: number;
   sizeChartId?: string;
   priceDisplayAttribute?: string;
   imageDisplayAttribute?: string;
+  discount: number;
+  discountPercent: number;
   minPrice: number;
   maxPrice: number;
   avgRating: number;

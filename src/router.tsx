@@ -22,6 +22,7 @@ export const getRouter = () => {
       ...rqContext,
     },
 
+    scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 1000 * 60 * 10,
     defaultPendingMs: 300,

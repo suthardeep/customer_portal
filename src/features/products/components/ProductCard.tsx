@@ -115,16 +115,26 @@ export function ProductCard({
 
         {/* Price Row */}
         <div className="flex flex-wrap items-center gap-2">
-          <p className="font-semibold text-n-900">
+          <h6 className="font-bold text-n-900">
+            {formatCurrency(product.price)}
+          </h6>
+          <p className="text-n-700 line-through">
             {" "}
-            {formatCurrency(product.price)}{" "}
+            {formatCurrency(product.mrp)}{" "}
           </p>
-          <p className="text-n-600 line-through"> {formatCurrency(1599)} </p>
         </div>
-        <span className="font-medium text-success-600">20% off</span>
+        {product.discountPercent > 0 ? (
+          <span className="font-medium text-success-600">
+            {product.discountPercent}% off
+          </span>
+        ) : product.discount > 0 ? (
+          <span className="font-medium text-success-600">
+            {formatCurrency(product.discount)} off
+          </span>
+        ) : null}
 
         {/* Delivery Date - Hardcoded for now */}
-        <span className="text-n-700">Delivery by Mon, 10 Feb</span>
+        {/* <span className="text-n-700">Delivery by Mon, 10 Feb</span> */}
       </div>
     </div>
   );

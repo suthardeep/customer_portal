@@ -12,6 +12,7 @@ import { cartKeys } from "./cartQueryFactory";
 import type {
   AddCartItemRequest,
   Cart,
+  CartItem,
   DeleteCartItemRequest,
   UpdateCartItemRequest,
 } from "./types/types";
@@ -22,8 +23,49 @@ export const useAddCartItemMutation = () => {
       const response = await addCartItem({ data });
       return response.data;
     },
-    onMutate: () => {
+    onMutate: async (variables) => {
       haptic("medium");
+      await queryClient.cancelQueries({ queryKey: cartKeys.detail() });
+      const previous = queryClient.getQueryData<Cart>(cartKeys.detail());
+      queryClient.setQueryData<Cart>(cartKeys.detail(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          items: [
+            ...old.items,
+            {
+              id: "",
+              variantId: variables.variantId,
+              productId: "",
+              aavakSku: "",
+              quantity: variables.quantity,
+              price: 0,
+              subtotal: 0,
+              sellingPrice: 0,
+              mrp: 0,
+              discountPercent: 0,
+              discount: null,
+              totalAavakCoinForUser: 0,
+              inStock: true,
+              hasVariants: false,
+              categoryId: "",
+              weightInGrams: 0,
+              returnPolicy: null,
+              optionValues: [],
+              name: "",
+              mediaUrls: [],
+              isFragile: false,
+              totalStock: 0,
+              viewCount: 0,
+              soldCount: 0,
+              totalReviews: 0,
+              avgRating: 0,
+            } as CartItem,
+          ],
+          totalItems: old.totalItems + 1,
+        };
+      });
+      return { previous };
     },
     onSuccess: (newItem) => {
       toast.success("Item added to cart");
@@ -31,12 +73,16 @@ export const useAddCartItemMutation = () => {
         if (!old) return old;
         return {
           ...old,
-          items: [...old.items, newItem],
-          totalItems: old.totalItems + 1,
+          items: old.items.map((item) =>
+            item.variantId === newItem.variantId ? newItem : item,
+          ),
         };
       });
     },
-    onError: (error) => {
+    onError: (error, _vars, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(cartKeys.detail(), context.previous);
+      }
       haptic("error");
       showErrorToasts(error);
     },

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import type { Category } from "../types/types";
 import { CategoryCard } from "./CategoryCard";
 import FallbackView from "@/components/empty-states/FallbackView";
@@ -20,11 +21,17 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
       {categories.map((category) => (
-        <CategoryCard
+        <Link
           key={category.id}
-          category={category}
-          className="w-full md:w-full shrink-0"
-        />
+          to="/categories/$categoryId"
+          params={{ categoryId: category.id }}
+        >
+          <CategoryCard
+            key={category.id}
+            category={category}
+            className="w-full md:w-full shrink-0"
+          />
+        </Link>
       ))}
     </div>
   );

@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cssHelpers";
 import { Link, useMatches } from "@tanstack/react-router";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Logo } from "../../compound/logo/Logo";
 import CategoriesTabNav from "../CategoriesTabNav";
 import CategoriesTabNavSkeleton from "../CategoriesTabNavSkeleton";
@@ -18,6 +18,14 @@ import { AavakLogoIcon } from "@/components/compound/logo/AavakLogoIcon";
 import { HeaderSpotlightIcon } from "./HeaderSpotlightIcon";
 
 export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const showCategorySubNav = useMatches({
     select: (matches) => matches.some((m) => m.staticData?.showCategorySubNav),
   });
@@ -43,6 +51,8 @@ export default function Header() {
   return (
     <div
       className={cn(
+        "sticky top-0 z-50 bg-white transition-shadow duration-300",
+        scrolled && "shadow-md",
         hideHeader === "desktop" && "block lg:hidden",
         hideHeader === "mobile" && "hidden lg:block",
       )}

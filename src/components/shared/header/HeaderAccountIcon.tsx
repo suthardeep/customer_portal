@@ -42,7 +42,7 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
     <button onClick={handleClick} className={className}>
       <div
         className={cn(
-          "fall flex-col justify-between group cursor-pointer min-w-10",
+          "flex flex-col items-center group cursor-pointer min-w-10",
           isMobile ? "gap-0.5" : "gap-2",
         )}
       >
