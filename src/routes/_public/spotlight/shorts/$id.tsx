@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_public/spotlight/shorts/$id")({
   staticData: {
     hideHeader: "mobile",
     showBottomBar: false,
+    hideFooter: true,
   },
 });
 

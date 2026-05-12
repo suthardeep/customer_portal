@@ -3,7 +3,7 @@ import { authQueries } from "../authQueries";
 import type { User } from "@/types/user.types";
 
 interface UseAuthReturn {
-  user: User | undefined;
+  user: User | null | undefined;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: Error | null;

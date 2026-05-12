@@ -31,9 +31,11 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
     if (initialIndexRef.current !== null) return initialIndexRef.current;
     if (posts.length === 0) return null;
     const idx = posts.findIndex((p) => p.id === initialPostId);
-    if (idx === -1) return null;
-    initialIndexRef.current = idx;
-    return idx;
+    // If the deep-linked post isn't in page 1, fall back to index 0 rather than
+    // leaving the container permanently hidden (blank screen on refresh).
+    const resolved = idx === -1 ? 0 : idx;
+    initialIndexRef.current = resolved;
+    return resolved;
   }, [posts, initialPostId]);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -42,6 +44,15 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const didInitialScroll = useRef(false);
   const observerReadyRef = useRef(false);
+
+  // Stable refs so the IntersectionObserver callback never needs to be recreated
+  // when paginated data grows — avoids a brief observer gap during rapid scroll.
+  const postsRef = useRef<FeedPost[]>([]);
+  const hasNextPageRef = useRef(hasNextPage);
+  const fetchNextPageRef = useRef(fetchNextPage);
+  useEffect(() => { postsRef.current = posts; }, [posts]);
+  useEffect(() => { hasNextPageRef.current = hasNextPage; }, [hasNextPage]);
+  useEffect(() => { fetchNextPageRef.current = fetchNextPage; }, [fetchNextPage]);
 
   // Initial scroll — runs once when resolved index and DOM element are ready
   useEffect(() => {
@@ -60,7 +71,8 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
     });
   }, [posts, resolvedInitialIndex]);
 
-  // Observer — only activates after initial scroll, re-attaches when posts grow
+  // Observer — created once after initial scroll; reads mutable refs so it never
+  // needs to be torn down when new pages load (avoids missed events during rapid scroll).
   useEffect(() => {
     if (
       !observerReadyRef.current ||
@@ -82,7 +94,8 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
 
         const postId = (best.target as HTMLDivElement).dataset.postId;
         if (!postId) return;
-        const index = posts.findIndex((p) => p.id === postId);
+        const currentPosts = postsRef.current;
+        const index = currentPosts.findIndex((p) => p.id === postId);
         if (index === -1) return;
 
         setActiveIndex((prev) => (prev === index ? prev : index));
@@ -91,9 +104,9 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
           params: { id: postId },
           replace: true,
         });
-        prefetchUpcomingPosts(posts, index);
-        if (hasNextPage && index >= posts.length - LOAD_MORE_THRESHOLD) {
-          fetchNextPage();
+        prefetchUpcomingPosts(currentPosts, index);
+        if (hasNextPageRef.current && index >= currentPosts.length - LOAD_MORE_THRESHOLD) {
+          fetchNextPageRef.current();
         }
       },
       { root: containerRef.current, threshold: 0.6 },
@@ -102,12 +115,13 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
       observer.observe(el);
     }
     return () => observer.disconnect();
-  }, [ready, posts, router, hasNextPage, fetchNextPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
   return (
     <div
       ref={containerRef}
-      className="overflow-y-auto overflow-x-hidden touch-pan-y snap-y p-0! snap-mandatory no-scrollbar h-dvh lg:h-[calc(100dvh-180px)]"
+      className="overflow-y-scroll overflow-x-hidden touch-pan-y snap-y p-0! snap-mandatory overscroll-y-contain no-scrollbar h-dvh lg:h-[calc(100dvh-180px)] will-change-transform"
       style={ready ? undefined : { visibility: "hidden" }}
     >
       {posts.map((post: FeedPost, index: number) => {
@@ -129,7 +143,7 @@ export function ShortFeedScroller({ initialPostId }: ShortFeedScrollerProps) {
               else itemRefs.current.delete(post.id);
             }}
             data-post-id={post.id}
-            className="snap-start snap-always h-dvh lg:h-[calc(100dvh-200px)] w-full max-w-full shrink-0 overflow-hidden"
+            className="snap-start snap-always h-dvh lg:h-[calc(100dvh-180px)] w-full max-w-full shrink-0 overflow-hidden"
           >
             {isAlive ? (
               <ShortFeedScrollerItem

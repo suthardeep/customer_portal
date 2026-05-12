@@ -1,20 +1,23 @@
 import { Link, useMatches } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import { Icon } from "@/components/base/icon/Icon";
 import { LogoWhite } from "@/components/compound/logo/LogoWhite";
 import { Image } from "@/components/base/Image";
 import type { IconName } from "@/components/base/icon/iconRegistry";
 
-const NAV_LINKS = [
+type NavLink = { label: string; to: LinkProps["to"] };
+
+const NAV_LINKS: NavLink[] = [
   { label: "Home", to: "/" },
   { label: "Categories", to: "/categories" },
-  { label: "Spotlight", to: "/spotlight" },
+  { label: "Spotlight", to: "/spotlight/buy-clips" },
   { label: "Subscription", to: "/subscription" },
-] as const;
+];
 
-const POLICY_LINKS = [
+const POLICY_LINKS: NavLink[] = [
   { label: "Terms of Service", to: "/terms-and-conditions" },
   { label: "Privacy Policy", to: "/privacy-policy" },
-] as const;
+];
 
 const SOCIAL_ICONS: { name: IconName; label: string }[] = [
   { name: "Facebook", label: "Facebook" },
@@ -57,7 +60,7 @@ function FooterBrandSection() {
 }
 
 interface FooterLinksColumnProps {
-  links: ReadonlyArray<{ label: string; to: string }>;
+  links: NavLink[];
 }
 
 function FooterLinksColumn({ links }: FooterLinksColumnProps) {

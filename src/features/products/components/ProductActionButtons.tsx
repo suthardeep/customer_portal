@@ -10,6 +10,8 @@ import { toast } from "@/utils/toast";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AddToCartButton } from "./AddToCartButton";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 
 interface ProductActionButtonsProps {
   productId: string;
@@ -37,11 +39,14 @@ export function ProductActionButtons({
   );
   const updateCartItemMutation = useUpdateCartItemMutation();
   const deleteCartItemMutation = useDeleteCartItemMutation();
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
+
   const navigate = useNavigate();
 
   const cartItem = cart?.items.find((item) => item.variantId === variantId);
 
-  const handleBuyNow = () => {
+  const navigateToBuyNow = () => {
     if (!variantId) {
       return toast.error("No variant selected");
     }
@@ -54,6 +59,13 @@ export function ProductActionButtons({
         ...(affiliateCode && { affiliateCode }),
       },
     });
+  };
+
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      return loginDialog.open({ onSuccess: navigateToBuyNow });
+    }
+    navigateToBuyNow();
   };
 
   if (isCartLoading) {
@@ -78,7 +90,9 @@ export function ProductActionButtons({
           <div
             className={cn(
               "flex gap-3 transition-all duration-300",
-              inCart ? "opacity-0 scale-95 pointer-events-none absolute inset-0" : "opacity-100 scale-100",
+              inCart
+                ? "opacity-0 scale-95 pointer-events-none absolute inset-0"
+                : "opacity-100 scale-100",
             )}
           >
             <AddToCartButton
@@ -100,7 +114,9 @@ export function ProductActionButtons({
           <div
             className={cn(
               "flex items-center justify-center gap-2 w-full transition-all duration-300",
-              inCart ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none absolute inset-0",
+              inCart
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none absolute inset-0",
             )}
           >
             <QuantitySelector
@@ -118,7 +134,9 @@ export function ProductActionButtons({
                 })
               }
               onRemove={() =>
-                deleteCartItemMutation.mutate({ variantId: cartItem!.variantId })
+                deleteCartItemMutation.mutate({
+                  variantId: cartItem!.variantId,
+                })
               }
             />
             <Link to="/cart" className="w-full">

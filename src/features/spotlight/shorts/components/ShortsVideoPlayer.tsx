@@ -62,6 +62,7 @@ const ShortsVideoPlayer = forwardRef<
   const [progress, setProgress] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
   const seekBarRef = useRef<HTMLDivElement>(null);
@@ -96,6 +97,7 @@ const ShortsVideoPlayer = forwardRef<
 
   const initHls = useCallback(
     (video: HTMLVideoElement, preloadOnly: boolean) => {
+      setHasError(false);
       destroyHls();
 
       if (Hls.isSupported()) {
@@ -111,28 +113,18 @@ const ShortsVideoPlayer = forwardRef<
         if (!preloadOnly) {
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
             video.muted = true;
-            video
-              .play()
-              .then(() => {
-                video.muted = isMuted;
-              })
-              .catch(() => {});
+            video.play().catch(() => {});
           });
         }
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = hlsUrl;
         if (!preloadOnly) {
           video.muted = true;
-          video
-            .play()
-            .then(() => {
-              video.muted = isMuted;
-            })
-            .catch(() => {});
+          video.play().catch(() => {});
         }
       }
     },
-    [hlsUrl, destroyHls, onHlsReady, isMuted],
+    [hlsUrl, destroyHls, onHlsReady],
   );
 
   const handleVolumeClick = () => {
@@ -163,6 +155,11 @@ const ShortsVideoPlayer = forwardRef<
     const video = videoRef.current;
     if (!video) return;
     if (isActive) {
+      // Skip full reinit if HLS is already attached and playing this URL
+      if (hlsRef.current && (hlsRef.current as Hls & { url?: string }).url === hlsUrl) {
+        video.play().catch(() => {});
+        return;
+      }
       setIsLoading(true);
       initHls(video, false);
     } else if (isPreload && !hlsRef.current) {
@@ -170,7 +167,8 @@ const ShortsVideoPlayer = forwardRef<
     } else if (!isActive) {
       destroyHls();
     }
-  }, [isActive, isPreload, initHls]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive, isPreload]);
 
   // Destroy on unmount
   useEffect(() => {
@@ -254,10 +252,27 @@ const ShortsVideoPlayer = forwardRef<
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isActive, handleVideoClick, reportDialog.isOpen]);
 
+  useEffect(() => {
+    if (!isActive) return;
+    const handleVisibility = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      if (document.hidden) {
+        video.pause();
+        pause();
+      } else {
+        video.play().catch(() => {});
+        resume();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [isActive, pause, resume]);
+
   return (
     <div className={`relative overflow-hidden bg-black ${className ?? ""}`}>
       {/* Thumbnail + spinner shown until video is ready */}
-      {isLoading && (
+      {isLoading && !hasError && (
         <div className="absolute inset-0 z-10">
           <Image
             src={thumbnail}
@@ -271,11 +286,28 @@ const ShortsVideoPlayer = forwardRef<
         </div>
       )}
 
+      {/* Error state with retry */}
+      {hasError && (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/70 gap-3">
+          <Icon name="AlertCircle" size="xl" className="text-n-50" />
+          <button
+            className="rounded-full bg-p-400 px-4 py-2 text-sm text-white"
+            onClick={() => {
+              const video = videoRef.current;
+              if (video) initHls(video, !isActive);
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
       <video
         ref={videoRefCallback}
         loop
         playsInline
         muted
+        preload={isActive || isPreload ? "auto" : "none"}
         className="relative size-full object-cover"
         onTimeUpdate={handleTimeUpdate}
         onClick={handleVideoClick}
@@ -283,6 +315,7 @@ const ShortsVideoPlayer = forwardRef<
           setIsLoading(false);
           if (videoRef.current) onVideoReady?.(videoRef.current);
         }}
+        onError={() => setHasError(true)}
       />
 
       {/* Center play/pause flash */}

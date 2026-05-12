@@ -5,7 +5,7 @@ import CampaignDescription from "@/features/spotlight/campaigns/components/Campa
 import CampaignDeliverables from "@/features/spotlight/campaigns/components/CampaignDeliverables";
 import CampaignRequirements from "@/features/spotlight/campaigns/components/CampaignRequirements";
 import CampaignRules from "@/features/spotlight/campaigns/components/CampaignRules";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
 import CampaignGuidelineDownload from "@/features/spotlight/campaigns/components/CampaignGuidelineDownload";
@@ -13,6 +13,7 @@ import CampaignJoinButton from "@/features/spotlight/campaigns/components/Campai
 import CampaignProducts from "@/features/spotlight/campaigns/components/CampaignProducts";
 import MyCampaignSubmissions from "@/features/spotlight/campaigns/components/MyCampaignSubmissions";
 import ErrorText from "@/components/base/ErrorText";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const Route = createFileRoute(
   "/_public/spotlight/campaigns/$campaignId",
@@ -32,12 +33,14 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   const params = Route.useParams();
+  const { isAuthenticated } = useAuth();
   const { data } = useSuspenseQuery(
     campaignQueries.campaignDetail(params.campaignId),
   );
-  const { data: submissions } = useSuspenseQuery(
-    campaignQueries.myCampaignSubmissions(params.campaignId, {}),
-  );
+  const { data: submissions } = useQuery({
+    ...campaignQueries.myCampaignSubmissions(params.campaignId, {}),
+    enabled: isAuthenticated,
+  });
 
   const isCampaignEnded = dayjs().isAfter(dayjs(data.endDate));
   const isRewardsFull = data.rewardedCreatorCount >= data.numberOfInfluencers;
@@ -66,10 +69,12 @@ function RouteComponent() {
         <CampaignRules rules={data.rules} />
         <CampaignProducts products={data.products} />
         <CampaignGuidelineDownload guidelinePdfUrl={data.guidelinePdfUrl} />
-        <MyCampaignSubmissions
-          campaignId={data.id}
-          submissions={submissions.data}
-        />
+        {submissions && submissions?.data?.length > 0 && (
+          <MyCampaignSubmissions
+            campaignId={data.id}
+            submissions={submissions.data}
+          />
+        )}
       </div>
       {isCampaignEnded ? (
         <ErrorText withBgCard className="text-center">

@@ -1,9 +1,11 @@
 import { Button } from "@/components/base/button/Button";
 import Dialog from "@/components/base/Dialog";
-import { campaignQueries } from "@/features/spotlight/campaigns/campaignsQueries";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 import type { Product } from "@/features/products/types/product.types";
+import { campaignQueries } from "@/features/spotlight/campaigns/campaignsQueries";
 import { useToggle } from "@/hooks/useToggle";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import CampaignSubmissionForm from "../submit/CampaignSubmissionForm";
 
 interface CampaignJoinButtonProps {
@@ -16,15 +18,27 @@ const CampaignJoinButton = ({
   products,
 }: CampaignJoinButtonProps) => {
   const submissionDialog = useToggle();
-  const { data: submissions } = useSuspenseQuery(
-    campaignQueries.myCampaignSubmissions(campaignId, {}),
-  );
-  const hasSubmissions = submissions.data.length > 0;
+  const { isAuthenticated } = useAuth();
+  const loginDialog = useLoginDialog();
+
+  const { data: submissions } = useQuery({
+    ...campaignQueries.myCampaignSubmissions(campaignId, {}),
+    enabled: isAuthenticated,
+  });
+  const hasSubmissions = (submissions && submissions.data.length > 0) || false;
+
+  const handleJoinClick = () => {
+    if (!isAuthenticated) {
+      loginDialog.open({ onSuccess: submissionDialog.open });
+      return;
+    }
+    submissionDialog.open();
+  };
 
   return (
     <>
       <div className="space-y-2">
-        <Button fullWidth size="lg" onClick={submissionDialog.open}>
+        <Button fullWidth size="lg" onClick={handleJoinClick}>
           {hasSubmissions ? "Add new submission" : "Join & Submit"}
         </Button>
       </div>

@@ -11,8 +11,9 @@ import type {
 } from "./types/types";
 
 export const getCustomerProfile = createServerFn({ method: "GET" }).handler(
-  async (): Promise<BaseApiResponse<User>> => {
+  async (): Promise<BaseApiResponse<User> | null> => {
     const token = getToken();
+    if (!token) return null;
     return apiRequest<BaseApiResponse<User>>("/v1/customer/profile", {
       token,
     });
