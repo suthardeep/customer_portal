@@ -52,7 +52,6 @@ function RouteComponent() {
   };
 
   const handleAddAddress = (data: AddressFormData) => {
-    delete data.otherAddressLabel;
     createMutation.mutate(data, { onSuccess: addDialog.close });
   };
 

@@ -1,7 +1,7 @@
 import { spotlightQueries } from "@/features/spotlight/spotlightQueries";
 import { SpotlightProfileSidebar } from "@/features/spotlight/components/SpotlightProfileSidebar";
 import { SpotlightRouteSkeleton } from "@/features/spotlight/components/skeletons/SpotlightRouteSkeleton";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 import RouteErrorComponent from "@/components/empty-states/RouteErrorComponent";
 import SpotlightNavbar from "@/features/spotlight/components/SpotlightNavbar";
 
@@ -18,6 +18,13 @@ export const Route = createFileRoute("/_public/spotlight")({
 });
 
 function RouteComponent() {
+  const hideSpotlightRoute = useMatches({
+    select: (matches) =>
+      matches.some((m) => m.staticData?.hideSpotlightRoute),
+  });
+
+  if (hideSpotlightRoute) return <Outlet />;
+
   return (
     <div className="flex gap-x-7 overflow-x-hidden md:p-6 lg:py-8 items-stretch">
       <SpotlightProfileSidebar />

@@ -7,6 +7,7 @@ import type { Address } from "../types/types";
 import { formatAddress } from "../utils";
 import { Chip } from "@/components/base/chip/Chip";
 import { ADDRESS_TYPE_CONFIG } from "../constants";
+import { AddressTypeEnum } from "../enums";
 
 interface AddressListItemProps {
   address: Address;
@@ -22,7 +23,10 @@ const AddressListItem = ({
   const popover = useToggle();
 
   const config = ADDRESS_TYPE_CONFIG[address.addressType];
-  const label = config.label;
+  const label =
+    address.addressType === AddressTypeEnum.OTHER && address.otherAddressLabel
+      ? address.otherAddressLabel
+      : config.label;
 
   const handleEdit = () => {
     popover.close();

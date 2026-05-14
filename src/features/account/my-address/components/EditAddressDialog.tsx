@@ -18,7 +18,6 @@ const EditAddressDialog = ({
 
   const handleSubmit = (data: AddressFormData) => {
     if (!address) return;
-    delete data.otherAddressLabel;
     updateMutation.mutate({ id: address.id, ...data }, { onSuccess: onClose });
   };
 
@@ -33,6 +32,7 @@ const EditAddressDialog = ({
         city: address.city,
         state: address.state,
         addressType: address.addressType,
+        otherAddressLabel: address.otherAddressLabel,
         isDefault: address.isDefault,
         latitude: address.latitude,
         longitude: address.longitude,

@@ -14,6 +14,7 @@ export interface Address {
   pincode: string;
   country: string;
   addressType: AddressType;
+  otherAddressLabel?: string;
   latitude?: number;
   longitude?: number;
   isDefault: boolean;
@@ -33,6 +34,7 @@ export type CreateAddressRequest = Pick<
   | "state"
   | "pincode"
   | "addressType"
+  | "otherAddressLabel"
   | "latitude"
   | "longitude"
   | "isDefault"

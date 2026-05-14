@@ -54,5 +54,7 @@ declare module "@tanstack/react-router" {
     maxWidth?: "max-w-7xl" | "max-w-8xl" | "none";
     hideHeader?: "all" | "desktop" | "mobile";
     hideFooter?: boolean;
+    hideSpotlightSidebar?: boolean;
+    hideSpotlightRoute?: boolean;
   }
 }
