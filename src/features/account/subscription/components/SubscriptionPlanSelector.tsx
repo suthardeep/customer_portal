@@ -6,10 +6,8 @@ import { Button } from "@/components/base/button/Button";
 import { Icon } from "@/components/base/icon";
 import { useSubscribeMutation } from "../subscriptionMutations";
 import { useSubscriptionPayment } from "@/hooks/useSubscriptionPayment";
-import { subscriptionQueries } from "../subscriptionQueries";
 import { authQueries } from "@/features/auth/authQueries";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "@/utils/toast";
 import type { RazorpaySubscriptionResult } from "@/lib/razorpaySubscription";
 
 interface SubscriptionPlanSelectorProps {
@@ -46,17 +44,6 @@ export function SubscriptionPlanSelector({
   });
 
   const isPolling = status === "polling";
-
-  const { data: currentSubscription } = useQuery({
-    ...subscriptionQueries.current(),
-    enabled: isPolling,
-    refetchInterval: 3000,
-  });
-
-  if (isPolling && currentSubscription?.isPremiumActive) {
-    toast.success("Subscription activated successfully!");
-    reset();
-  }
 
   const handleSubscribe = async () => {
     const orderData = await subscribeMutation.mutateAsync({

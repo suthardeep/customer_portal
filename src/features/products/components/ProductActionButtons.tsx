@@ -99,6 +99,7 @@ export function ProductActionButtons({
               variantId={variantId}
               quantity={quantity}
               disabled={disabled}
+              min={min}
             />
             <Button
               color="secondary"

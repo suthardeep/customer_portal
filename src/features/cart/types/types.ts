@@ -21,6 +21,7 @@ export interface CartItem extends Pick<
   | "viewCount"
   | "isFragile"
   | "totalStock"
+  | "minOrderQuantity"
 > {
   id: string;
   variantId: string;

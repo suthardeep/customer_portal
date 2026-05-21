@@ -12,25 +12,35 @@ import { ProductTopBar } from "@/features/products/components/ProductTopBar";
 import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
 import { MOCK_PRODUCT_FEATURES } from "@/features/products/constants";
+import { affiliateQueries } from "@/features/affiliate/affiliateQueries";
 import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
+import { toast } from "@/utils/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { z } from "zod";
 
 const productDetailSearchSchema = z.object({
   variantId: z.string().optional(),
-  quantity: z.number().int().min(1).optional().default(1),
+  quantity: z.number().int().min(1).optional(),
   affiliateCode: z.string().optional(),
+  _minQtyCorrected: z.boolean().optional(),
 });
 
 export const Route = createFileRoute("/_public/products/$productId")({
   validateSearch: productDetailSearchSchema,
-  loaderDeps: ({ search }) => ({ variantId: search.variantId }),
+  loaderDeps: ({ search }) => ({
+    variantId: search.variantId,
+    quantity: search.quantity,
+  }),
   loader: async ({ context, params, deps }) => {
-    const product = await context.queryClient.ensureQueryData(
-      productQueries.detail(params.productId),
-    );
+    const [product] = await Promise.all([
+      context.queryClient.ensureQueryData(productQueries.detail(params.productId)),
+      context.queryClient.prefetchQuery(
+        affiliateQueries.productShareLink(params.productId, deps.variantId),
+      ),
+    ]);
     if (!deps.variantId && product.variants.length > 0) {
       throw redirect({
         to: ".",
@@ -38,6 +48,20 @@ export const Route = createFileRoute("/_public/products/$productId")({
           ...prev,
           variantId: product.variants[0].id,
           quantity: product.minOrderQuantity ?? 1,
+        }),
+        replace: true,
+      });
+    }
+    const min = product.minOrderQuantity ?? 1;
+    const quantityProvided = deps.quantity !== undefined;
+    const effectiveQuantity = deps.quantity ?? 1;
+    if (effectiveQuantity < min) {
+      throw redirect({
+        to: ".",
+        search: (prev) => ({
+          ...prev,
+          quantity: min,
+          _minQtyCorrected: quantityProvided ? true : undefined,
         }),
         replace: true,
       });
@@ -54,8 +78,20 @@ function ProductDetailComponent() {
     variantId: searchVariantId,
     quantity,
     affiliateCode,
+    _minQtyCorrected,
   } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId));
+
+  useEffect(() => {
+    if (_minQtyCorrected && product.minOrderQuantity) {
+      toast.info(`Minimum order quantity is ${product.minOrderQuantity} units`);
+      navigate({
+        search: (prev) => ({ ...prev, _minQtyCorrected: undefined }),
+        replace: true,
+      });
+    }
+  }, [_minQtyCorrected]);
 
   const variantId = searchVariantId ?? product.variants[0];
 
@@ -71,7 +107,6 @@ function ProductDetailComponent() {
 
   // Use mock data for features not yet available from API
   const features = MOCK_PRODUCT_FEATURES;
-
 
   const galleryImages = selectedVariant?.mediaUrls?.length
     ? selectedVariant.mediaUrls
@@ -114,7 +149,7 @@ function ProductDetailComponent() {
               <ProductActionButtons
                 productId={productId}
                 variantId={selectedVariant?.id}
-                quantity={quantity}
+                quantity={quantity ?? 1}
                 disabled={isOutOfStock}
                 min={product.minOrderQuantity}
                 max={selectedVariant?.quantity}

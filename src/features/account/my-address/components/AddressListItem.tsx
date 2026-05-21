@@ -13,12 +13,14 @@ interface AddressListItemProps {
   address: Address;
   onEdit: (address: Address) => void;
   onDelete: (address: Address) => void;
+  onSetDefault: (address: Address) => void;
 }
 
 const AddressListItem = ({
   address,
   onEdit,
   onDelete,
+  onSetDefault,
 }: AddressListItemProps) => {
   const popover = useToggle();
 
@@ -36,6 +38,11 @@ const AddressListItem = ({
   const handleDelete = () => {
     popover.close();
     onDelete(address);
+  };
+
+  const handleSetDefault = () => {
+    popover.close();
+    onSetDefault(address);
   };
 
   return (
@@ -74,6 +81,11 @@ const AddressListItem = ({
       >
         <div>
           <MenuItem onClick={handleEdit}>Edit</MenuItem>
+          {!address.isDefault && (
+            <MenuItem onClick={handleSetDefault}>
+              Set as default address
+            </MenuItem>
+          )}
           <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </div>
       </Popover>

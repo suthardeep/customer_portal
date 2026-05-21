@@ -3,6 +3,8 @@ import {
   type RazorpaySubscriptionOrderData,
   type RazorpaySubscriptionResult,
 } from "@/lib/razorpaySubscription";
+import { queryClient } from "@/queryClient";
+import { subscriptionKeys } from "@/features/account/subscription/subscriptionQueryFactory";
 import { useCallback, useState } from "react";
 
 type PaymentStatus = "idle" | "checkout_open" | "polling" | "success" | "error" | "dismissed";
@@ -37,9 +39,11 @@ export function useSubscriptionPayment({
             try {
               setStatus("polling");
               await onVerify(result);
+              await queryClient.refetchQueries({ queryKey: subscriptionKeys.current() });
               setStatus("success");
             } catch (err: unknown) {
               const message = err instanceof Error ? err.message : "Payment verification failed";
+              console.error("[SubPayment] onVerify error", err);
               setError(message);
               setStatus("error");
             }
@@ -51,6 +55,7 @@ export function useSubscriptionPayment({
         });
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Could not open payment dialog";
+        console.error("[SubPayment] initiatePayment error", err);
         setError(message);
         setStatus("error");
       }

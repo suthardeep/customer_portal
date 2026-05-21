@@ -29,6 +29,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     ref,
   ) => {
     const buttonClasses = cn(
+      "group",
       baseStyles,
       variantStyles[variant][color],
       squareSizes[size],

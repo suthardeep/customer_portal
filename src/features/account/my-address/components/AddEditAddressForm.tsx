@@ -1,5 +1,4 @@
 import { Button } from "@/components/base/button/Button";
-import { Checkbox } from "@/components/base/checkbox/Checkbox";
 import ErrorText from "@/components/base/ErrorText";
 import { Input } from "@/components/base/input/Input";
 import { TabSelector } from "@/components/base/TabSelector";
@@ -71,18 +70,25 @@ const AddEditAddressForm = ({
           placeholder="Enter Full name"
           error={errors.fullName?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
         <Input
-          {...register("phone")}
+          {...register("phone", {
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\D/g, "");
+            },
+          })}
           label="Mobile Number"
           placeholder="Enter Mobile number"
-          type="number"
+          type="text"
+          pattern="[0-9]*"
           inputMode="numeric"
           maxLength={10}
           error={errors.phone?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
@@ -92,6 +98,7 @@ const AddEditAddressForm = ({
           placeholder="Enter Address Line 1"
           error={errors.addressLine1?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
@@ -114,14 +121,19 @@ const AddEditAddressForm = ({
         />
 
         <Input
-          {...register("pincode")}
+          {...register("pincode", {
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\D/g, "");
+            },
+          })}
           label="Pincode"
           placeholder="123456"
-          type="tel"
+          type="text"
           inputMode="numeric"
           maxLength={6}
           error={errors.pincode?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
@@ -131,6 +143,7 @@ const AddEditAddressForm = ({
           placeholder="Enter City name"
           error={errors.city?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
@@ -140,6 +153,7 @@ const AddEditAddressForm = ({
           placeholder="Enter State name"
           error={errors.state?.message}
           disabled={isMutating}
+          required
           fullWidth
         />
 
@@ -171,12 +185,6 @@ const AddEditAddressForm = ({
             fullWidth
           />
         )}
-
-        <Checkbox
-          {...register("isDefault")}
-          label="Set as default address"
-          disabled={isMutating}
-        />
       </div>
       <div className="flex gap-3 pt-2">
         {onCancel && (

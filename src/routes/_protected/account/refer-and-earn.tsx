@@ -2,29 +2,44 @@ import { Icon } from "@/components/base/icon/Icon";
 import { Image } from "@/components/base/Image";
 import FallbackView from "@/components/empty-states/FallbackView";
 import AccountPageHeader from "@/features/account/components/AccountPageHeader";
-import { useCreateReferralShareLinkMutation } from "@/features/affiliate/affiliateMutations";
+import { affiliateQueries } from "@/features/affiliate/affiliateQueries";
 import { useShareLink } from "@/features/affiliate/hooks/useShareLink";
+import { authQueries } from "@/features/auth/authQueries";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import AccountPageWrapper from "@/features/account/components/AccountPageWrapper";
 import { cn } from "@/utils/cssHelpers";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/account/refer-and-earn")({
+  loader: async ({ context }) => {
+    const profile = context.queryClient.getQueryData(
+      authQueries.profile().queryKey,
+    );
+    const referralCode = profile?.referralCode;
+    if (referralCode) {
+      await context.queryClient.prefetchQuery(
+        affiliateQueries.referralLink(referralCode),
+      );
+    }
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { user, isLoading } = useAuth();
-  const shareLink = useCreateReferralShareLinkMutation();
   const { share, copied } = useShareLink();
   const referralCode = user?.referralCode ?? "";
   const referredByCode = user?.referredByCode;
   const referralCount = user?.referralCount ?? 0;
 
+  const { data: referralLink } = useQuery(
+    affiliateQueries.referralLink(referralCode),
+  );
+
   const handleCopyClick = async () => {
-    if (!referralCode) return;
-    const link = await shareLink.mutateAsync({ targetId: referralCode });
-    await share(link, "Join me on Aavak!");
+    if (!referralLink) return;
+    await share(referralLink, "Join me on Aavak!");
   };
 
   return (
@@ -65,7 +80,7 @@ function RouteComponent() {
                   <button
                     className="flex items-center gap-1.5 text-p-700 font-medium hover:bg-p-50 rounded-lg py-2 cursor-pointer px-3 disabled:opacity-50"
                     onClick={handleCopyClick}
-                    disabled={shareLink.isPending}
+                    disabled={copied.isOpen}
                   >
                     <Icon name="Copy" size="lg" className="text-p-700" />
                     <span>Copy link</span>

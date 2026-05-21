@@ -1,8 +1,8 @@
 import { showErrorToasts } from "@/components/toast";
-import { queryClient } from "@/queryClient";
 import { useMutation } from "@tanstack/react-query";
-import { subscriptionKeys } from "./subscriptionQueryFactory";
 import { cancelSubscription, subscribe } from "./subscriptionService";
+import { queryClient } from "@/queryClient";
+import { subscriptionKeys } from "./subscriptionQueryFactory";
 import type { SubscribeRequest } from "./types/types";
 
 export const useSubscribeMutation = () => {
@@ -10,9 +10,6 @@ export const useSubscribeMutation = () => {
     mutationFn: async (data: SubscribeRequest) => {
       const response = await subscribe({ data });
       return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: subscriptionKeys.current() });
     },
     onError: (error) => {
       showErrorToasts(error);

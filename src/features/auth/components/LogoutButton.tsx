@@ -21,6 +21,7 @@ export const LogoutButton = ({
         isOpen={confirmDialog.isOpen}
         onClose={confirmDialog.close}
         size="sm"
+        title="Logout"
       >
         <div className="fall flex-col">
           <LogoutGraphic />

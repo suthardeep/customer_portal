@@ -34,12 +34,14 @@ const EditProfileDialog = ({ isOpen, onClose }: EditProfileDialogProps) => {
       size="sm"
       disableBackdropClose={updateMutation.isPending}
     >
-      <EditProfileForm
-        user={user}
-        onSubmit={handleSubmit}
-        onCancel={onClose}
-        isMutating={updateMutation.isPending}
-      />
+      {user && (
+        <EditProfileForm
+          user={user}
+          onSubmit={handleSubmit}
+          onCancel={onClose}
+          isMutating={updateMutation.isPending}
+        />
+      )}
     </Dialog>
   );
 };

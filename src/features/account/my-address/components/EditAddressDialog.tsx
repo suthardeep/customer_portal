@@ -32,7 +32,7 @@ const EditAddressDialog = ({
         city: address.city,
         state: address.state,
         addressType: address.addressType,
-        otherAddressLabel: address.otherAddressLabel,
+        otherAddressLabel: address.otherAddressLabel ?? "",
         isDefault: address.isDefault,
         latitude: address.latitude,
         longitude: address.longitude,

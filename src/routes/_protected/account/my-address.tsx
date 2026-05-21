@@ -5,7 +5,10 @@ import AddAddressDialog from "@/features/account/my-address/components/AddAddres
 import AddressListItem from "@/features/account/my-address/components/AddressListItem";
 import DeleteAddressDialog from "@/features/account/my-address/components/DeleteAddressDialog";
 import EditAddressDialog from "@/features/account/my-address/components/EditAddressDialog";
-import { useCreateAddressMutation } from "@/features/account/my-address/addressMutations";
+import {
+  useCreateAddressMutation,
+  useUpdateAddressMutation,
+} from "@/features/account/my-address/addressMutations";
 import { addressQueries } from "@/features/account/my-address/addressQueries";
 import type {
   Address,
@@ -36,6 +39,7 @@ export const Route = createFileRoute("/_protected/account/my-address")({
 function RouteComponent() {
   const { data: addresses } = useSuspenseQuery(addressQueries.list());
   const createMutation = useCreateAddressMutation();
+  const updateMutation = useUpdateAddressMutation();
   const addDialog = useToggle();
   const editDialog = useToggle();
   const deleteDialog = useToggle();
@@ -51,8 +55,31 @@ function RouteComponent() {
     deleteDialog.open();
   };
 
+  const handleSetDefault = (address: Address) => {
+    updateMutation.mutate({
+      id: address.id,
+      fullName: address.fullName,
+      phone: address.phone,
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      landmark: address.landmark,
+      city: address.city,
+      state: address.state,
+      pincode: address.pincode,
+      addressType: address.addressType,
+      otherAddressLabel: address.otherAddressLabel,
+      latitude: address.latitude,
+      longitude: address.longitude,
+      isDefault: true,
+    });
+  };
+
   const handleAddAddress = (data: AddressFormData) => {
-    createMutation.mutate(data, { onSuccess: addDialog.close });
+    const isFirst = addresses.length === 0;
+    createMutation.mutate(
+      { ...data, isDefault: isFirst },
+      { onSuccess: addDialog.close },
+    );
   };
 
   return (
@@ -80,6 +107,7 @@ function RouteComponent() {
               address={address}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onSetDefault={handleSetDefault}
             />
           ))}
         </div>

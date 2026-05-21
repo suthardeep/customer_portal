@@ -27,7 +27,7 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
     } else {
       loginDialog.open({
         onSuccess: () =>
-          navigate({ to: "/account/my-orders", search: { currentPage: 1 } }),
+          navigate({ to: pathname as "/", replace: true }),
       });
     }
   };

@@ -4,7 +4,6 @@ import FallbackView from "@/components/empty-states/FallbackView";
 import { categoryQueries } from "@/features/categories/categoryQueries";
 import { CategoryCard } from "@/features/categories/components/CategoryCard";
 import { CategoryDetailSkeleton } from "@/features/categories/components/skeletons/CategoryDetailSkeleton";
-import type { CategoryTreeNode } from "@/features/categories/types/types";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { ProductCardSkeleton } from "@/features/products/components/ProductCardSkeleton";
 import { productQueries } from "@/features/products/productQueries";
@@ -21,13 +20,13 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
   beforeLoad: async ({ search, params, context }) => {
     if (!search.subCategoryId) {
       const tree = await context.queryClient.ensureQueryData(
-        categoryQueries.categoryTree(params.categoryId),
+        categoryQueries.tree({ parentId: params.categoryId }),
       );
-      if (tree.children.length > 0) {
+      if (tree.data.length > 0) {
         throw redirect({
           to: "/categories/$categoryId",
           params: { categoryId: params.categoryId },
-          search: { subCategoryId: tree.children[0].id },
+          search: { subCategoryId: tree.data[0].id },
           replace: true,
         });
       }
@@ -35,7 +34,7 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
   },
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
-      categoryQueries.categoryTree(params.categoryId),
+      categoryQueries.tree({ parentId: params.categoryId }),
     );
   },
   pendingComponent: CategoryDetailSkeleton,
@@ -52,10 +51,12 @@ function CategoryDetailComponent() {
   const { categoryId } = Route.useParams();
   const { subCategoryId } = Route.useSearch();
 
-  const { data } = useSuspenseQuery(categoryQueries.categoryTree(categoryId));
-  const { children: subCategories } = data;
+  const { data } = useSuspenseQuery(
+    categoryQueries.tree({ mainCategoryId: categoryId }),
+  );
+  const subCategories = data.data;
 
-  const selectedSub: CategoryTreeNode =
+  const selectedSub =
     subCategories.find((s) => s.id === subCategoryId) ?? subCategories[0];
 
   const childCategories = selectedSub?.children ?? [];

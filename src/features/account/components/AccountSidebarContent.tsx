@@ -21,7 +21,13 @@ export function AccountSidebarContent() {
             )}
           </div>
         ))}
-        <LogoutButton size="sm" fullWidth variant="ghost" color="danger" />
+        <LogoutButton
+          size="sm"
+          className="py-2.5"
+          fullWidth
+          variant="ghost"
+          color="danger"
+        />
       </div>
     </>
   );

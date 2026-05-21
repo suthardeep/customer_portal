@@ -3,6 +3,11 @@ export type PaginationQueryParams = {
   pageSize?: number;
 };
 
+export type CategoryTreeQueryParams = PaginationQueryParams & {
+  parentId?: string;
+  mainCategoryId?: string;
+};
+
 export type GeneralQueryParams<_T = unknown> = PaginationQueryParams & {
   search?: string;
   sortByField?: string;

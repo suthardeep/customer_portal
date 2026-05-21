@@ -120,7 +120,7 @@ export function MyOrderHeaderDetails({
               ) : (
                 <>
                   <p className="text-n-900 font-medium">
-                    {existingReview ? "Your rating" : "Rate your experience"}
+                    {existingReview ? "Your rating" : "Rate this product"}
                   </p>
                   {existingReview ? (
                     <button type="button" onClick={reviewSheet.open}>

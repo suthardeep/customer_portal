@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "./types/enums";
+import { SubscriptionPeriod, SubscriptionStatus } from "./types/enums";
 
 const SUBSCRIPTION_STATUS_LABELS: Record<SubscriptionStatus, string> = {
   [SubscriptionStatus.CREATED]: "Created",
@@ -15,3 +15,11 @@ const SUBSCRIPTION_STATUS_LABELS: Record<SubscriptionStatus, string> = {
 
 export const getSubscriptionStatusLabel = (status: SubscriptionStatus): string =>
   SUBSCRIPTION_STATUS_LABELS[status] ?? status;
+
+const SUBSCRIPTION_PERIOD_LABELS: Record<SubscriptionPeriod, string> = {
+  [SubscriptionPeriod.MONTHLY]: "/ month",
+  [SubscriptionPeriod.YEARLY]: "/ year",
+};
+
+export const getSubscriptionPeriodLabel = (period: SubscriptionPeriod): string =>
+  SUBSCRIPTION_PERIOD_LABELS[period] ?? period;

@@ -101,7 +101,7 @@ export function MyOrdersCard({
         <div className="p-2 pt-0 w-full" onClick={(e) => e.preventDefault()}>
           <div className="w-full rounded-xl bg-p-50 px-4 py-3 flex items-center gap-4">
             <p className="text-n-900 font-medium">
-              {existingReview ? "Your rating" : "Rate your experience"}
+              {existingReview ? "Your rating" : "Rate this product"}
             </p>
             {existingReview ? (
               <button type="button" onClick={reviewSheet.open}>

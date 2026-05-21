@@ -121,7 +121,12 @@ const Dialog: React.FC<DialogProps> = (props) => {
             if (disableBackdropClose) e.preventDefault();
           }}
         >
-          {customContent ? children : defaultContent}
+          {customContent ? (
+            <>
+              <RadixDialog.Title className="sr-only">{title}</RadixDialog.Title>
+              {children}
+            </>
+          ) : defaultContent}
         </RadixDialog.Content>
       </RadixDialog.Portal>
     </RadixDialog.Root>

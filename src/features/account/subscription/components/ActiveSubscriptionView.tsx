@@ -6,15 +6,18 @@ import { prettyDate } from "@/utils/formatDateTime";
 import dayjs from "dayjs";
 import { useCancelSubscriptionMutation } from "../subscriptionMutations";
 import { SubscriptionStatus } from "../types/enums";
-import type { CurrentSubscription } from "../types/types";
+import type { CurrentSubscription, SubscriptionPlan } from "../types/types";
 import { getSubscriptionStatusLabel } from "../utils";
+import { SubscriptionPlanSelector } from "./SubscriptionPlanSelector";
 
 interface ActiveSubscriptionViewProps {
   subscription: CurrentSubscription;
+  plans: SubscriptionPlan[];
 }
 
 export function ActiveSubscriptionView({
   subscription,
+  plans,
 }: ActiveSubscriptionViewProps) {
   const cancelDialog = useToggle();
   const cancelMutation = useCancelSubscriptionMutation();
@@ -58,24 +61,18 @@ export function ActiveSubscriptionView({
         {/* Details */}
         <div className="flex flex-col gap-3 p-6 pt-1">
           <div className="flex items-center justify-between">
+            <p className="text-n-700">Active plan</p>
+            <p className="text-n-50 font-medium capitalize">
+              {subscription.planPeriod}
+            </p>
+          </div>
+          <div className="flex items-center justify-between">
             <p className="text-n-700">
-              {isPeriodPast ? "Period ended" : "Current period ends"}
+              {isPeriodPast ? "Expired on" : "Valid until"}
             </p>
             <p className="text-n-50 font-medium">
               {prettyDate(subscription.currentPeriodEnd)}
             </p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-n-700">Premium access</p>
-            <span
-              className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                subscription.isPremiumActive
-                  ? "bg-success-100 text-success-700"
-                  : "bg-n-800 text-n-400"
-              }`}
-            >
-              {subscription.isPremiumActive ? "Active" : "Inactive"}
-            </span>
           </div>
         </div>
       </div>
@@ -90,10 +87,18 @@ export function ActiveSubscriptionView({
       )}
 
       {isCancelled && (
-        <p className="text-center text-n-600 text-sm">
-          Subscription cancelled. Premium access until{" "}
-          {prettyDate(subscription.currentPeriodEnd)}.
-        </p>
+        <>
+          <p className="text-center text-n-600 text-sm">
+            Subscription cancelled. Premium access until{" "}
+            {prettyDate(subscription.currentPeriodEnd)}.
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-s-800" />
+            <p className="text-xs text-n-700 shrink-0">Subscribe for next period</p>
+            <div className="h-px flex-1 bg-s-800" />
+          </div>
+          <SubscriptionPlanSelector plans={plans} />
+        </>
       )}
 
       <Dialog

@@ -2,6 +2,7 @@ import { cn } from "@/utils/cssHelpers";
 import { formatCurrency } from "@/utils/formatCurrency";
 import type { SubscriptionPlan } from "../types/types";
 import { SubscriptionPeriod } from "../types/enums";
+import { getSubscriptionPeriodLabel } from "../utils";
 
 interface SubscriptionPlanCardProps {
   plan: SubscriptionPlan;
@@ -43,10 +44,11 @@ export function SubscriptionPlanCard({
           )}
         </div>
 
-        <div className="flex items-baseline gap-0.5 shrink-0">
+        <div className="flex items-baseline gap-1 shrink-0">
           <h4 className="font-bold text-n-50">
             {formatCurrency(plan.item.amount / 100)}
           </h4>
+          <p className="text-n-50/70">{getSubscriptionPeriodLabel(plan.period)}</p>
         </div>
       </div>
     </button>

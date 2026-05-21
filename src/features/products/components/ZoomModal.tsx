@@ -14,6 +14,7 @@ export function ZoomModal({ image, isOpen, onClose }: ZoomModalProps) {
       isOpen={isOpen}
       onClose={onClose}
       size="full"
+      title="Product Image"
       customContent
       disableBackdropClose={false}
     >

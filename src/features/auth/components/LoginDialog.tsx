@@ -27,6 +27,12 @@ export const LoginDialog = () => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [sendOtpError, setSendOtpError] = useState<string | null>(null);
 
+  const handleClose = () => {
+    setIsNewUser(false);
+    setSendOtpError(null);
+    close();
+  };
+
   const sendOtpMutation = useSendOtpMutation();
 
   const handleLoginSubmit = (data: LoginFormData) => {
@@ -87,7 +93,7 @@ export const LoginDialog = () => {
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={close}
+      onClose={handleClose}
       title={dialogTitle}
       subTitle={dialogSubTitle}
       size="sm"
@@ -126,7 +132,7 @@ export const LoginDialog = () => {
         <IconButton
           icon="X"
           aria-label="Close dialog"
-          onClick={close}
+          onClick={handleClose}
           size="sm"
           variant="ghost"
           color="neutral"

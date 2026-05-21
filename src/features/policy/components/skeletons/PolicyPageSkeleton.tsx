@@ -2,6 +2,7 @@ export function PolicyPageSkeleton() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 md:py-16">
       <header className="mb-10">
+        <div className="shimmer mb-4 h-9 w-9 rounded-full" />
         <div className="shimmer mb-2 h-8 w-2/3 rounded" />
         <div className="shimmer h-4 w-32 rounded" />
         <div className="shimmer mt-6 h-px w-full rounded" />

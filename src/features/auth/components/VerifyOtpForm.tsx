@@ -8,8 +8,9 @@ import {
 import ErrorText from "@/components/base/ErrorText";
 import Spinner from "@/components/compound/spinner/Spinner";
 import { Icon } from "@/components/base/icon/Icon";
+import { useToggle } from "@/hooks/useToggle";
 
-const RESEND_COUNTDOWN_SECONDS = 30;
+const RESEND_COUNTDOWN_SECONDS = 60;
 
 interface VerifyOtpFormProps {
   phone: string;
@@ -33,6 +34,7 @@ const VerifyOtpForm = ({
     RESEND_COUNTDOWN_SECONDS,
   );
 
+  const resendSuccess = useToggle();
   const verifyOtpMutation = useVerifyOtpMutation();
   const sendOtpMutation = useSendOtpMutation();
 
@@ -67,9 +69,11 @@ const VerifyOtpForm = ({
     sendOtpMutation.mutate(
       { phone, userType: "customer" },
       {
-        onSuccess: () => {
-          setResendCountdown(RESEND_COUNTDOWN_SECONDS);
+        onSuccess: (data) => {
+          setResendCountdown(data.waitTimeInSeconds ?? RESEND_COUNTDOWN_SECONDS);
           otpInputRef.current?.clearFields();
+          resendSuccess.open();
+          setTimeout(resendSuccess.close, 3000);
         },
       },
     );
@@ -118,7 +122,12 @@ const VerifyOtpForm = ({
           {errorMessage && <ErrorText withBgCard>{errorMessage}</ErrorText>}
 
           <div className="flex flex-col items-center gap-2">
-            {canResend ? (
+            {resendSuccess.isOpen ? (
+              <p className="text-sm text-success-600 font-medium flex items-center gap-1">
+                <Icon name="CheckCircle" size="sm" className="text-success-500" />
+                OTP sent successfully
+              </p>
+            ) : canResend ? (
               <Button
                 variant="ghost"
                 color="primary"

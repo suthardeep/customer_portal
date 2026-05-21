@@ -7,7 +7,6 @@ import { SubscriptionFeatureGrid } from "@/features/account/subscription/compone
 import { SubscriptionFooterLinks } from "@/features/account/subscription/components/SubscriptionFooterLinks";
 import { SubscriptionPlanSelector } from "@/features/account/subscription/components/SubscriptionPlanSelector";
 import { SubscriptionSunburst } from "@/features/account/subscription/components/SubscriptionSunburst";
-import { SubscriptionStatus } from "@/features/account/subscription/types/enums";
 import { subscriptionQueries } from "@/features/account/subscription/subscriptionQueries";
 import SubscriptionSkeleton from "@/features/account/subscription/components/skeletons/SubscriptionSkeleton";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -35,9 +34,7 @@ function SubscriptionPage() {
   const { data: currentSubscription } = useSuspenseQuery(
     subscriptionQueries.current(),
   );
-  const hasActivePlan =
-    currentSubscription?.isPremiumActive ||
-    currentSubscription?.status === SubscriptionStatus.CANCELLED;
+  const hasActivePlan = currentSubscription?.isPremiumActive;
 
   return (
     <div className="relative min-h-screen bg-s-1000 overflow-hidden">
@@ -50,7 +47,8 @@ function SubscriptionPage() {
           icon="ChevronLeft"
           variant="ghost"
           color="neutral"
-          iconClassName="text-n-50"
+          className="hover:bg-s-900"
+          iconClassName="group-hover:text-n-50"
           onClick={() => router.history.back()}
           aria-label="Go back"
         />
@@ -136,7 +134,10 @@ function SubscriptionPage() {
         {/* Active plan or plan selector */}
         <div className="w-full mt-8">
           {hasActivePlan && currentSubscription ? (
-            <ActiveSubscriptionView subscription={currentSubscription} />
+            <ActiveSubscriptionView
+              subscription={currentSubscription}
+              plans={plans}
+            />
           ) : (
             <SubscriptionPlanSelector plans={plans} />
           )}

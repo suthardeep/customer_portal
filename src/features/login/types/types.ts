@@ -51,6 +51,7 @@ export interface SendOtpResponse {
   isNewUser: boolean;
   otpSent: boolean;
   expiresIn: Date;
+  waitTimeInSeconds: number;
 }
 
 export interface VerifyOtpRequest {
