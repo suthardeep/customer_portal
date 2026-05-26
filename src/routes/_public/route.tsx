@@ -2,8 +2,12 @@ import Header from "@/components/shared/header/Header";
 import Footer from "@/components/shared/footer/Footer";
 import { cn } from "@/utils/cssHelpers";
 import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
+import { siteConfigQueries } from "@/features/site-config/siteConfigQueries";
 
 export const Route = createFileRoute("/_public")({
+  loader: ({ context }) => {
+    context.queryClient.prefetchQuery(siteConfigQueries.detail());
+  },
   component: RouteComponent,
 });
 

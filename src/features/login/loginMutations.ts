@@ -49,10 +49,10 @@ export const useVerifyOtpMutation = () => {
     },
     onSuccess: async () => {
       const cachedCart = queryClient.getQueryData<Cart>(cartKeys.detail());
+      await queryClient.invalidateQueries({ queryKey: cartKeys.all });
       if (cachedCart && cachedCart.totalItems > 0) {
         const sessionId = getSessionId();
         await migrateCart({ data: { sessionId } }).catch(() => {});
-        await queryClient.invalidateQueries({ queryKey: cartKeys.all });
       }
       await queryClient.refetchQueries({ queryKey: authKeys.profile() });
       await queryClient.invalidateQueries({ queryKey: walletKeys.balance() });
