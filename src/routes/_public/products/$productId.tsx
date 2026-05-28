@@ -12,7 +12,6 @@ import { ProductTopBar } from "@/features/products/components/ProductTopBar";
 import { ProductVariantSelector } from "@/features/products/components/ProductVariantSelector";
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
 import { MOCK_PRODUCT_FEATURES } from "@/features/products/constants";
-import { affiliateQueries } from "@/features/affiliate/affiliateQueries";
 import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
 import { toast } from "@/utils/toast";
@@ -35,12 +34,9 @@ export const Route = createFileRoute("/_public/products/$productId")({
     quantity: search.quantity,
   }),
   loader: async ({ context, params, deps }) => {
-    const [product] = await Promise.all([
-      context.queryClient.ensureQueryData(productQueries.detail(params.productId)),
-      context.queryClient.prefetchQuery(
-        affiliateQueries.productShareLink(params.productId, deps.variantId),
-      ),
-    ]);
+    const product = await context.queryClient.ensureQueryData(
+      productQueries.detail(params.productId),
+    );
     if (!deps.variantId && product.variants.length > 0) {
       throw redirect({
         to: ".",

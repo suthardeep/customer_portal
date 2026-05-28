@@ -10,11 +10,17 @@ export function HorizontalListLayout({
   displaySettings,
 }: HorizontalListLayoutProps) {
   const gap = displaySettings.spacing ?? 16;
+  const itemWidth = displaySettings.itemWidth;
 
   return (
     <div
       className="flex overflow-x-auto no-scrollbar"
-      style={{ gap: `${gap}px` }}
+      style={
+        {
+          gap: `${gap}px`,
+          ...(itemWidth && { "--item-width": `${itemWidth}px` }),
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>

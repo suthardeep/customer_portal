@@ -5,6 +5,7 @@ import { cn } from "@/utils/cssHelpers";
 import type { Address } from "../types/types";
 import { formatAddress } from "../utils";
 import { ADDRESS_TYPE_CONFIG } from "../constants";
+import { AddressTypeEnum } from "../enums";
 
 interface AddressSelectCardProps {
   address: Address;
@@ -18,6 +19,10 @@ const AddressSelectCard = ({
   onSelect,
 }: AddressSelectCardProps) => {
   const config = ADDRESS_TYPE_CONFIG[address.addressType];
+  const label =
+    address.addressType === AddressTypeEnum.OTHER && address.otherAddressLabel
+      ? address.otherAddressLabel
+      : config.label;
 
   return (
     <div
@@ -41,7 +46,7 @@ const AddressSelectCard = ({
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="font-semibold text-n-900">{config.label}</p>
+          <p className="font-semibold text-n-900">{label}</p>
           {address.isDefault && <Chip>Default</Chip>}
         </div>
         <p className="mt-0.5 text-sm text-n-800 line-clamp-2">

@@ -96,6 +96,7 @@ export enum BannerRatioEnum {
   "3:2" = "3:2",
   "2:1" = "2:1",
   "1:1" = "1:1",
+  "32:9" = "32:9",
 }
 
 export enum ScreenTypeEnum {

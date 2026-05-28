@@ -28,7 +28,7 @@ export function CategoryCard({
         <Image
           src={category.image || DEFAULT_CATEGORY_IMAGE}
           alt={category.name}
-          className={imgClassName}
+          className={cn("object-contain", imgClassName)}
         />
       </div>
 

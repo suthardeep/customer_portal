@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_public/")({
   },
   pendingComponent: HomepageSkeleton,
   component: HomePage,
-  staticData: { showCategorySubNav: true, showBottomBar: true },
+  staticData: { showCategorySubNav: true, showBottomBar: true, maxWidth: "none" },
   errorComponent: () => (
     <div className="p-4">
       <FallbackView

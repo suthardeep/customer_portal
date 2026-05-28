@@ -1,6 +1,7 @@
 import { Icon } from "@/components/base/icon/Icon";
 import AddressSelectorSheet from "@/features/account/my-address/components/AddressSelectorSheet";
 import { ADDRESS_TYPE_CONFIG } from "@/features/account/my-address/constants";
+import { AddressTypeEnum } from "@/features/account/my-address/enums";
 import { useDetectLocation } from "@/features/account/my-address/hooks/useDetectLocation";
 import { addressQueries } from "@/features/account/my-address/addressQueries";
 import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
@@ -15,7 +16,7 @@ import { useRef } from "react";
 
 export function HeaderLocation() {
   const { isAuthenticated } = useAuth();
-  const { activeAddress, selectSavedAddress, setDetectedAddress } =
+  const { activeAddress, selectSavedAddress, setDetectedAddress, _hasHydrated } =
     useSelectedAddressStore();
   const selectedAddressId = activeAddress?.id ?? null;
   const sheetToggle = useToggle();
@@ -47,23 +48,26 @@ export function HeaderLocation() {
         setDetectedAddress(detected);
       }
     },
-    { autoDetect: !activeAddress && !hasSavedAddresses },
+    { autoDetect: _hasHydrated && !activeAddress && !hasSavedAddresses },
   );
 
   const typeLabel = activeAddress?.addressType
-    ? ADDRESS_TYPE_CONFIG[activeAddress.addressType].label
+    ? activeAddress.addressType === AddressTypeEnum.OTHER &&
+      activeAddress.otherAddressLabel
+      ? activeAddress.otherAddressLabel
+      : ADDRESS_TYPE_CONFIG[activeAddress.addressType].label
     : "Change";
 
   const label = isDetecting
     ? "Detecting..."
-    : error
-      ? error
-      : activeAddress
-        ? formatAddress(activeAddress)
+    : activeAddress
+      ? formatAddress(activeAddress)
+      : error
+        ? error
         : "Detect location";
 
   const handleClick = () => {
-    if (activeAddress) {
+    if (activeAddress || hasSavedAddresses) {
       sheetToggle.open();
     } else {
       detect();

@@ -48,8 +48,8 @@ export const useVerifyOtpMutation = () => {
       return verifyOtp({ data });
     },
     onSuccess: async () => {
-      const cachedCart = queryClient.getQueryData<Cart>(cartKeys.detail());
       await queryClient.invalidateQueries({ queryKey: cartKeys.all });
+      const cachedCart = queryClient.getQueryData<Cart>(cartKeys.detail());
       if (cachedCart && cachedCart.totalItems > 0) {
         const sessionId = getSessionId();
         await migrateCart({ data: { sessionId } }).catch(() => {});

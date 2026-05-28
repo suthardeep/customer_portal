@@ -11,8 +11,9 @@ export function BannerCard({ banner }: BannerCardProps) {
 
   return (
     <div
-      className="w-full overflow-hidden"
+      className="overflow-hidden shrink-0"
       style={{
+        width: "var(--item-width, 100%)",
         aspectRatio,
         borderRadius: `${banner.roundness}px`,
       }}

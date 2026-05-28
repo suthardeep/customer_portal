@@ -48,7 +48,7 @@ export function DeleteCollectionDialog({
       <div className="space-y-4">
         <p className="text-gray-700">
           Are you sure you want to delete the collection{" "}
-          <span className="font-semibold">{collection.name}</span>?
+          <span className="font-semibold text-sm">{collection.name}</span>?
         </p>
 
         {collection.isDefault && (
@@ -61,8 +61,8 @@ export function DeleteCollectionDialog({
         )}
 
         <p className="text-sm text-gray-600">
-          This action cannot be undone. All items in this collection will be
-          removed from the collection.
+          When you delete this collection the items will still remain saved in{" "}
+          <span className="font-semibold text-sm">All</span>.
         </p>
       </div>
     </Dialog>

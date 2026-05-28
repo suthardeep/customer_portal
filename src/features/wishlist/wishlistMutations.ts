@@ -7,6 +7,7 @@ import type {
   RemoveItemFromWishlistRequest,
   UpdateCollectionRequest,
 } from "./types/types";
+import { COLLECTION_PRODUCTS_PAGE_SIZE } from "./constants";
 import { wishlistKeys } from "./wishlistQueryFactory";
 import {
   addItemToCollection,
@@ -103,6 +104,11 @@ export const useAddItemToCollectionMutation = () => {
       queryClient.invalidateQueries({
         queryKey: wishlistKeys.collectionProducts("ALL", { pageSize: 100 }),
       });
+      for (const collectionId of variables.collectionIds ?? []) {
+        queryClient.invalidateQueries({
+          queryKey: wishlistKeys.collectionProductsInfinite(collectionId, { pageSize: COLLECTION_PRODUCTS_PAGE_SIZE }),
+        });
+      }
     },
   });
 };

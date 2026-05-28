@@ -20,6 +20,8 @@ export const Route = createFileRoute("/_protected/account/wallet")({
 
 function RouteComponent() {
   const { data } = useSuspenseQuery(walletQueries.balance());
+  console.log("ball - ", data);
+
   return (
     <div>
       <AccountPageWrapper className="pb-6">

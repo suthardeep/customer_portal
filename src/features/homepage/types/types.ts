@@ -183,6 +183,7 @@ export interface CtaConfig {
 export interface Section {
   id: string;
   title: string;
+  hideTitle: boolean;
   subtitle: string | null;
   sectionType: SectionTypeEnum;
   logoUrl: string;

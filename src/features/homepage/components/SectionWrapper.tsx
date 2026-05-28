@@ -1,4 +1,5 @@
 import { Button } from "@/components/base/button/Button";
+import { Image } from "@/components/base/Image";
 import { Link } from "@tanstack/react-router";
 import type { Section } from "../types/types";
 import { ActionTypeEnum } from "../types/enums";
@@ -40,38 +41,69 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
   const titleStyle = getTextStyle(section.titleDecoration);
   const subtitleStyle = getTextStyle(section.subtitleDecoration);
   const ctaHref = getCtaHref(section);
+  const hasBackground = !section.sectionStyling.hasTransparentBackground;
 
-  return (
-    <section className="p-4" style={backgroundStyle}>
-      <div className="flex items-center justify-between mb-3">
+  const header = (
+    <div className="flex items-center justify-between mb-3">
+      {!section.hideTitle && (
         <div>
-          <h5 style={titleStyle}>{section.title}</h5>
+          <div className="flex items-center gap-2">
+            {section.logoUrl && (
+              <div className="size-8 shrink-0">
+                <Image
+                  src={section.logoUrl}
+                  alt=""
+                  className="object-contain"
+                />
+              </div>
+            )}
+            <h5 style={titleStyle}>{section.title}</h5>
+          </div>
           {section.subtitle && (
             <p style={subtitleStyle} className="mt-0.5">
               {section.subtitle}
             </p>
           )}
         </div>
+      )}
 
-        {section.hasCta &&
-          section.ctaConfig?.label &&
-          ctaHref &&
-          (ctaHref.startsWith("http") ? (
-            <a href={ctaHref} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="sm">
-                {section.ctaConfig.label}
-              </Button>
-            </a>
-          ) : (
-            <Link to={ctaHref}>
-              <Button variant="ghost" size="sm">
-                {section.ctaConfig.label}
-              </Button>
-            </Link>
-          ))}
+      {section.hasCta &&
+        section.ctaConfig?.label &&
+        ctaHref &&
+        (ctaHref.startsWith("http") ? (
+          <a href={ctaHref} target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="sm" className="text-black">
+              {section.ctaConfig.label}
+            </Button>
+          </a>
+        ) : (
+          <Link to={ctaHref}>
+            <Button variant="ghost" size="sm" className="text-black">
+              {section.ctaConfig.label}
+            </Button>
+          </Link>
+        ))}
+    </div>
+  );
+
+  if (hasBackground) {
+    const { borderRadius: _, ...fullBleedStyle } = backgroundStyle;
+    return (
+      <section className="w-full" style={fullBleedStyle}>
+        <div className="max-w-8xl mx-auto px-4 py-12">
+          {header}
+          {children}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section>
+      <div className="max-w-8xl mx-auto px-4 py-12" style={backgroundStyle}>
+        {header}
+        {children}
       </div>
-
-      {children}
     </section>
   );
 }

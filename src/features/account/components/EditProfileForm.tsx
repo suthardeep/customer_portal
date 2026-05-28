@@ -58,6 +58,7 @@ const EditProfileForm = ({
             {...register("dateOfBirth")}
             label="Date of Birth"
             type="date"
+            max={new Date().toISOString().split("T")[0]}
             error={errors.dateOfBirth?.message}
             disabled={isMutating}
             fullWidth

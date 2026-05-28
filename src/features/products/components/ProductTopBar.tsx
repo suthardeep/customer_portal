@@ -1,5 +1,5 @@
 import { IconButton } from "@/components/base/icon-button/IconButton";
-import { affiliateQueries } from "@/features/affiliate/affiliateQueries";
+import { useCreateProductShareLinkMutation } from "@/features/affiliate/affiliateMutations";
 import { useShareLink } from "@/features/affiliate/hooks/useShareLink";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
@@ -41,12 +41,12 @@ export function ProductTopBar({
   const openWishlistSheet = useWishlistSheetStore((state) => state.open);
   const addItemToAllCollectionMutation = useAddItemToCollectionMutation();
 
-  const shareLinkQuery = useQuery(affiliateQueries.productShareLink(productId, variantId));
+  const createShareLink = useCreateProductShareLinkMutation();
   const shareAction = useShareLink();
 
   const handleShareClick = async () => {
-    if (!shareLinkQuery.data) return;
-    await shareAction.share(shareLinkQuery.data, productName);
+    const link = await createShareLink.mutateAsync({ productId, variantId });
+    await shareAction.share(link, productName);
   };
 
   const handleAddToWishlist = () => {
@@ -98,7 +98,7 @@ export function ProductTopBar({
           variant="ghost"
           color="neutral"
           onClick={handleShareClick}
-          isLoading={shareLinkQuery.isLoading}
+          isLoading={createShareLink.isPending}
           aria-label="Share product"
         />
       </div>

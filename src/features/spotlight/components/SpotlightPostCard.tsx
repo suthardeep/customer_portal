@@ -61,25 +61,30 @@ function SpotlightPostCard({
           )}
           <SpotlightTypeIcon type={post.type} className="ml-auto" />
         </div>
-        {(showMediaStatus || showPostReviewStatus) && (
-          <div className="absolute inset-x-0 bottom-0 p-1.5 bg-linear-to-b flex items-center gap-2">
-            {showPostReviewStatus && (
-              <Chip color={getStatusChipColor(post.status)} size="xs">
-                {getStatusLabel(post.status)}
-              </Chip>
-            )}
-            {showMediaStatus && (
-              <Chip
-                color={getMediaStatusChipColor(post.media.status)}
-                size="xs"
-                className="ml-auto"
-              >
-                {" "}
-                {getMediaStatusLabel(post.media.status)}{" "}
-              </Chip>
-            )}
+        <div className="absolute inset-x-0 bottom-0 p-1.5 bg-linear-to-t from-black/60 to-transparent flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <Icon name="Eye" size="xs" className="text-n-200" />
+            <span className="text-xs text-n-200">{post.stats.views}</span>
           </div>
-        )}
+          {(showMediaStatus || showPostReviewStatus) && (
+            <>
+              {showPostReviewStatus && (
+                <Chip color={getStatusChipColor(post.status)} size="xs">
+                  {getStatusLabel(post.status)}
+                </Chip>
+              )}
+              {showMediaStatus && (
+                <Chip
+                  color={getMediaStatusChipColor(post.media.status)}
+                  size="xs"
+                  className="ml-auto"
+                >
+                  {getMediaStatusLabel(post.media.status)}
+                </Chip>
+              )}
+            </>
+          )}
+        </div>
       </div>
       <div className="mt-2 flex items-center gap-2 px-2">
         <div className="size-6 border-[0.5px] rounded-full border-n-500 overflow-hidden">
@@ -100,7 +105,7 @@ function SpotlightPostCard({
 
   if (disableRedirect) {
     return (
-      <div className="group">
+      <div className="group shrink-0" style={{ width: "var(--item-width)" }}>
         {content}
       </div>
     );
@@ -108,7 +113,8 @@ function SpotlightPostCard({
 
   return (
     <Link
-      className="group"
+      className="group shrink-0"
+      style={{ width: "var(--item-width)" }}
       to={linkTo ?? "/spotlight/shorts/$id"}
       params={linkParams ?? { id: post.id }}
     >

@@ -16,7 +16,7 @@ const BANNER_GRID_COLS_NARROW = "grid-cols-1 md:grid-cols-2";
 
 export function BannerSection({ items, displaySettings }: BannerSectionProps) {
   const ratio = items[0]?.ratio;
-  const isWide = !ratio || ratio === BANNER_WIDE_RATIO;
+  const isWide = !ratio || ratio === BANNER_WIDE_RATIO || ratio === BannerRatioEnum["32:9"];
 
   return (
     <SectionLayout

@@ -1,6 +1,7 @@
 import ErrorText from "@/components/base/ErrorText";
 import { Image } from "@/components/base/Image";
 import { MediaUploader } from "@/components/base/media-uploader/MediaUploader";
+import { Button } from "@/components/base/button/Button";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { ProfileFormData } from "@/features/auth/schemas/profileFormSchema";
 
@@ -20,6 +21,13 @@ export function ProfileImageSection() {
     });
   };
 
+  const handleRemove = () => {
+    setValue("profileImageUrl", "", {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
   return (
     <div className="flex flex-col items-center mb-6">
       <div className="size-32 rounded-full overflow-hidden mb-3">
@@ -29,12 +37,25 @@ export function ProfileImageSection() {
           className="size-full object-cover"
         />
       </div>
-      <MediaUploader
-        onUpload={handleUpload}
-        uploadVariant="button"
-        variant="outline"
-        buttonText="Upload new"
-      />
+      <div className="flex items-center gap-2">
+        <MediaUploader
+          onUpload={handleUpload}
+          uploadVariant="button"
+          variant="outline"
+          buttonText="Upload new"
+          size="sm"
+        />
+        {profileImageUrl && (
+          <Button
+            variant="ghost"
+            color="danger"
+            size="sm"
+            onClick={handleRemove}
+          >
+            Remove photo
+          </Button>
+        )}
+      </div>
       {errors.profileImageUrl && (
         <ErrorText>{errors.profileImageUrl.message}</ErrorText>
       )}

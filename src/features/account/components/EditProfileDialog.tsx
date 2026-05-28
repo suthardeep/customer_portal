@@ -19,7 +19,7 @@ const EditProfileDialog = ({ isOpen, onClose }: EditProfileDialogProps) => {
       fullName: data.fullName,
       email: data.email,
       ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth } : {}),
-      ...(data.profileImageUrl
+      ...(data.profileImageUrl !== undefined
         ? { profileImageUrl: data.profileImageUrl }
         : {}),
     };
