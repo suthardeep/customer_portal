@@ -1,4 +1,5 @@
 import { useToggle } from "@/hooks/useToggle";
+import Collapsible from "@/components/compound/Collapsible";
 import type { ProductDetail, ProductHighlight } from "../types/types";
 import FallbackView from "@/components/empty-states/FallbackView";
 
@@ -71,32 +72,31 @@ export function ProductHighlights({
       {hasCustomFields && (
         <div className="space-y-4">
           {customFields!.map((group, groupIdx) => (
-            <div key={groupIdx}>
-              {group.groupName && (
-                <p className="font-semibold text-n-900 mb-2">
-                  {group.groupName}
+            <Collapsible
+              key={groupIdx}
+              defaultOpen
+              trigger={
+                <p className="font-semibold text-n-900">
+                  {group.groupName ?? "Product Description"}
                 </p>
-              )}
-              <div className="border border-n-400 rounded-lg py-2 px-2.5">
-                <table className="w-full border-collapse">
-                  <tbody>
-                    {group.fields.map((field) => (
-                      <tr
-                        key={field.id}
-                        className="border-b border-n-200 last:border-0"
-                      >
-                        <td className="text-sm font-medium text-n-600 align-top w-1/3">
-                          {field.name}
-                        </td>
-                        <td className="text-sm text-n-900 font-medium">
-                          {field.value}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              }
+            >
+              <div className="border border-n-300 rounded-lg overflow-hidden mt-2">
+                {group.fields.map((field) => (
+                  <div
+                    key={field.id}
+                    className="flex border-b border-n-200 last:border-0"
+                  >
+                    <div className="w-2/5 px-3 py-2.5 bg-p-50 text-sm font-medium text-n-900 self-stretch flex items-center">
+                      {field.name}
+                    </div>
+                    <div className="flex-1 px-3 py-2.5 text-sm text-n-900 font-medium">
+                      {field.value}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            </Collapsible>
           ))}
         </div>
       )}

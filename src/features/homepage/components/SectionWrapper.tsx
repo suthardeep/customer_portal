@@ -90,7 +90,7 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
     const { borderRadius: _, ...fullBleedStyle } = backgroundStyle;
     return (
       <section className="w-full" style={fullBleedStyle}>
-        <div className="max-w-8xl mx-auto px-4 py-12">
+        <div className="max-w-8xl mx-auto px-4 py-4 sm:py-6 md:py-8 lg:py-12">
           {header}
           {children}
         </div>
@@ -100,7 +100,7 @@ export function SectionWrapper({ section, children }: SectionWrapperProps) {
 
   return (
     <section>
-      <div className="max-w-8xl mx-auto px-4 py-12" style={backgroundStyle}>
+      <div className="max-w-8xl mx-auto px-4 py-4 sm:py-6 md:py-8 lg:py-12" style={backgroundStyle}>
         {header}
         {children}
       </div>

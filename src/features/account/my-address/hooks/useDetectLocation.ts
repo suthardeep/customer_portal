@@ -51,6 +51,7 @@ export const useDetectLocation: UseDetectLocation = (
           if (!res.ok) throw new Error("Failed to fetch address.");
 
           const data = await res.json();
+
           const a = data.address ?? {};
 
           const road = a.road ?? a.pedestrian ?? a.suburb ?? "";
@@ -60,8 +61,7 @@ export const useDetectLocation: UseDetectLocation = (
           onSuccess({
             addressLine1: `${houseNumber}${road}`.trim(),
             addressLine2: neighbourhood || undefined,
-            city:
-              a.city ?? a.town ?? a.village ?? a.county ?? a.district ?? "",
+            city: a.city ?? a.town ?? a.village ?? a.county ?? a.district ?? "",
             state: a.state ?? "",
             pincode: a.postcode ?? "",
             country: a.country ?? "",

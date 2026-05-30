@@ -61,7 +61,7 @@ export default function Header() {
         <div
           className={cn(
             "p-3 mx-auto flex items-center gap-4",
-            maxWidth ? maxWidth : "max-w-8xl",
+            maxWidth && maxWidth !== "none" ? maxWidth : "max-w-8xl",
           )}
         >
           <Link to="/" className="block lg:hidden">

@@ -2,10 +2,12 @@ import { cn } from "@/utils/cssHelpers";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import type { ProductVariant } from "../types";
 import type { ProductOptionGroup } from "../types/types";
+import SizeChartSheet from "./SizeChartSheet";
 
 interface ProductVariantSelectorProps {
   optionGroups: ProductOptionGroup[];
   variants: ProductVariant[];
+  sizeChartId?: string | null;
 }
 
 function findMatchingVariant(
@@ -87,6 +89,7 @@ interface OptionGroupSelectorProps {
   variants: ProductVariant[];
   selectedValues: Record<string, string>;
   onValueChange: (groupId: string, valueId: string) => void;
+  sizeChartId?: string | null;
 }
 
 function OptionGroupSelector({
@@ -94,6 +97,7 @@ function OptionGroupSelector({
   variants,
   selectedValues,
   onValueChange,
+  sizeChartId,
 }: OptionGroupSelectorProps) {
   const selectedValueId = selectedValues[group.id];
   const selectedLabel = group.values.find(
@@ -102,14 +106,17 @@ function OptionGroupSelector({
 
   return (
     <div className="space-y-2">
-      <p className="font-medium text-n-950">
-        {group.name}
-        {selectedLabel && (
-          <span className="ml-1 text-sm capitalize text-p-800 font-semibold">
-            : {selectedLabel}
-          </span>
-        )}
-      </p>
+      <div className="flex items-center gap-3">
+        <p className="font-medium text-n-950">
+          {group.name}
+          {selectedLabel && (
+            <span className="ml-1 text-sm capitalize text-p-800 font-semibold">
+              : {selectedLabel}
+            </span>
+          )}
+        </p>
+        {sizeChartId && <SizeChartSheet sizeChartId={sizeChartId} />}
+      </div>
       <div className="flex flex-wrap gap-3">
         {group.values.map((optValue) => {
           const isSelected = selectedValueId === optValue.id;
@@ -138,6 +145,7 @@ function OptionGroupSelector({
 export function ProductVariantSelector({
   optionGroups,
   variants,
+  sizeChartId,
 }: ProductVariantSelectorProps) {
   const { variantId } = useSearch({
     from: "/_public/products/$productId",
@@ -176,6 +184,7 @@ export function ProductVariantSelector({
           variants={variants}
           selectedValues={selectedValues}
           onValueChange={handleValueChange}
+          sizeChartId={group.name.toLowerCase() === "size" ? sizeChartId : null}
         />
       ))}
     </div>

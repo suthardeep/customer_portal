@@ -13,8 +13,6 @@ export function CategorySection({
   items,
   displaySettings,
 }: CategorySectionProps) {
-  console.log(items, "items");
-
   return (
     <SectionLayout displaySettings={displaySettings}>
       {items.map((category) => (

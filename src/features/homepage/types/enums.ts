@@ -59,10 +59,25 @@ export enum ActionTypeEnum {
   CATEGORY = "CATEGORY",
   BRAND = "BRAND",
   SEARCH = "SEARCH",
+  PRODUCT_DETAIL = "PRODUCT_DETAIL",
   IN_APP_PAGE = "IN_APP_PAGE",
   UGC_USER = "UGC_USER",
   UGC_REEL = "UGC_REEL",
   EXTERNAL_URL = "EXTERNAL_URL",
+}
+
+export enum AppRedirectTargetEnum {
+  PRODUCT = "PRODUCT",
+  CATEGORY = "CATEGORY",
+  BRAND = "BRAND",
+  SEARCH = "SEARCH",
+  UGC_POST = "UGC_POST",
+  CREATOR_STORE = "CREATOR_STORE",
+  REFERRAL = "REFERRAL",
+  ORDER = "ORDER",
+  IN_APP_PAGE = "IN_APP_PAGE",
+  EXTERNAL_URL = "EXTERNAL_URL",
+  APP_HOME = "APP_HOME",
 }
 
 export enum TextAlignEnum {

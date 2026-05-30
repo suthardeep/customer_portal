@@ -77,6 +77,16 @@ function CategoryDetailComponent() {
     ),
   });
 
+  if (data?.meta?.totalRows === 0) {
+    return (
+      <FallbackView
+        icon="ShoppingCart"
+        title="No products found"
+        subtitle="We couldn't find any products matching your selection."
+      />
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Subcategory cards */}

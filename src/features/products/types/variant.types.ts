@@ -1,5 +1,12 @@
 export type VariantTargetGender = "Unisex" | "Male" | "Female";
 
+export interface VariantDiscounts {
+  totalSavingsAmount: number;
+  totalDiscountPercent: number;
+  label: string;
+  breakdown: object[];
+}
+
 export interface VariantOptionValue {
   id: string;
   value: string;
@@ -17,6 +24,7 @@ export interface ProductVariant {
   sellingPrice: number;
   price: number;
   discountPercent: number;
+  discounts: VariantDiscounts;
   aavakCoins: number;
   totalAavakCoinForUser: number;
   weightInGrams: number;

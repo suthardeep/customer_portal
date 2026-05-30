@@ -1,4 +1,5 @@
 import { CreateAffiliateButton } from "@/features/products/components/CreateAffiliateButton";
+import { ProductReviews } from "@/features/products/components/ProductReviews";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
 import { ProductBadges } from "@/features/products/components/ProductBadges";
@@ -89,7 +90,7 @@ function ProductDetailComponent() {
     }
   }, [_minQtyCorrected]);
 
-  const variantId = searchVariantId ?? product.variants[0];
+  const variantId = searchVariantId ?? product.variants[0]?.id;
 
   const selectedVariant: ProductVariant | undefined = (() => {
     if (!product.variants?.length) return undefined;
@@ -161,13 +162,15 @@ function ProductDetailComponent() {
             </div>
             <div className="w-full space-y-3">
               <DeliveryInfo />
-              <ProductBadges features={features} />
+
+              <ProductBadges features={features} returnPolicy={product.returnPolicy} />
             </div>
           </div>
 
           <ProductVariantSelector
             optionGroups={product.optionGroups}
             variants={product.variants}
+            sizeChartId={product.sizeChartId}
           />
           {/* <OffersList offers={offers} /> */}
           {product.seller && <ProductSellerInfo seller={product.seller} />}
@@ -180,6 +183,17 @@ function ProductDetailComponent() {
           description={product.description}
           bulletPoints={product.bulletPoints}
           customFields={product.customFields}
+        />
+      </div>
+
+      {/* Reviews */}
+      <div id="reviews" className="mt-8">
+        <ProductReviews
+          productId={productId}
+          productName={product.name}
+          totalReviews={product.totalReviews}
+          avgRating={product.avgRating}
+          productImageUrl={product.mediaUrls?.[0]}
         />
       </div>
     </div>

@@ -1,10 +1,11 @@
 import type { CSSProperties } from "react";
 import {
+  AppRedirectTargetEnum,
   FontStyleEnum,
   GradientDirectionEnum,
   TextAlignEnum,
 } from "./types/enums";
-import type { SectionStyling, TextDecoration } from "./types/types";
+import type { CtaConfig, SectionStyling, TextDecoration } from "./types/types";
 
 const FONT_WEIGHT_MAP: Record<FontStyleEnum, CSSProperties["fontWeight"]> = {
   [FontStyleEnum.NORMAL]: 400,
@@ -73,6 +74,33 @@ export function getSectionBackgroundStyle(
   }
 
   return style;
+}
+
+export function getBannerHref(
+  ctaConfig: CtaConfig | null | undefined,
+): string | undefined {
+  if (!ctaConfig?.redirect) return undefined;
+
+  const { target, params } = ctaConfig.redirect;
+
+  switch (target) {
+    case AppRedirectTargetEnum.CATEGORY:
+      return params.categoryId
+        ? `/categories/${params.categoryId}`
+        : "/categories";
+    case AppRedirectTargetEnum.BRAND:
+      return params.brandId ? `/categories/${params.brandId}` : undefined;
+    case AppRedirectTargetEnum.PRODUCT:
+      return params.productId ? `/products/${params.productId}` : undefined;
+    case AppRedirectTargetEnum.SEARCH:
+      return params.query ? `/search?q=${encodeURIComponent(params.query)}` : "/search";
+    case AppRedirectTargetEnum.EXTERNAL_URL:
+      return params.url;
+    case AppRedirectTargetEnum.APP_HOME:
+      return "/";
+    default:
+      return undefined;
+  }
 }
 
 export const BANNER_RATIO_MAP: Record<string, string> = {

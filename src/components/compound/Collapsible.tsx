@@ -67,11 +67,12 @@ const Collapsible: React.FC<CollapsibleProps> = (props) => {
         {hideIcon === false && (
           <IconButton
             icon="ChevronDown"
-            iconClassName={cn(
+            className={cn(
               "ml-auto cursor-pointer transition-all",
               isOpen ? "-scale-y-100" : "scale-100",
             )}
             aria-label="close-collapsible-icon"
+            variant="ghost"
           />
         )}
       </div>

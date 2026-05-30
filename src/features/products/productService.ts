@@ -10,6 +10,7 @@ import type {
   SimilarProductsParams,
 } from "./types";
 import type { ProductDetailResponse } from "./types/types";
+import type { ProductReviewsApiResponse, ReviewsParams } from "./types/review.types";
 
 export const getProductList = createServerFn({ method: "GET" })
   .inputValidator((data: ProductQueryParams) => data)
@@ -59,3 +60,13 @@ export const getSearchSuggestions = createServerFn({ method: "GET" }).handler(
     );
   },
 );
+
+export const getProductReviews = createServerFn({ method: "GET" })
+  .inputValidator((data: ReviewsParams) => data)
+  .handler(async ({ data }): Promise<ProductReviewsApiResponse> => {
+    const { productId, ...params } = data;
+    return apiRequest<ProductReviewsApiResponse>(
+      `/v1/products/public/${productId}/reviews`,
+      { params },
+    );
+  });

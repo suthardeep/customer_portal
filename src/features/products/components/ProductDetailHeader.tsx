@@ -24,7 +24,10 @@ export function ProductDetailHeader({
       ? product.maxPrice
       : undefined;
 
-  const discount = selectedVariant?.discountPercent;
+  const discount =
+    selectedVariant?.discounts?.totalDiscountPercent ??
+    selectedVariant?.discountPercent;
+  const savingsAmount = selectedVariant?.discounts?.totalSavingsAmount;
   const earnCoins = selectedVariant?.totalAavakCoinForUser ?? 0;
 
   return (
@@ -34,11 +37,19 @@ export function ProductDetailHeader({
 
       {/* Rating and Reviews */}
       {product.avgRating !== undefined && (
-        <StarRatingDisplay
-          rating={product.avgRating}
-          reviewCount={product.totalReviews}
-          size="sm"
-        />
+        <button
+          type="button"
+          onClick={() =>
+            document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="text-left"
+        >
+          <StarRatingDisplay
+            rating={product.avgRating}
+            reviewCount={product.totalReviews}
+            size="sm"
+          />
+        </button>
       )}
 
       {/* Price */}
@@ -46,6 +57,7 @@ export function ProductDetailHeader({
         currentPrice={currentPrice}
         originalPrice={originalPrice}
         discount={discount}
+        savingsAmount={savingsAmount}
         earnCoins={earnCoins}
       />
 

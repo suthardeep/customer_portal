@@ -5,7 +5,9 @@ import {
   getSimilarProducts,
   getAutocomplete,
   getSearchSuggestions,
+  getProductReviews,
 } from "./productService";
+import { getSizeChart } from "./sizeChartService";
 import { productKeys } from "./productQueryFactory";
 import type {
   AutocompleteParams,
@@ -14,6 +16,7 @@ import type {
   SearchSuggestionsResponse,
   SimilarProductsParams,
 } from "./types";
+import type { ReviewsParams } from "./types/review.types";
 
 export const productQueries = {
   list: (params: ProductQueryParams) =>
@@ -100,5 +103,28 @@ export const productQueries = {
       queryFn: async (): Promise<SearchSuggestionsResponse> => {
         return getSearchSuggestions();
       },
+    }),
+
+  sizeChart: (id: string) =>
+    queryOptions({
+      queryKey: productKeys.sizeChart(id),
+      queryFn: async () => {
+        const response = await getSizeChart({ data: id });
+        return response.data;
+      },
+    }),
+
+  reviews: (params: ReviewsParams) =>
+    infiniteQueryOptions({
+      queryKey: productKeys.reviews(params.productId),
+      queryFn: async ({ pageParam }) => {
+        const response = await getProductReviews({
+          data: { ...params, currentPage: pageParam },
+        });
+        return response.data;
+      },
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) =>
+        lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
     }),
 };

@@ -12,12 +12,18 @@ import { haversineDistance } from "@/utils/haversine";
 import { useToggle } from "@/hooks/useToggle";
 import { useQuery } from "@tanstack/react-query";
 import { ADDRESS_MATCH_THRESHOLD_METERS } from "./constants";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export function HeaderLocation() {
   const { isAuthenticated } = useAuth();
-  const { activeAddress, selectSavedAddress, setDetectedAddress, _hasHydrated } =
+  const { activeAddress, selectSavedAddress, setDetectedAddress, clearSelection, _hasHydrated } =
     useSelectedAddressStore();
+
+  useEffect(() => {
+    if (_hasHydrated && !isAuthenticated && activeAddress?.id) {
+      clearSelection();
+    }
+  }, [_hasHydrated, isAuthenticated, activeAddress?.id, clearSelection]);
   const selectedAddressId = activeAddress?.id ?? null;
   const sheetToggle = useToggle();
   const { data: savedAddresses } = useQuery({

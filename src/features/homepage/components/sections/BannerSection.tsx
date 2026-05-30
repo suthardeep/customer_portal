@@ -16,12 +16,15 @@ const BANNER_GRID_COLS_NARROW = "grid-cols-1 md:grid-cols-2";
 
 export function BannerSection({ items, displaySettings }: BannerSectionProps) {
   const ratio = items[0]?.ratio;
-  const isWide = !ratio || ratio === BANNER_WIDE_RATIO || ratio === BannerRatioEnum["32:9"];
+  const isWide =
+    !ratio || ratio === BANNER_WIDE_RATIO || ratio === BannerRatioEnum["32:9"];
 
   return (
     <SectionLayout
       displaySettings={displaySettings}
-      slideBasis={isWide ? BANNER_SLIDER_BASIS_WIDE : BANNER_SLIDER_BASIS_NARROW}
+      slideBasis={
+        isWide ? BANNER_SLIDER_BASIS_WIDE : BANNER_SLIDER_BASIS_NARROW
+      }
       colsOverride={isWide ? BANNER_GRID_COLS_WIDE : BANNER_GRID_COLS_NARROW}
       align="start"
     >

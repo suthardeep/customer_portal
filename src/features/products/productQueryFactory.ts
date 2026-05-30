@@ -17,4 +17,7 @@ export const productKeys = {
     [...productKeys.all, "autocomplete", q] as const,
   searchSuggestions: () =>
     [...productKeys.all, "search-suggestions"] as const,
+  sizeChart: (id: string) => [...productKeys.all, "size-chart", id] as const,
+  reviews: (productId: string) =>
+    [...productKeys.all, "reviews", productId] as const,
 };

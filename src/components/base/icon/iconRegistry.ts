@@ -24,6 +24,7 @@ import {
   DeliveryDelay01Icon,
   Calendar03Icon,
   ThumbsUpIcon,
+  ThumbsDownIcon,
   DeliveryReturn01Icon,
   DeliverySent01Icon,
   DeliveryTracking01Icon,
@@ -90,6 +91,7 @@ import {
   VolumeHighIcon,
   Mail01Icon,
   Invoice01Icon,
+  RulerIcon,
 } from "@hugeicons/core-free-icons";
 
 export const iconRegistry = {
@@ -177,6 +179,7 @@ export const iconRegistry = {
   // Search icons
   TrendingUp: ChartUpIcon,
   ThumbsUp: ThumbsUpIcon,
+  ThumbsDown: ThumbsDownIcon,
   // Cart icons
   Coins: Coins01Icon,
   // Menu drawer
@@ -204,6 +207,7 @@ export const iconRegistry = {
   Copy: Copy01Icon,
   Mail: Mail01Icon,
   Invoice: Invoice01Icon,
+  Ruler: RulerIcon,
 } as const;
 
 export type IconName = keyof typeof iconRegistry;

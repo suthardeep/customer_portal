@@ -2,7 +2,7 @@ import type { BaseApiResponse, PaginatedResponse } from "@/types/baseApi.types";
 
 export interface CreateReviewRequest {
   productId: string;
-  orderId: string;
+  orderId?: string;
   title?: string;
   description?: string;
   rating: number;

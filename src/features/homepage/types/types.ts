@@ -4,6 +4,7 @@ import type {
 } from "@/types/baseApi.types";
 import type {
   ActionTypeEnum,
+  AppRedirectTargetEnum,
   AppStylingEnum,
   BannerRatioEnum,
   BannerTypeEnum,
@@ -171,11 +172,18 @@ export interface CtaTarget {
   name: string;
 }
 
+export interface AppRedirectPayload {
+  target: AppRedirectTargetEnum;
+  params: Record<string, string>;
+}
+
 export interface CtaConfig {
   ctaType?: CtaTypeEnum;
   label?: string;
   actionType?: ActionTypeEnum;
   targets?: CtaTarget[];
+  ctaUrl?: string;
+  redirect?: AppRedirectPayload;
 }
 
 // --- Full section (from /api/v1/section/{id}) ---
