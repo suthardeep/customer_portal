@@ -7,6 +7,7 @@ import { CategoryDetailSkeleton } from "@/features/categories/components/skeleto
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { ProductCardSkeleton } from "@/features/products/components/ProductCardSkeleton";
 import { productQueries } from "@/features/products/productQueries";
+import { buildMeta, APP_NAME, APP_URL } from "@/utils/seo";
 import { useQueries, useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
@@ -33,9 +34,21 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
     }
   },
   loader: async ({ context, params }) => {
-    await context.queryClient.ensureQueryData(
+    return await context.queryClient.ensureQueryData(
       categoryQueries.tree({ parentId: params.categoryId }),
     );
+  },
+  head: ({ loaderData, params }) => {
+    const category = loaderData?.data?.[0];
+    const name = category?.name ?? "Category";
+    return {
+      meta: buildMeta({
+        title: `${name} — ${APP_NAME}`,
+        description: `Shop ${name} products on ${APP_NAME}. Browse the latest collection.`,
+        url: `${APP_URL}/categories/${params.categoryId}`,
+        image: category?.image ?? undefined,
+      }),
+    };
   },
   pendingComponent: CategoryDetailSkeleton,
   component: CategoryDetailComponent,

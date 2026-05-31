@@ -5,8 +5,16 @@ import { PolicyPageSkeleton } from "@/features/policy/components/skeletons/Polic
 import { policyQueries } from "@/features/policy/policyQueries";
 import { PolicyTypeEnum } from "@/features/policy/types/types";
 import FallbackView from "@/components/empty-states/FallbackView";
+import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 
 export const Route = createFileRoute("/_public/terms-and-conditions")({
+  head: () => ({
+    meta: buildMeta({
+      title: `Terms & Conditions — ${APP_NAME}`,
+      description: `Read the ${APP_NAME} terms and conditions governing use of our platform and services.`,
+      url: `${APP_URL}/terms-and-conditions`,
+    }),
+  }),
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       policyQueries.detail(PolicyTypeEnum.TERMS_AND_CONDITIONS),

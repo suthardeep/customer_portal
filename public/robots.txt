@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /account/
+Disallow: /checkout
+Disallow: /buy-now
+Disallow: /order-success/
+Disallow: /order-error
+Disallow: /verify-otp
+
+Sitemap: https://aavak.in/api/sitemap.xml

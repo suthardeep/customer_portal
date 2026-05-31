@@ -15,6 +15,12 @@ import { ProductDetailSkeleton } from "@/features/products/components/skeletons/
 import { MOCK_PRODUCT_FEATURES } from "@/features/products/constants";
 import { productQueries } from "@/features/products/productQueries";
 import type { ProductVariant } from "@/features/products/types";
+import {
+  buildBreadcrumbJsonLd,
+  buildProductJsonLd,
+  jsonLdScript,
+} from "@/utils/jsonLd";
+import { APP_NAME, APP_URL, buildMeta, truncateDescription } from "@/utils/seo";
 import { toast } from "@/utils/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
@@ -63,6 +69,38 @@ export const Route = createFileRoute("/_public/products/$productId")({
         replace: true,
       });
     }
+    return product;
+  },
+  head: ({ loaderData: product }) => {
+    if (!product) return {};
+    const pageUrl = `${APP_URL}/products/${product.id}`;
+    const breadcrumbItems = [
+      { name: "Home", url: APP_URL },
+      ...(product.categories?.map((c) => ({
+        name: c.name,
+        url: `${APP_URL}/categories/${c.id}`,
+      })) ?? []),
+      { name: product.name, url: pageUrl },
+    ];
+    return {
+      meta: buildMeta({
+        title: `${product.name} — ${APP_NAME}`,
+        description: truncateDescription(product.description),
+        image: product.mediaUrls?.[0],
+        url: pageUrl,
+        type: "product",
+      }),
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: jsonLdScript(buildProductJsonLd(product, pageUrl)),
+        },
+        {
+          type: "application/ld+json",
+          children: jsonLdScript(buildBreadcrumbJsonLd(breadcrumbItems)),
+        },
+      ],
+    };
   },
   pendingComponent: ProductDetailSkeleton,
   component: ProductDetailComponent,

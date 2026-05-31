@@ -7,6 +7,7 @@ import { ProductListSkeleton } from "@/features/products/components/skeletons/Pr
 import { productQueries } from "@/features/products/productQueries";
 import { productsListPageSearch } from "@/features/products/productsSearchSchema";
 import { getProductsPageLabel } from "@/features/products/utils";
+import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
@@ -20,6 +21,13 @@ export const Route = createFileRoute("/_public/products/")({
       productQueries.listInfinite(apiParams),
     );
   },
+  head: () => ({
+    meta: buildMeta({
+      title: `All Products — ${APP_NAME}`,
+      description: `Browse all products on ${APP_NAME}. Shop fashion, electronics, home goods and more.`,
+      url: `${APP_URL}/products`,
+    }),
+  }),
   validateSearch: productsListPageSearch,
   pendingComponent: ProductListSkeleton,
   component: ProductsPage,

@@ -5,8 +5,16 @@ import { PolicyPageSkeleton } from "@/features/policy/components/skeletons/Polic
 import { policyQueries } from "@/features/policy/policyQueries";
 import { PolicyTypeEnum } from "@/features/policy/types/types";
 import FallbackView from "@/components/empty-states/FallbackView";
+import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 
 export const Route = createFileRoute("/_public/privacy-policy")({
+  head: () => ({
+    meta: buildMeta({
+      title: `Privacy Policy — ${APP_NAME}`,
+      description: `Read the ${APP_NAME} privacy policy to understand how we collect, use and protect your data.`,
+      url: `${APP_URL}/privacy-policy`,
+    }),
+  }),
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       policyQueries.detail(PolicyTypeEnum.PRIVACY_POLICY),

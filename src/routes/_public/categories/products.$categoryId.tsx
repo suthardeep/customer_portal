@@ -4,6 +4,7 @@ import { categoryQueries } from "@/features/categories/categoryQueries";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { ProductListSkeleton } from "@/features/products/components/ProductListSkeleton";
 import { productQueries } from "@/features/products/productQueries";
+import { buildMeta, APP_NAME, APP_URL } from "@/utils/seo";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -11,9 +12,20 @@ export const Route = createFileRoute(
   "/_public/categories/products/$categoryId",
 )({
   loader: async ({ context, params }) => {
-    await context.queryClient.ensureQueryData(
+    return await context.queryClient.ensureQueryData(
       categoryQueries.detail(params.categoryId),
     );
+  },
+  head: ({ loaderData, params }) => {
+    const name = loaderData?.category?.name ?? "Products";
+    return {
+      meta: buildMeta({
+        title: `${name} Products — ${APP_NAME}`,
+        description: `Browse all ${name} products on ${APP_NAME}.`,
+        url: `${APP_URL}/categories/products/${params.categoryId}`,
+        image: loaderData?.category?.image ?? undefined,
+      }),
+    };
   },
   errorComponent: (e) => (
     <FallbackView title={e?.error?.message || "Unable to fetch category"} />

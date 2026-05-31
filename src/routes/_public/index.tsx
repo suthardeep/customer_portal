@@ -4,8 +4,16 @@ import { homepageQueries } from "@/features/homepage/homepageQueries";
 import { SectionRenderer } from "@/features/homepage/components/SectionRenderer";
 import { HomepageSkeleton } from "@/features/homepage/components/skeletons/HomepageSkeleton";
 import FallbackView from "@/components/empty-states/FallbackView";
+import { buildMeta, APP_NAME, APP_DESCRIPTION, APP_URL } from "@/utils/seo";
 
 export const Route = createFileRoute("/_public/")({
+  head: () => ({
+    meta: buildMeta({
+      title: `${APP_NAME} — Shop Online`,
+      description: APP_DESCRIPTION,
+      url: APP_URL,
+    }),
+  }),
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(homepageQueries.config());
   },

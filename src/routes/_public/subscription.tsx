@@ -9,10 +9,18 @@ import { SubscriptionPlanSelector } from "@/features/account/subscription/compon
 import { SubscriptionSunburst } from "@/features/account/subscription/components/SubscriptionSunburst";
 import { subscriptionQueries } from "@/features/account/subscription/subscriptionQueries";
 import SubscriptionSkeleton from "@/features/account/subscription/components/skeletons/SubscriptionSkeleton";
+import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_public/subscription")({
+  head: () => ({
+    meta: buildMeta({
+      title: `${APP_NAME} Premium — Unlock Exclusive Benefits`,
+      description: `Upgrade to ${APP_NAME} Premium for exclusive deals, early access, and members-only benefits.`,
+      url: `${APP_URL}/subscription`,
+    }),
+  }),
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.prefetchQuery(subscriptionQueries.plans()),
