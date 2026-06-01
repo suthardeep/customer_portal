@@ -6,18 +6,28 @@ interface CreateAffiliateButtonProps {
   productId: string;
   variantId?: string;
   productName: string;
+  productImage?: string;
+  productDescription?: string;
 }
 
 export function CreateAffiliateButton({
   productId,
   variantId,
   productName,
+  productImage,
+  productDescription,
 }: CreateAffiliateButtonProps) {
   const createShareLink = useCreateProductShareLinkMutation();
   const shareAction = useShareLink();
 
   const handleClick = async () => {
-    const link = await createShareLink.mutateAsync({ productId, variantId });
+    const link = await createShareLink.mutateAsync({
+      productId,
+      variantId,
+      title: productName,
+      description: productDescription,
+      imageUrl: productImage,
+    });
     await shareAction.share(link, productName);
   };
 

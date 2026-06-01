@@ -15,12 +15,16 @@ interface ProductTopBarProps {
   brandName?: string;
   brandId?: string;
   productName: string;
+  productImage?: string;
+  productDescription?: string;
 }
 
 export function ProductTopBar({
   brandName,
   productName,
   brandId,
+  productImage,
+  productDescription,
 }: ProductTopBarProps) {
   const { productId } = useParams({
     from: "/_public/products/$productId",
@@ -45,7 +49,13 @@ export function ProductTopBar({
   const shareAction = useShareLink();
 
   const handleShareClick = async () => {
-    const link = await createShareLink.mutateAsync({ productId, variantId });
+    const link = await createShareLink.mutateAsync({
+      productId,
+      variantId,
+      title: productName,
+      description: productDescription,
+      imageUrl: productImage,
+    });
     await shareAction.share(link, productName);
   };
 

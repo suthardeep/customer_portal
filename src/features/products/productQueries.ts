@@ -3,12 +3,15 @@ import {
   getProductList,
   getProductById,
   getSimilarProducts,
+  getComplementaryProducts,
   getAutocomplete,
   getSearchSuggestions,
   getProductReviews,
 } from "./productService";
 import { getSizeChart } from "./sizeChartService";
 import { productKeys } from "./productQueryFactory";
+import { queryClient } from "@/queryClient";
+import { userActivityKeys } from "@/features/user-activities/userActivitiesQueryFactory";
 import type {
   AutocompleteParams,
   AutocompleteSuggestionsResponse,
@@ -42,11 +45,12 @@ export const productQueries = {
         lastPage.meta.hasNextPage ? lastPage.meta.currentPage + 1 : undefined,
     }),
 
-  detail: (productId: string) =>
+  detail: (productId: string, isAd?: boolean) =>
     queryOptions({
       queryKey: productKeys.detail(productId),
       queryFn: async () => {
-        const response = await getProductById({ data: productId });
+        const response = await getProductById({ data: { productId, isAd } });
+        queryClient.invalidateQueries({ queryKey: userActivityKeys.recentViews() });
         return response.data;
       },
     }),
@@ -110,6 +114,15 @@ export const productQueries = {
       queryKey: productKeys.sizeChart(id),
       queryFn: async () => {
         const response = await getSizeChart({ data: id });
+        return response.data;
+      },
+    }),
+
+  complementary: (productId: string) =>
+    queryOptions({
+      queryKey: productKeys.complementary(productId),
+      queryFn: async () => {
+        const response = await getComplementaryProducts({ data: productId });
         return response.data;
       },
     }),

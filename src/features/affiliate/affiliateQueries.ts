@@ -3,12 +3,12 @@ import { createProductShareLink, createReferralShareLink } from "./affiliateServ
 import { affiliateKeys } from "./affiliateQueryFactory";
 
 export const affiliateQueries = {
-  referralLink: (referralCode: string) =>
+  referralLink: (referralCode: string, metadata?: { title?: string; description?: string; image?: string }) =>
     queryOptions({
       queryKey: affiliateKeys.referralLink(referralCode),
       queryFn: async () => {
         const response = await createReferralShareLink({
-          data: { targetId: referralCode },
+          data: { targetId: referralCode, ...metadata },
         });
         return response.data;
       },

@@ -8,7 +8,7 @@ export const userActivityQueries = {
       queryKey: userActivityKeys.recentViews(),
       queryFn: async () => {
         const response = await getRecentlyViewedProducts();
-        return response.data;
+        return response;
       },
     }),
 };

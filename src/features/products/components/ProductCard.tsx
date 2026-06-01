@@ -1,4 +1,5 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
+import { Chip } from "@/components/base/chip/Chip";
 import { Image } from "@/components/base/Image";
 import { useWishlistSheetStore } from "@/features/wishlist/stores/wishlistSheetStore";
 import { WishlistButton } from "@/features/wishlist/components/WishlistButton";
@@ -13,16 +14,20 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLoginDialog } from "@/features/auth/hooks/useLoginDialog";
 import { ProductCardAddToCart } from "./ProductCardAddToCart";
 
+type PreloadMode = "intent" | "render" | "viewport" | false;
+
 interface ProductCardProps {
   product: Product;
   className?: string;
   disableDetailPageRedirection?: boolean;
+  preload?: PreloadMode;
 }
 
 export function ProductCard({
   product,
   className,
   disableDetailPageRedirection = false,
+  preload = "intent",
 }: ProductCardProps) {
   const { isAuthenticated } = useAuth();
   const loginDialog = useLoginDialog();
@@ -79,6 +84,15 @@ export function ProductCard({
       {/* Image Section */}
       <div className="relative aspect-square overflow-hidden">
         <Image src={imageUrl ?? ""} alt={product.name} />
+
+        {/* AD Chip */}
+        {product.isAd && (
+          <div className="absolute top-2 left-2">
+            <Chip size="xs" color="neutral">
+              AD
+            </Chip>
+          </div>
+        )}
 
         {/* Wishlist Button */}
         <WishlistButton
@@ -147,7 +161,11 @@ export function ProductCard({
     <Link
       to="/products/$productId"
       params={{ productId: product?.id }}
-      search={{ variantId: product?.variantId ?? undefined }}
+      search={{
+        variantId: product?.variantId ?? undefined,
+        isAd: product.isAd || undefined,
+      }}
+      preload={preload}
     >
       {content()}
     </Link>

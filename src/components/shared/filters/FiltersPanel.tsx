@@ -18,7 +18,12 @@ export function FiltersPanel({
   onToggle,
   onClearAll,
 }: FiltersPanelProps) {
-  if (filters.optionGroups.length === 0) return null;
+  console.log(filters, "filters");
+
+  if (filters.optionGroups.length === 0 || filters.optionValues.length === 0) {
+    return;
+    // return <FallbackView title="No filters" />;
+  }
 
   const activeCount = selectedOptionValues.length;
 

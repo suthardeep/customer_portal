@@ -110,9 +110,20 @@ export function CartItemCard({
               {formatCurrency(item.sellingPrice)}
             </h6>
             {item.mrp !== item.sellingPrice && (
-              <p className="text-sm text-n-800 line-through">
-                {formatCurrency(item.mrp)}
-              </p>
+              <>
+                <p className="text-sm text-n-800 line-through">
+                  {formatCurrency(item.mrp)}
+                </p>
+                {item.discountPercent > 0 ? (
+                  <p className="text-sm font-semibold text-success-600">
+                    {item.discountPercent}% off
+                  </p>
+                ) : item.discount ? (
+                  <p className="text-sm font-semibold text-success-600">
+                    {item.discount} off
+                  </p>
+                ) : null}
+              </>
             )}
           </div>
 

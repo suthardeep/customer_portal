@@ -10,11 +10,13 @@ type ShortActionsProps = {
   isLiked: boolean;
   isBookmarked: boolean;
   postId: string;
+  caption?: string;
+  thumbnail?: string;
   className?: string;
 };
 
 const ShortActions: React.FC<ShortActionsProps> = (props) => {
-  const { isBookmarked, isLiked, stats, className, postId } = props;
+  const { isBookmarked, isLiked, stats, className, postId, caption, thumbnail } = props;
   return (
     <div
       className={cn(
@@ -23,7 +25,7 @@ const ShortActions: React.FC<ShortActionsProps> = (props) => {
       )}
     >
       <ShortLike isLiked={isLiked} likes={stats.likes} postId={postId} />
-      <ShortShare shares={stats.shares} postId={postId} />
+      <ShortShare shares={stats.shares} postId={postId} caption={caption} thumbnail={thumbnail} />
       <ShortViews views={stats.views} />
       <ShortBookmark
         isBookmarked={isBookmarked}

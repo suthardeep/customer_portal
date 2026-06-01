@@ -93,6 +93,8 @@ const ShortFeedItem = forwardRef<ShortsVideoPlayerHandle, ShortFeedItemProps>(
           isLiked={post.isLiked}
           isBookmarked={post.isBookmarked}
           postId={post.id}
+          caption={post.caption}
+          thumbnail={post.media.thumbnail}
         />
       </div>
     );

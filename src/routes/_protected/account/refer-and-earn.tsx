@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_protected/account/refer-and-earn")({
     const referralCode = profile?.referralCode;
     if (referralCode) {
       await context.queryClient.prefetchQuery(
-        affiliateQueries.referralLink(referralCode),
+        affiliateQueries.referralLink(referralCode, { title: "Join me on Aavak!" }),
       );
     }
   },
@@ -34,7 +34,7 @@ function RouteComponent() {
   const referralCount = user?.referralCount ?? 0;
 
   const { data: referralLink } = useQuery(
-    affiliateQueries.referralLink(referralCode),
+    affiliateQueries.referralLink(referralCode, { title: "Join me on Aavak!" }),
   );
 
   const handleCopyClick = async () => {

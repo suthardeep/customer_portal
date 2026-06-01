@@ -2,17 +2,19 @@ import { Icon } from "@/components/base/icon";
 import { productQueries } from "@/features/products/productQueries";
 import useDebounce from "@/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 interface SearchAutocompleteProps {
   onClose?: () => void;
+  query: string;
 }
 
-const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({ onClose }) => {
+const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
+  onClose,
+  query,
+}) => {
   const navigate = useNavigate();
-  const location = useRouterState({ select: (s) => s.location });
-  const currentQ = (location.search as Record<string, string>)?.q ?? "";
-  const debouncedQuery = useDebounce(currentQ, 400);
+  const debouncedQuery = useDebounce(query, 400);
 
   const { data } = useQuery({
     ...productQueries.autocomplete({ q: debouncedQuery }),
@@ -20,6 +22,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({ onClose }) => {
   });
 
   const suggestions = data?.data?.suggestions ?? [];
+  console.log(data);
 
   if (!suggestions.length) return null;
 

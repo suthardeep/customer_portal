@@ -7,10 +7,12 @@ import ShortActionIconButton from "./ShortActionIconButton";
 interface ShortShareProps {
   shares: number;
   postId: string;
+  caption?: string;
+  thumbnail?: string;
 }
 
 const ShortShare: React.FC<ShortShareProps> = (props) => {
-  const { shares, postId } = props;
+  const { shares, postId, caption, thumbnail } = props;
   const { isAuthenticated } = useAuth();
   const loginDialog = useLoginDialog();
   const shareLink = useCreateUgcShareLinkMutation();
@@ -21,7 +23,7 @@ const ShortShare: React.FC<ShortShareProps> = (props) => {
       loginDialog.open();
       return;
     }
-    const link = await shareLink.mutateAsync({ targetId: postId });
+    const link = await shareLink.mutateAsync({ targetId: postId, title: caption, imageUrl: thumbnail });
     await share(link);
   };
 

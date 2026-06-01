@@ -33,21 +33,37 @@ export interface AffiliateLinkResponse {
 export interface CreateProductShareLinkRequest {
   productId: string;
   variantId?: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
 }
 
 export interface CreateUgcShareLinkRequest {
   targetId: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
 }
 
 export interface CreateStoreShareLinkRequest {
   targetId: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
 }
 
 export interface CreateReferralShareLinkRequest {
   targetId: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
 }
 
-export type CreateAppInviteLinkRequest = Record<string, never>;
+export interface CreateAppInviteLinkRequest {
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+}
 
 export interface ResolveShareCodeRequest {
   code: string;

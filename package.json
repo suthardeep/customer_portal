@@ -38,6 +38,7 @@
     "dotenv-cli": "^11.0.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "h3": "2.0.1-rc.22",
     "hls.js": "^1.6.15",
     "nitro": "3.0.260311-beta",
     "react": "^19.2.0",

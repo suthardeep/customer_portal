@@ -20,4 +20,6 @@ export const productKeys = {
   sizeChart: (id: string) => [...productKeys.all, "size-chart", id] as const,
   reviews: (productId: string) =>
     [...productKeys.all, "reviews", productId] as const,
+  complementary: (id: string) =>
+    [...productKeys.all, "complementary", id] as const,
 };

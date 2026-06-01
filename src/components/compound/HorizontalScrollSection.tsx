@@ -19,7 +19,7 @@ const HorizontalScrollSection = ({
   return (
     <section className={cn("w-full", className)}>
       <div className="flex items-center justify-between mb-4">
-        <h5 className="font-semibold text-n-900">{title}</h5>
+        <h5 className="font-bold text-n-1000">{title}</h5>
         {!hideSeeAll && seeAllLink && (
           <Link
             to={seeAllLink}

@@ -4,6 +4,7 @@ import SearchSuggestions from "@/components/shared/search/SearchSuggestions";
 import SearchTrending from "@/components/shared/search/SearchTrending";
 import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { z } from "zod";
 
 const searchSchema = z.object({
@@ -24,11 +25,14 @@ export const Route = createFileRoute("/_public/search")({
 });
 
 function SearchPageComponent() {
+  const { q } = Route.useSearch();
+  const [query, setQuery] = useState(q);
+
   return (
     <div>
-      <SearchInput />
+      <SearchInput value={query} onChange={setQuery} />
       <div className="px-4 pb-4 flex flex-col lg:flex-row gap-6 mt-3">
-        <SearchAutocomplete />
+        <SearchAutocomplete query={query} />
         <SearchSuggestions />
         <SearchTrending />
       </div>

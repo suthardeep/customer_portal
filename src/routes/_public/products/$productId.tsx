@@ -1,4 +1,5 @@
 import { CreateAffiliateButton } from "@/features/products/components/CreateAffiliateButton";
+import { SimilarProducts } from "@/features/products/components/SimilarProducts";
 import { ProductReviews } from "@/features/products/components/ProductReviews";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { ProductActionButtons } from "@/features/products/components/ProductActionButtons";
@@ -32,6 +33,7 @@ const productDetailSearchSchema = z.object({
   quantity: z.number().int().min(1).optional(),
   affiliateCode: z.string().optional(),
   _minQtyCorrected: z.boolean().optional(),
+  isAd: z.boolean().optional(),
 });
 
 export const Route = createFileRoute("/_public/products/$productId")({
@@ -39,10 +41,11 @@ export const Route = createFileRoute("/_public/products/$productId")({
   loaderDeps: ({ search }) => ({
     variantId: search.variantId,
     quantity: search.quantity,
+    isAd: search.isAd,
   }),
   loader: async ({ context, params, deps }) => {
     const product = await context.queryClient.ensureQueryData(
-      productQueries.detail(params.productId),
+      productQueries.detail(params.productId, deps.isAd),
     );
     if (!deps.variantId && product.variants.length > 0) {
       throw redirect({
@@ -114,9 +117,10 @@ function ProductDetailComponent() {
     quantity,
     affiliateCode,
     _minQtyCorrected,
+    isAd,
   } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const { data: product } = useSuspenseQuery(productQueries.detail(productId));
+  const { data: product } = useSuspenseQuery(productQueries.detail(productId, isAd));
 
   useEffect(() => {
     if (_minQtyCorrected && product.minOrderQuantity) {
@@ -172,6 +176,8 @@ function ProductDetailComponent() {
             brandName={product.brand?.name}
             brandId={product.brand?.id}
             productName={product.name}
+            productImage={product.mediaUrls?.[0]}
+            productDescription={product.description}
           />
           <div className="flex flex-col xl:flex-row gap-8">
             <div className="w-full">
@@ -195,13 +201,18 @@ function ProductDetailComponent() {
                   productId={productId}
                   variantId={selectedVariant?.id}
                   productName={product.name}
+                  productImage={product.mediaUrls?.[0]}
+                  productDescription={product.description}
                 />
               </div>
             </div>
             <div className="w-full space-y-3">
               <DeliveryInfo />
 
-              <ProductBadges features={features} returnPolicy={product.returnPolicy} />
+              <ProductBadges
+                features={features}
+                returnPolicy={product.returnPolicy}
+              />
             </div>
           </div>
 
@@ -234,6 +245,9 @@ function ProductDetailComponent() {
           productImageUrl={product.mediaUrls?.[0]}
         />
       </div>
+
+      {/* Similar / Complementary Products */}
+      <SimilarProducts productId={productId} />
     </div>
   );
 }

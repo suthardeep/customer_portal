@@ -5,11 +5,17 @@ import { useState } from "react";
 
 interface SearchInputProps {
   onClose?: () => void;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ onClose }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ onClose, value: controlledValue, onChange: controlledOnChange }) => {
   const navigate = useNavigate();
-  const [query, setQuery] = useState("");
+  const [internalQuery, setInternalQuery] = useState("");
+
+  const isControlled = controlledValue !== undefined;
+  const query = isControlled ? controlledValue : internalQuery;
+  const setQuery = isControlled ? controlledOnChange! : setInternalQuery;
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();

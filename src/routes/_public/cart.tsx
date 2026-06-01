@@ -47,7 +47,7 @@ function CartComponent() {
       {!hasItems && isLoading && <CartSkeleton />}
       {!hasItems && !isLoading && <CartEmptyState />}
 
-      {false && isAuthenticated && <RecentlyViewedSection />}
+      {isAuthenticated && <RecentlyViewedSection />}
     </div>
   );
 }

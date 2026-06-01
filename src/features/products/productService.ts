@@ -20,17 +20,18 @@ export const getProductList = createServerFn({ method: "GET" })
     });
   });
 
+type GetProductByIdParams = { productId: string; isAd?: boolean };
+
 // Get product by ID
 export const getProductById = createServerFn({ method: "GET" })
-  .inputValidator((data: string) => data)
-  .handler(async ({ data: productId }): Promise<ProductDetailResponse> => {
+  .inputValidator((data: GetProductByIdParams) => data)
+  .handler(async ({ data }): Promise<ProductDetailResponse> => {
+    const { productId, isAd } = data;
     const token = getToken();
 
     return apiRequest<ProductDetailResponse>(
       `/v2/products/public/details/${productId}`,
-      {
-        token,
-      },
+      { token, params: isAd ? { isAd: true } : undefined },
     );
   });
 
@@ -60,6 +61,14 @@ export const getSearchSuggestions = createServerFn({ method: "GET" }).handler(
     );
   },
 );
+
+export const getComplementaryProducts = createServerFn({ method: "GET" })
+  .inputValidator((data: string) => data)
+  .handler(async ({ data: productId }): Promise<ProductListResponse> => {
+    return apiRequest<ProductListResponse>(
+      `/v2/products/public/complementary/${productId}`,
+    );
+  });
 
 export const getProductReviews = createServerFn({ method: "GET" })
   .inputValidator((data: ReviewsParams) => data)

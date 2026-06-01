@@ -83,6 +83,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.4)
+      h3:
+        specifier: 2.0.1-rc.22
+        version: 2.0.1-rc.22(crossws@0.4.4(srvx@0.11.13))
       hls.js:
         specifier: ^1.6.15
         version: 1.6.15
@@ -2801,8 +2804,8 @@ packages:
       crossws:
         optional: true
 
-  h3@2.0.1-rc.19:
-    resolution: {integrity: sha512-47er/mh8eGA7+0nvNUloalj+yTJ1ku8M0BVzA2I1ZHSlpfbUNdBK4LpWztfH7TwW6kuhF8MfAvl0AwB+X9B+2w==}
+  h3@2.0.1-rc.22:
+    resolution: {integrity: sha512-Esv0DMIuPkCTSWCA0vO73vcTqwzH1wjSrAO1TXNu/K3up1sZHa9EKMapbmxCDYBeymC3fVTk4qxp7ogQWQ+KgA==}
     engines: {node: '>=20.11.1'}
     hasBin: true
     peerDependencies:
@@ -3384,6 +3387,11 @@ packages:
 
   srvx@0.11.13:
     resolution: {integrity: sha512-oknN6qduuMPafxKtHucUeG32Q963pjriA5g3/Bl05cwEsUe5VVbIU4qR9LrALHbipSCyBe+VmfDGGydqazDRkw==}
+    engines: {node: '>=20.16.0'}
+    hasBin: true
+
+  srvx@0.11.16:
+    resolution: {integrity: sha512-bp07zRuycfTY43IjAvvTFnmnJi8ikW0VFiHwOhhYcVW/L4xQ1XY4PAd4Nuum1rsA17C39zL7x+CDhrn5AL32Rw==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -6419,10 +6427,10 @@ snapshots:
     optionalDependencies:
       crossws: 0.4.4(srvx@0.11.13)
 
-  h3@2.0.1-rc.19(crossws@0.4.4(srvx@0.11.13)):
+  h3@2.0.1-rc.22(crossws@0.4.4(srvx@0.11.13)):
     dependencies:
       rou3: 0.8.1
-      srvx: 0.11.13
+      srvx: 0.11.16
     optionalDependencies:
       crossws: 0.4.4(srvx@0.11.13)
 
@@ -6661,7 +6669,7 @@ snapshots:
       crossws: 0.4.4(srvx@0.11.13)
       db0: 0.3.4
       env-runner: 0.1.6(miniflare@4.20260131.0)
-      h3: 2.0.1-rc.19(crossws@0.4.4(srvx@0.11.13))
+      h3: 2.0.1-rc.22(crossws@0.4.4(srvx@0.11.13))
       hookable: 6.1.0
       nf3: 0.3.14
       ocache: 0.1.4
@@ -7017,6 +7025,8 @@ snapshots:
   srvx@0.10.1: {}
 
   srvx@0.11.13: {}
+
+  srvx@0.11.16: {}
 
   stackback@0.0.2: {}
 

@@ -1,7 +1,6 @@
 import Divider from "@/components/base/Divider";
 import { PlaceOrderButton } from "./PlaceOrderButton";
 import { Icon } from "@/components/base/icon/Icon";
-import { Image } from "@/components/base/Image";
 import { showErrorToasts } from "@/components/toast";
 import type { Cart } from "@/features/cart/types/types";
 import { openRazorpayCheckout } from "@/lib/razorpayTopUp";
@@ -13,6 +12,7 @@ import {
 } from "../checkoutMutations";
 import type { CheckoutSession, PaymentMethod } from "../types/types";
 import ErrorText from "@/components/base/ErrorText";
+import { TotalAavakCoinsEarned } from "@/components/base/TotalAavakCoinsEarned";
 
 interface CheckoutSummaryProps {
   session: CheckoutSession | null;
@@ -201,22 +201,7 @@ export function CheckoutSummary({
         <hr className="border-n-200" />
 
         {/* Coins earning banner */}
-        {totalCoins > 0 && (
-          <div className="mx-4 my-4 flex items-start gap-2 rounded-xl border border-(--s-200) bg-s-50 p-3">
-            <div className="size-6 min-w-6">
-              <Image src="/aavak-coin-v1.png" alt="coin" eager />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-s-800">
-                You're Earning {totalCoins} coins
-              </p>
-              <p className="mt-0.5 text-xs text-s-600">
-                Your {totalCoins} aavak coins unlock exciting discounts and
-                future beauty treats!
-              </p>
-            </div>
-          </div>
-        )}
+        <TotalAavakCoinsEarned coins={totalCoins} />
 
         {/* Place Order button — desktop only (mobile uses sticky bar below) */}
         <div className="hidden lg:block p-4 pt-0">

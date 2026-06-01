@@ -28,6 +28,7 @@ import { z } from "zod";
 import { IconButton } from "@/components/base/icon-button/IconButton";
 import { CartSummarySkeleton } from "./skeletons/CartSkeleton";
 import ErrorText from "@/components/base/ErrorText";
+import { TotalAavakCoinsEarned } from "@/components/base/TotalAavakCoinsEarned";
 
 const pincodeSchema = z.object({
   pincode: z
@@ -108,7 +109,18 @@ export function CartSummary({ cart }: CartSummaryProps) {
 
   const hasNoSavedAddresses = !addressList?.length;
 
+  const totalCoins = cart.items.reduce(
+    (acc, item) => acc + item.totalAavakCoinForUser * item.quantity,
+    0,
+  );
+
+  const totalMrp = cart.items.reduce(
+    (sum, item) => sum + item.mrp * item.quantity,
+    0,
+  );
+
   const subtotal = summary?.subtotal;
+  const itemDiscount = subtotal !== undefined ? totalMrp - subtotal : 0;
   const shippingCharges = summary?.shippingCharges;
   const couponDiscount = summary?.couponDiscount;
   const cgst = summary?.cgst;
@@ -239,8 +251,22 @@ export function CartSummary({ cart }: CartSummaryProps) {
             <ErrorText withBgCard> {summaryQuery?.error?.message} </ErrorText>
           )}
           {subtotal !== undefined && (
-            <SummaryRow label="Subtotal" value={formatCurrency(subtotal)} />
+            <SummaryRow label="Item Total" value={formatCurrency(subtotal)} />
           )}
+
+          <hr className="border-dashed border-n-400" />
+          <SummaryRow
+            label="Total MRP (incl. of taxes)"
+            value={formatCurrency(totalMrp)}
+          />
+          {itemDiscount > 0 && (
+            <SummaryRow
+              label="Item Discount"
+              value={`-${formatCurrency(itemDiscount)}`}
+              valueClass="font-medium text-success-600"
+            />
+          )}
+          <hr className="border-dashed border-n-400" />
 
           {couponDiscount !== undefined && couponDiscount > 0 && (
             <SummaryRow
@@ -353,6 +379,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
             )}
           </div>
         )}
+        <TotalAavakCoinsEarned coins={totalCoins} className="mt-2 mb-4" />
 
         {/* Continue button — desktop only (mobile uses sticky bar below) */}
         <div className="hidden lg:block p-4 pt-0">
@@ -367,6 +394,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
             Continue
           </Button>
         </div>
+
         <ApplyCouponsDialog
           isOpen={applyCouponToggle.isOpen}
           onClose={applyCouponToggle.close}
