@@ -3,6 +3,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { cartQueries } from "@/features/cart/cartQueries";
 import { CartEmptyState } from "@/features/cart/components/CartEmptyState";
 import { CartItemList } from "@/features/cart/components/CartItemList";
+import { CartOfferBanner } from "@/features/cart/components/CartOfferBanner";
 import { CartSummary } from "@/features/cart/components/CartSummary";
 import CartSkeleton from "@/features/cart/components/skeletons/CartSkeleton";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
@@ -39,6 +40,7 @@ function CartComponent() {
           <div className="flex flex-col gap-3">
             <DeliveryInfo />
             <CartItemList items={cart.items} />
+            <CartOfferBanner offers={cart.offers ?? []} />
           </div>
           <CartSummary cart={cart} />
         </div>

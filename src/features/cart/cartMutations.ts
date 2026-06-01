@@ -45,6 +45,7 @@ export const useAddCartItemMutation = () => {
               mrp: 0,
               discountPercent: 0,
               discount: null,
+              discounts: null,
               totalAavakCoinForUser: 0,
               inStock: true,
               hasVariants: false,
