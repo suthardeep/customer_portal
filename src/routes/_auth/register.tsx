@@ -16,6 +16,9 @@ const registerSearchSchema = z.object({
 export const Route = createFileRoute("/_auth/register")({
   component: RegisterRouteComponent,
   validateSearch: registerSearchSchema,
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
 });
 
 function RegisterRouteComponent() {

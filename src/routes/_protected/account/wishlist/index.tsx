@@ -14,6 +14,9 @@ export const Route = createFileRoute("/_protected/account/wishlist/")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(wishlistQueries.collections());
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: CollectionListSkeleton,
   component: WishlistCollectionsComponent,
   errorComponent: () => (

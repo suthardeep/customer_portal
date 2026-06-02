@@ -20,6 +20,9 @@ export const Route = createFileRoute("/_public/terms-and-conditions")({
       policyQueries.detail(PolicyTypeEnum.TERMS_AND_CONDITIONS),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
   pendingComponent: PolicyPageSkeleton,
   errorComponent: () => (
     <div className="p-4">

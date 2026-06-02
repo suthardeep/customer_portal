@@ -16,6 +16,9 @@ export const Route = createFileRoute("/_public/spotlight/_protected/analytics")(
         spotlightQueries.creatorAnalytics(),
       );
     },
+    headers: () => ({
+      'Cache-Control': 'private, no-store',
+    }),
     pendingComponent: AnalyticsPageSkeleton,
     component: RouteComponent,
   },

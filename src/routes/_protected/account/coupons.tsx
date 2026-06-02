@@ -22,6 +22,9 @@ export const Route = createFileRoute("/_protected/account/coupons")({
       couponQueries.list({ currentPage: deps.currentPage }),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: CouponsListSkeleton,
   errorComponent: () => (
     <FallbackView title="Unable to load coupons" icon="Coupon" color="danger" />

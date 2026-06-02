@@ -38,6 +38,9 @@ export const Route = createFileRoute("/_protected/checkout")({
       context.queryClient.ensureQueryData(addressQueries.list()),
     ]);
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: CheckoutSkeleton,
   errorComponent: (err) => (
     <FallbackView

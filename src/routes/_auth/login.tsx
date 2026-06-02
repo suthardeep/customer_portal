@@ -12,6 +12,9 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/_auth/login")({
   component: LoginRouteComponent,
   validateSearch: loginSearchSchema,
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
 });
 
 function LoginRouteComponent() {

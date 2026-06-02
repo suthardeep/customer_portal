@@ -15,6 +15,9 @@ export const Route = createFileRoute("/_public/spotlight/_protected/bookmarks")(
         spotlightQueries.bookmarkedPosts(),
       );
     },
+    headers: () => ({
+      'Cache-Control': 'private, no-store',
+    }),
     component: RouteComponent,
   },
 );

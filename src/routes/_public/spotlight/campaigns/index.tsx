@@ -14,6 +14,9 @@ export const Route = createFileRoute("/_public/spotlight/campaigns/")({
       campaignQueries.campaignListInfinite({}),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=120, s-maxage=120, stale-while-revalidate=600',
+  }),
 });
 
 function RouteComponent() {

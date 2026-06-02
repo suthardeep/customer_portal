@@ -12,6 +12,9 @@ const verifyOtpSearchSchema = z.object({
 export const Route = createFileRoute("/_auth/verify-otp")({
   validateSearch: verifyOtpSearchSchema,
   component: VerifyOtpRouteComponent,
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
 });
 
 function VerifyOtpRouteComponent() {

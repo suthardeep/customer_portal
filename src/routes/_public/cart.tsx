@@ -15,6 +15,9 @@ export const Route = createFileRoute("/_public/cart")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(cartQueries.detail());
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: CartSkeleton,
   errorComponent: (err) => (
     <FallbackView

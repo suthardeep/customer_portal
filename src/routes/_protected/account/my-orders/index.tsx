@@ -24,6 +24,9 @@ export const Route = createFileRoute("/_protected/account/my-orders/")({
       myOrderQueries.list({ currentPage, pageSize: MY_ORDERS_PAGE_SIZE }),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: MyOrdersListSkeleton,
   errorComponent: () => (
     <FallbackView

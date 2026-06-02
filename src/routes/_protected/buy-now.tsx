@@ -42,6 +42,9 @@ export const Route = createFileRoute("/_protected/buy-now")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(addressQueries.list());
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: CheckoutSkeleton,
   errorComponent: (err) => (
     <FallbackView

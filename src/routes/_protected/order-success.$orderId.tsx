@@ -16,6 +16,9 @@ export const Route = createFileRoute("/_protected/order-success/$orderId")({
       retryDelay: (attempt: number) => attempt * 2000,
     });
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: OrderSuccessSkeleton,
   errorComponent: ({ error }) => (
     <div className="flex mt-32 items-center justify-center px-4 py-12">

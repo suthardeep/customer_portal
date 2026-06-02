@@ -14,6 +14,9 @@ export const Route = createFileRoute("/_public/spotlight/buy-clips")({
       spotlightQueries.feedExplore(),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=120, s-maxage=120, stale-while-revalidate=600',
+  }),
   pendingComponent: BuyClipsSkeleton,
   component: RouteComponent,
 });

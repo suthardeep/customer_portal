@@ -10,6 +10,9 @@ import SpotlightBackButton from "@/features/spotlight/components/SpotlightBackBu
 
 export const Route = createFileRoute("/_public/spotlight/")({
   component: SpotlightLandingPage,
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
   staticData: {
     maxWidth: "none",
     hideSpotlightRoute: true,

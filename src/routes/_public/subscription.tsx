@@ -27,6 +27,9 @@ export const Route = createFileRoute("/_public/subscription")({
       context.queryClient.prefetchQuery(subscriptionQueries.current()),
     ]);
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: SubscriptionSkeleton,
   component: SubscriptionPage,
   errorComponent: SubscriptionErrorComponent,

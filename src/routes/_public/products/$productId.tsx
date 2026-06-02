@@ -105,6 +105,9 @@ export const Route = createFileRoute("/_public/products/$productId")({
       ],
     };
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+  }),
   pendingComponent: ProductDetailSkeleton,
   component: ProductDetailComponent,
   errorComponent: () => <ProductNotFound />,

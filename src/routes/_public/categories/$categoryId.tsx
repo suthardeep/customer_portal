@@ -50,6 +50,9 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
       }),
     };
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=300, s-maxage=300, stale-while-revalidate=1800',
+  }),
   pendingComponent: CategoryDetailSkeleton,
   component: CategoryDetailComponent,
   errorComponent: (err) => (

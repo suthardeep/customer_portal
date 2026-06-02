@@ -22,6 +22,9 @@ export const Route = createFileRoute("/_public/categories/")({
       }),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=300, s-maxage=300, stale-while-revalidate=1800',
+  }),
   pendingComponent: CategoryListSkeleton,
   errorComponent: ({ error }) => (
     <div className="container mx-auto px-4 py-8">

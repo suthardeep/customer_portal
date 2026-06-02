@@ -30,6 +30,9 @@ export const Route = createFileRoute("/_protected/account/support/")({
       supportQueries.list({ currentPage, pageSize: SUPPORT_PAGE_SIZE }),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   pendingComponent: SupportTicketListSkeleton,
   errorComponent: () => (
     <FallbackView

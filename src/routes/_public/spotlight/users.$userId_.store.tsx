@@ -11,6 +11,9 @@ export const Route = createFileRoute("/_public/spotlight/users/$userId_/store")(
       spotlightQueries.creatorStore(params.userId),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=300, s-maxage=300, stale-while-revalidate=1800',
+  }),
   component: RouteComponent,
 });
 

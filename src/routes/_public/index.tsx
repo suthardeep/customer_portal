@@ -17,6 +17,9 @@ export const Route = createFileRoute("/_public/")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(homepageQueries.config());
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=120, s-maxage=120, stale-while-revalidate=600',
+  }),
   pendingComponent: HomepageSkeleton,
   component: HomePage,
   staticData: { showCategorySubNav: true, showBottomBar: true, maxWidth: "none" },

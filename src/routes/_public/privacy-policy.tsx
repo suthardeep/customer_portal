@@ -20,6 +20,9 @@ export const Route = createFileRoute("/_public/privacy-policy")({
       policyQueries.detail(PolicyTypeEnum.PRIVACY_POLICY),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  }),
   pendingComponent: PolicyPageSkeleton,
   errorComponent: () => (
     <div className="p-4">

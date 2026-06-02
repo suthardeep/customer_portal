@@ -29,6 +29,9 @@ export const Route = createFileRoute("/_public/products/")({
     }),
   }),
   validateSearch: productsListPageSearch,
+  headers: () => ({
+    'Cache-Control': 'public, max-age=120, s-maxage=120, stale-while-revalidate=600',
+  }),
   pendingComponent: ProductListSkeleton,
   component: ProductsPage,
 });

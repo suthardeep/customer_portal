@@ -15,6 +15,9 @@ export const Route = createFileRoute("/_protected/account/wallet")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(walletQueries.balance());
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   component: RouteComponent,
 });
 

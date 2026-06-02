@@ -9,6 +9,9 @@ export const Route = createFileRoute("/_public/spotlight/shorts/$id")({
       spotlightQueries.postDetail(params.id),
     );
   },
+  headers: () => ({
+    'Cache-Control': 'public, max-age=120, s-maxage=120, stale-while-revalidate=600',
+  }),
   component: RouteComponent,
   pendingComponent: ShortFeedSkeleton,
   staticData: {

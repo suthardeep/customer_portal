@@ -25,6 +25,9 @@ export const Route = createFileRoute("/_protected/account/my-address")({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(addressQueries.list());
   },
+  headers: () => ({
+    'Cache-Control': 'private, no-store',
+  }),
   component: RouteComponent,
   pendingComponent: AddressListSkeleton,
   errorComponent: () => (
