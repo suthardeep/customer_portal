@@ -64,10 +64,10 @@ export default function Header() {
             maxWidth && maxWidth !== "none" ? maxWidth : "max-w-8xl",
           )}
         >
-          <Link to="/" className="block lg:hidden">
+          <Link to="/" className="block lg:hidden" aria-label="Aavak - Go to homepage">
             <AavakLogoIcon />
           </Link>
-          <Link to="/" className="hidden lg:block">
+          <Link to="/" className="hidden lg:block" aria-label="Aavak - Go to homepage">
             <Logo className="w-32" />
           </Link>
           <HeaderLocation />

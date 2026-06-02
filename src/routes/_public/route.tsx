@@ -26,14 +26,14 @@ function RouteComponent() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
-      <div
+      <main
         className={cn(
           "mx-auto flex-1 w-full",
           maxWidth === "none" ? "" : "max-w-8xl",
         )}
       >
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   );
