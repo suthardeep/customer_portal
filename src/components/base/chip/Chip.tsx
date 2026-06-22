@@ -44,7 +44,7 @@ const variantStyles: Record<ChipVariant, Record<ChipColor, string>> = {
   outline: {
     primary: "border border-p-300 text-p-700",
     secondary: "border border-(--s-300) text-s-700",
-    success: "border border-success-300 text-success-700",
+    success: "border border-success-700 text-success-700",
     danger: "border border-danger-300 text-danger-700",
     neutral: "border border-n-300 text-n-800",
     blue: "border border-blue-300 text-blue-700",

@@ -53,15 +53,85 @@ function OfferCard({ offer }: { offer: CartOffer }) {
   }
 
   if (offer.offerState === "CONDITIONS_NOT_YET_MET") {
-    return (
-      <div className="flex items-center gap-3 rounded-xl border border-n-300 bg-n-100 px-4 py-3">
-        <Icon name="Coupon" size="md" className="text-n-500 shrink-0" />
-        <p className="text-sm text-n-600">{offer.message}</p>
-      </div>
-    );
+    return <ConditionsNotMetCard offer={offer} />;
   }
 
   return null;
+}
+
+function ConditionsNotMetCard({ offer }: { offer: CartOffer }) {
+  const rewardProducts = offer.claimAction?.rewardProducts ?? [];
+
+  return (
+    <div className="rounded-xl border border-n-400 bg-n-100 overflow-hidden">
+      <div className="flex items-start gap-3 px-4 py-3">
+        <Icon name="Coupon" size="md" className="text-n-700 shrink-0 mt-0.5" />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm font-semibold text-n-900 truncate">
+              {offer.discountName}
+            </p>
+            {offer.badge ? (
+              <span className="shrink-0 rounded-md bg-success-500 px-2 py-0.5 text-xs font-bold text-white">
+                {offer.badge}
+              </span>
+            ) : null}
+          </div>
+          <p className="mt-0.5 text-sm text-n-700">{offer.message}</p>
+          {offer.savingsAmount > 0 ? (
+            <p className="mt-0.5 text-xs font-semibold text-success-700">
+              Unlock to save {formatCurrency(offer.savingsAmount)}
+            </p>
+          ) : null}
+        </div>
+      </div>
+
+      {rewardProducts.length > 0 ? (
+        <div className="flex flex-col gap-2 border-t border-n-400 px-4 py-3">
+          {rewardProducts.map((reward) => (
+            <RewardPreviewRow key={reward.productId} reward={reward} />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function RewardPreviewRow({ reward }: { reward: CartOfferRewardProduct }) {
+  const product = reward.product;
+
+  if (!product) return null;
+
+  const imageUrl = product.mediaUrls[0];
+
+  return (
+    <Link
+      to="/products/$productId"
+      params={{ productId: product.id }}
+      search={{ variantId: product.variantId }}
+      className="flex items-center gap-3"
+    >
+      <div className="size-12 shrink-0 overflow-hidden rounded-lg border border-n-400 bg-n-50">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={product.name}
+            className="size-full object-cover"
+          />
+        ) : (
+          <div className="size-full flex items-center justify-center">
+            <Icon name="ShoppingCart" size="sm" className="text-n-400" />
+          </div>
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-2 text-sm font-medium text-n-900">
+          {product.name}
+        </p>
+        <p className="mt-0.5 text-xs text-n-700">Qty: {reward.quantity}</p>
+      </div>
+    </Link>
+  );
 }
 
 function ReadyToClaimCard({ offer }: { offer: CartOffer }) {
@@ -106,7 +176,7 @@ function RewardProductRow({ reward }: { reward: CartOfferRewardProduct }) {
         to="/products/$productId"
         params={{ productId: product.id }}
         search={{ variantId: product.variantId }}
-        className="size-16 shrink-0 overflow-hidden rounded-lg border border-n-300 bg-n-100"
+        className="size-16 shrink-0 overflow-hidden rounded-lg border border-n-400 bg-n-100"
       >
         {imageUrl ? (
           <Image

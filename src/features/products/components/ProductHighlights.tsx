@@ -5,7 +5,8 @@ import FallbackView from "@/components/empty-states/FallbackView";
 
 type ProductHighlightsProps = {
   highlights?: ProductHighlight[];
-} & Pick<ProductDetail, "bulletPoints" | "customFields">;
+  bulletPoints?: string[];
+} & Pick<ProductDetail, "customFields">;
 
 export function ProductHighlights({
   highlights,

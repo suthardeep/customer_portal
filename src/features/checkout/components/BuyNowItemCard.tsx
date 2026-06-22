@@ -1,4 +1,5 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
+import { Chip } from "@/components/base/chip/Chip";
 import { OptionValuesRenderer } from "@/components/base/OptionValuesRenderer";
 import { Image } from "@/components/base/Image";
 import type { BuyNowItem } from "@/features/checkout/types/types";
@@ -30,6 +31,15 @@ export function BuyNowItemCard({ item }: BuyNowItemCardProps) {
               {formatCurrency(item.mrp * item.quantity)}
             </p>
           )}
+          {item.discountPercent > 0 ? (
+            <Chip variant="outline" color="success" size="xs">
+              {item.discountPercent}% off
+            </Chip>
+          ) : item.discount ? (
+            <Chip variant="outline" color="success" size="xs">
+              {item.discount} off
+            </Chip>
+          ) : null}
         </div>
         <OptionValuesRenderer optionValues={item.optionValues} />
         <div className="flex items-center gap-2">

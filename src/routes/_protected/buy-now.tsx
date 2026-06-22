@@ -1,4 +1,5 @@
 import FallbackView from "@/components/empty-states/FallbackView";
+import { Alert } from "@/components/base/Alert";
 import { Image } from "@/components/base/Image";
 import { addressQueries } from "@/features/account/my-address/addressQueries";
 import { useCreateAddressMutation } from "@/features/account/my-address/addressMutations";
@@ -27,7 +28,7 @@ import { stripIndianCountryCode } from "@/utils/stringHelpers";
 import { useToggle } from "@/hooks/useToggle";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { z } from "zod";
 
 const buyNowSearchSchema = z.object({
@@ -43,7 +44,7 @@ export const Route = createFileRoute("/_protected/buy-now")({
     await context.queryClient.ensureQueryData(addressQueries.list());
   },
   headers: () => ({
-    'Cache-Control': 'private, no-store',
+    "Cache-Control": "private, no-store",
   }),
   pendingComponent: CheckoutSkeleton,
   errorComponent: (err) => (
@@ -96,8 +97,8 @@ function BuyNowComponent() {
 
   const addressId = selectedAddress?.id ?? "";
 
-  const sessionQuery = useQuery(
-    checkoutQueries.buyNowSession(
+  const sessionPayload = useMemo(
+    () =>
       buildBuyNowPayload(addressId, variantId, quantity, {
         paymentMethod,
         coinsToApply,
@@ -105,8 +106,19 @@ function BuyNowComponent() {
         couponCode,
         affiliateCode,
       }),
-    ),
+    [
+      addressId,
+      variantId,
+      quantity,
+      paymentMethod,
+      coinsToApply,
+      gstDetailsId,
+      couponCode,
+      affiliateCode,
+    ],
   );
+
+  const sessionQuery = useQuery(checkoutQueries.buyNowSession(sessionPayload));
 
   const handleApplyCoins = (coins: number) => {
     applyCoins(coins, sessionQuery.data?.amountToPay ?? Infinity);
@@ -218,6 +230,12 @@ function BuyNowComponent() {
           />
         </div>
       </div>
+
+      {sessionQuery.error && (
+        <Alert variant="danger" title="We couldn't load your order">
+          {sessionQuery.error.message}
+        </Alert>
+      )}
 
       <AddressSelectorSheet
         isOpen={sheet.isOpen}

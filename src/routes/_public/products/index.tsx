@@ -55,7 +55,6 @@ function ProductsPage() {
 
   const products = data?.pages.flatMap((page) => page.data) ?? [];
   const availableFilters = data?.pages[0]?.filters;
-  console.log(data, "data");
 
   const selectedFilters = search.filters ? search.filters.split(",") : [];
 
@@ -80,7 +79,11 @@ function ProductsPage() {
       label === "All Products"
         ? "No products found"
         : `No products found for ${label}`;
-    return <FallbackView title={fallbackTitle} icon="Cart" version="default" />;
+    return (
+      <div className="flex flex-1 items-center justify-center p-4">
+        <FallbackView title={fallbackTitle} icon="Cart" version="default" />
+      </div>
+    );
   }
 
   return (

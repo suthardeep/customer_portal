@@ -28,6 +28,13 @@ export interface SubscriptionPlan {
 export type SubscriptionPlansResponse = BaseApiResponse<SubscriptionPlan[]>;
 
 // --- Current Subscription ---
+export interface PendingSubscription {
+  subscriptionId: string;
+  billingStartsAt: string;
+  planPeriod: string;
+  planAmountInr: number;
+}
+
 export interface CurrentSubscription {
   id: string;
   customerId: string;
@@ -36,7 +43,9 @@ export interface CurrentSubscription {
   planAmountInr: number;
   status: SubscriptionStatus;
   currentPeriodEnd: string;
+  cancelledAt?: string;
   isPremiumActive: boolean;
+  pendingSubscription?: PendingSubscription;
 }
 
 export type CurrentSubscriptionResponse = BaseApiResponse<CurrentSubscription>;

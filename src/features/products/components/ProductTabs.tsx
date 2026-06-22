@@ -10,7 +10,9 @@ import type {
 type ProductTabsProps = {
   highlights?: ProductHighlight[];
   specifications?: ProductSpecification[];
-} & Pick<ProductDetail, "description" | "bulletPoints" | "customFields">;
+  description?: string;
+  bulletPoints?: string[];
+} & Pick<ProductDetail, "customFields">;
 
 export function ProductTabs({
   highlights,

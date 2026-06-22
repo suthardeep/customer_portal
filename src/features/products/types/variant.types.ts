@@ -20,6 +20,10 @@ export interface ProductVariant {
   name: string;
   description?: string;
   mediaUrls: string[];
+  bulletPoints?: string[];
+  minOrderQuantity?: number;
+  externalSku?: string | null;
+  vendorSku?: string | null;
   mrp: number;
   sellingPrice: number;
   price: number;

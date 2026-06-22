@@ -1,16 +1,16 @@
 import { Icon } from "@/components/base/icon/Icon";
+import type { SummaryCharge } from "@/types/general.types";
 import { useToggle } from "@/hooks/useToggle";
 import { formatCurrency } from "@/utils/formatCurrency";
 
 interface TaxBreakdownProps {
-  cgst: number;
-  sgst: number;
-  igst: number;
+  /** Individual tax charges (e.g. CGST, SGST, IGST) from the summary. */
+  taxes: Pick<SummaryCharge, "key" | "label" | "amount">[];
 }
 
-export function TaxBreakdown({ cgst, sgst, igst }: TaxBreakdownProps) {
+export function TaxBreakdown({ taxes }: TaxBreakdownProps) {
   const taxToggle = useToggle();
-  const total = cgst + sgst + igst;
+  const total = taxes.reduce((sum, tax) => sum + tax.amount, 0);
 
   if (total <= 0) return null;
 
@@ -21,11 +21,11 @@ export function TaxBreakdown({ cgst, sgst, igst }: TaxBreakdownProps) {
         className="flex w-full items-center justify-between"
       >
         <div className="flex items-center gap-1">
-          <p className="text-sm text-n-800">Taxes</p>
+          <p className="text-sm text-n-900">Taxes</p>
           <Icon
             name="ChevronDown"
             size="xs"
-            className={`text-n-800 transition-transform duration-300 ${taxToggle.isOpen ? "rotate-180" : "rotate-0"}`}
+            className={`text-n-900 transition-transform duration-300 ${taxToggle.isOpen ? "rotate-180" : "rotate-0"}`}
           />
         </div>
         <p className="text-sm font-semibold text-n-900">
@@ -38,24 +38,16 @@ export function TaxBreakdown({ cgst, sgst, igst }: TaxBreakdownProps) {
       >
         <div className="overflow-hidden py-1">
           <div className="flex flex-col gap-2 pl-3 border-l-2 border-n-300">
-            {cgst > 0 && (
-              <div className="flex justify-between">
-                <p className="text-n-800">CGST</p>
-                <p className="font-medium text-n-800">{formatCurrency(cgst)}</p>
-              </div>
-            )}
-            {sgst > 0 && (
-              <div className="flex justify-between">
-                <p className="text-n-800">SGST</p>
-                <p className="font-medium text-n-800">{formatCurrency(sgst)}</p>
-              </div>
-            )}
-            {igst > 0 && (
-              <div className="flex justify-between">
-                <p className="text-n-800">IGST</p>
-                <p className="font-medium text-n-800">{formatCurrency(igst)}</p>
-              </div>
-            )}
+            {taxes
+              .filter((tax) => tax.amount > 0)
+              .map((tax) => (
+                <div key={tax.key} className="flex justify-between">
+                  <p className="text-n-900">{tax.label}</p>
+                  <p className="font-medium text-n-900">
+                    {formatCurrency(tax.amount)}
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
       </div>

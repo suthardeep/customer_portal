@@ -1,4 +1,5 @@
 import { AavakCoinsChip } from "@/components/base/AavakCoinsChip";
+import { Chip } from "@/components/base/chip/Chip";
 import { Image } from "@/components/base/Image";
 import type { CartItem } from "@/features/cart/types/types";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -30,6 +31,19 @@ export function CheckoutItemCard({ item }: CheckoutItemCardProps) {
               {formatCurrency(item.mrp * item.quantity)}
             </p>
           )}
+          {item.discounts?.label ? (
+            <Chip variant="outline" color="success" size="xs">
+              {item.discounts.label}
+            </Chip>
+          ) : item.discountPercent > 0 ? (
+            <p className="text-sm font-semibold text-success-600">
+              {item.discountPercent}% off
+            </p>
+          ) : item.discount ? (
+            <p className="text-sm font-semibold text-success-600">
+              {item.discount} off
+            </p>
+          ) : null}
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm text-n-800">

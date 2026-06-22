@@ -28,7 +28,7 @@ export const Route = createFileRoute("/_public/subscription")({
     ]);
   },
   headers: () => ({
-    'Cache-Control': 'private, no-store',
+    "Cache-Control": "private, no-store",
   }),
   pendingComponent: SubscriptionSkeleton,
   component: SubscriptionPage,

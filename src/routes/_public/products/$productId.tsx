@@ -15,6 +15,7 @@ import { ProductVariantSelector } from "@/features/products/components/ProductVa
 import { ProductDetailSkeleton } from "@/features/products/components/skeletons/ProductDetailSkeleton";
 import { MOCK_PRODUCT_FEATURES } from "@/features/products/constants";
 import { productQueries } from "@/features/products/productQueries";
+import { resolveVariant } from "@/features/products/utils";
 import type { ProductVariant } from "@/features/products/types";
 import {
   buildBreadcrumbJsonLd,
@@ -53,12 +54,12 @@ export const Route = createFileRoute("/_public/products/$productId")({
         search: (prev) => ({
           ...prev,
           variantId: product.variants[0].id,
-          quantity: product.minOrderQuantity ?? 1,
+          quantity: product.variants[0].minOrderQuantity ?? 1,
         }),
         replace: true,
       });
     }
-    const min = product.minOrderQuantity ?? 1;
+    const min = resolveVariant(product, deps.variantId)?.minOrderQuantity ?? 1;
     const quantityProvided = deps.quantity !== undefined;
     const effectiveQuantity = deps.quantity ?? 1;
     if (effectiveQuantity < min) {
@@ -76,6 +77,7 @@ export const Route = createFileRoute("/_public/products/$productId")({
   },
   head: ({ loaderData: product }) => {
     if (!product) return {};
+    const defaultVariant = product.variants?.[0];
     const pageUrl = `${APP_URL}/products/${product.id}`;
     const breadcrumbItems = [
       { name: "Home", url: APP_URL },
@@ -88,8 +90,8 @@ export const Route = createFileRoute("/_public/products/$productId")({
     return {
       meta: buildMeta({
         title: `${product.name} — ${APP_NAME}`,
-        description: truncateDescription(product.description),
-        image: product.mediaUrls?.[0],
+        description: truncateDescription(defaultVariant?.description),
+        image: defaultVariant?.mediaUrls?.[0],
         url: pageUrl,
         type: "product",
       }),
@@ -125,9 +127,16 @@ function ProductDetailComponent() {
   const navigate = Route.useNavigate();
   const { data: product } = useSuspenseQuery(productQueries.detail(productId, isAd));
 
+  const selectedVariant: ProductVariant | undefined = resolveVariant(
+    product,
+    searchVariantId,
+  );
+
   useEffect(() => {
-    if (_minQtyCorrected && product.minOrderQuantity) {
-      toast.info(`Minimum order quantity is ${product.minOrderQuantity} units`);
+    if (_minQtyCorrected && selectedVariant?.minOrderQuantity) {
+      toast.info(
+        `Minimum order quantity is ${selectedVariant.minOrderQuantity} units`,
+      );
       navigate({
         search: (prev) => ({ ...prev, _minQtyCorrected: undefined }),
         replace: true,
@@ -135,24 +144,12 @@ function ProductDetailComponent() {
     }
   }, [_minQtyCorrected]);
 
-  const variantId = searchVariantId ?? product.variants[0]?.id;
-
-  const selectedVariant: ProductVariant | undefined = (() => {
-    if (!product.variants?.length) return undefined;
-    if (variantId) {
-      return product.variants.find((v) => v.id === variantId);
-    }
-    return product.variants[0];
-  })();
-
   const isOutOfStock = selectedVariant ? selectedVariant.quantity <= 0 : false;
 
   // Use mock data for features not yet available from API
   const features = MOCK_PRODUCT_FEATURES;
 
-  const galleryImages = selectedVariant?.mediaUrls?.length
-    ? selectedVariant.mediaUrls
-    : (product.mediaUrls ?? []);
+  const galleryImages = selectedVariant?.mediaUrls ?? [];
 
   return (
     <div className="container mx-auto px-4 pt-6 pb-28 lg:pb-6">
@@ -166,8 +163,8 @@ function ProductDetailComponent() {
           <ProductImageGallery images={galleryImages} />
           <div className="mt-8 hidden lg:block">
             <ProductTabs
-              description={product.description}
-              bulletPoints={product.bulletPoints}
+              description={selectedVariant?.description}
+              bulletPoints={selectedVariant?.bulletPoints}
               customFields={product.customFields}
             />
           </div>
@@ -179,8 +176,8 @@ function ProductDetailComponent() {
             brandName={product.brand?.name}
             brandId={product.brand?.id}
             productName={product.name}
-            productImage={product.mediaUrls?.[0]}
-            productDescription={product.description}
+            productImage={selectedVariant?.mediaUrls?.[0]}
+            productDescription={selectedVariant?.description}
           />
           <div className="flex flex-col xl:flex-row gap-8">
             <div className="w-full">
@@ -195,7 +192,7 @@ function ProductDetailComponent() {
                 variantId={selectedVariant?.id}
                 quantity={quantity ?? 1}
                 disabled={isOutOfStock}
-                min={product.minOrderQuantity}
+                min={selectedVariant?.minOrderQuantity}
                 max={selectedVariant?.quantity}
                 affiliateCode={affiliateCode}
               />
@@ -204,8 +201,8 @@ function ProductDetailComponent() {
                   productId={productId}
                   variantId={selectedVariant?.id}
                   productName={product.name}
-                  productImage={product.mediaUrls?.[0]}
-                  productDescription={product.description}
+                  productImage={selectedVariant?.mediaUrls?.[0]}
+                  productDescription={selectedVariant?.description}
                 />
               </div>
             </div>
@@ -232,8 +229,8 @@ function ProductDetailComponent() {
       {/* Mobile-only tabs */}
       <div className="mt-6 lg:hidden">
         <ProductTabs
-          description={product.description}
-          bulletPoints={product.bulletPoints}
+          description={selectedVariant?.description}
+          bulletPoints={selectedVariant?.bulletPoints}
           customFields={product.customFields}
         />
       </div>
@@ -245,7 +242,7 @@ function ProductDetailComponent() {
           productName={product.name}
           totalReviews={product.totalReviews}
           avgRating={product.avgRating}
-          productImageUrl={product.mediaUrls?.[0]}
+          productImageUrl={selectedVariant?.mediaUrls?.[0]}
         />
       </div>
 

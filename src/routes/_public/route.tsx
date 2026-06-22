@@ -24,16 +24,18 @@ function RouteComponent() {
   });
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <Header />
-      <main
-        className={cn(
-          "mx-auto flex-1 w-full",
-          maxWidth === "none" ? "" : "max-w-8xl",
-        )}
-      >
-        <Outlet />
-      </main>
+    <div className="flex flex-col">
+      <div className="flex min-h-dvh flex-col">
+        <Header />
+        <main
+          className={cn(
+            "mx-auto flex flex-1 w-full flex-col *:flex-1",
+            maxWidth === "none" ? "" : "max-w-8xl",
+          )}
+        >
+          <Outlet />
+        </main>
+      </div>
       <Footer />
     </div>
   );

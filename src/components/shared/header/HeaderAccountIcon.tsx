@@ -26,8 +26,7 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
       }
     } else {
       loginDialog.open({
-        onSuccess: () =>
-          navigate({ to: pathname as "/", replace: true }),
+        onSuccess: () => navigate({ to: pathname as "/", replace: true }),
       });
     }
   };
@@ -35,7 +34,7 @@ export function HeaderAccountIcon({ className, isMobile = false }: Props) {
   const label = isLoading
     ? "..."
     : isAuthenticated
-      ? user?.fullName?.split(" ")[0] || user?.phone || "Account"
+      ? user?.fullName?.split(" ")[0] || "User"
       : "Login";
 
   return (

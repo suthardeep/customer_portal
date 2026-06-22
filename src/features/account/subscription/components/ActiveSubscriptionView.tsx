@@ -89,15 +89,74 @@ export function ActiveSubscriptionView({
       {isCancelled && (
         <>
           <p className="text-center text-n-600 text-sm">
-            Subscription cancelled. Premium access until{" "}
-            {prettyDate(subscription.currentPeriodEnd)}.
+            {subscription.cancelledAt && (
+              <>
+                Subscription cancelled on {prettyDate(subscription.cancelledAt)}
+                .{" "}
+              </>
+            )}
+            Premium access until {prettyDate(subscription.currentPeriodEnd)}.
           </p>
-          <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-s-800" />
-            <p className="text-xs text-n-700 shrink-0">Subscribe for next period</p>
-            <div className="h-px flex-1 bg-s-800" />
-          </div>
-          <SubscriptionPlanSelector plans={plans} />
+
+          {subscription.pendingSubscription ? (
+            <div className="flex flex-col gap-3">
+              <p className="text-center text-n-600 text-sm">
+                Good news — you've already got your next plan sorted! It'll kick
+                in automatically when your current premium access ends, so you
+                won't miss a beat.
+              </p>
+
+              <div className="rounded-xl border border-(--s-700) bg-linear-to-br from-s-1000 to-p-1000 overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-s-900/40">
+                  <Icon
+                    name="Calendar"
+                    size="sm"
+                    className="text-s-400 shrink-0"
+                  />
+                  <p className="text-xs font-medium uppercase tracking-wide text-s-100">
+                    Upcoming plan
+                  </p>
+                </div>
+
+                {/* Body */}
+                <div className="flex flex-col gap-3 px-4 py-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-n-50 font-semibold capitalize">
+                      {subscription.pendingSubscription.planPeriod} plan
+                    </p>
+                    <h5 className="font-bold text-s-300">
+                      {formatCurrency(
+                        subscription.pendingSubscription.planAmountInr,
+                      )}
+                    </h5>
+                  </div>
+
+                  <div className="h-px bg-s-800" />
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-n-700 text-sm">Starts on</p>
+                    <p className="text-s-100 font-medium text-sm">
+                      {prettyDate(
+                        subscription.pendingSubscription.billingStartsAt,
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-s-800" />
+                <p className="text-xs text-n-700 shrink-0">
+                  Subscribe for next period
+                </p>
+                <div className="h-px flex-1 bg-s-800" />
+              </div>
+              <SubscriptionPlanSelector plans={plans} />
+            </>
+          )}
         </>
       )}
 

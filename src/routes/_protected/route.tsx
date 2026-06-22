@@ -36,7 +36,7 @@ function RouteComponent() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
-      <div className="mx-auto max-w-8xl flex-1 w-full">
+      <div className="mx-auto max-w-8xl flex flex-1 w-full flex-col *:flex-1">
         <Outlet />
       </div>
     </div>

@@ -44,8 +44,8 @@ export function buildProductJsonLd(product: ProductDetail, pageUrl: string) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    description: product.description,
-    image: product.mediaUrls,
+    description: firstVariant?.description,
+    image: firstVariant?.mediaUrls,
     url: pageUrl,
     sku: firstVariant?.aavakSku,
     brand: product.brand

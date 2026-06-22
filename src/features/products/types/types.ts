@@ -39,9 +39,6 @@ export interface ProductDetail {
   id: string;
   slug: string;
   name: string;
-  description?: string;
-  mediaUrls: string[];
-  bulletPoints?: string[];
   tags?: string[];
   customFields?: Array<{
     groupName: string;
@@ -61,10 +58,8 @@ export interface ProductDetail {
   packerDetails?: string;
   importerDetails?: string;
   countryOfOrigin?: string;
-  minOrderQuantity?: number;
   sizeChartId?: string | null;
   isFragile: boolean;
-  externalSku?: string | null;
   minPrice: number;
   maxPrice: number;
   totalStock: number;
