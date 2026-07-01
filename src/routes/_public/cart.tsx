@@ -11,6 +11,7 @@ import { SkippedItemsSection } from "@/features/cart/components/SkippedItemsSect
 import CartSkeleton from "@/features/cart/components/skeletons/CartSkeleton";
 import { useCartItemActions } from "@/features/cart/hooks/useCartItemActions";
 import { useCartSummary } from "@/features/cart/hooks/useCartSummary";
+import { useSelectedCartItems } from "@/features/cart/hooks/useSelectedCartItems";
 import { DeliveryInfo } from "@/features/products/components/DeliveryInfo";
 import { RecentlyViewedSection } from "@/features/user-activities/components/RecentlyViewedSection";
 
@@ -38,6 +39,7 @@ function CartComponent() {
 	const { isAuthenticated } = useAuth();
 
 	const summary = useCartSummary();
+	const selection = useSelectedCartItems(cart.items);
 	const { handleQuantityChange, handleDelete, isAnyPending } =
 		useCartItemActions();
 
@@ -52,6 +54,13 @@ function CartComponent() {
 						<CartItemList
 							items={cart.items}
 							skippedVariantIds={summary.skippedVariantIds}
+							selectedIds={selection.selectedIds}
+							selectedCount={selection.selectedCount}
+							allSelected={selection.allSelected}
+							someSelected={selection.someSelected}
+							onToggleItem={selection.toggle}
+							onSelectAll={selection.selectAll}
+							onClearAll={selection.clearAll}
 							onQuantityChange={handleQuantityChange}
 							onDelete={handleDelete}
 							isUpdating={isAnyPending}
@@ -65,7 +74,11 @@ function CartComponent() {
 						/>
 						<CartOfferBanner offers={cart.offers ?? []} />
 					</div>
-					<CartSummary cart={cart} summary={summary} />
+					<CartSummary
+							cart={cart}
+							summary={summary}
+							selectedCount={selection.selectedCount}
+						/>
 				</div>
 			)}
 

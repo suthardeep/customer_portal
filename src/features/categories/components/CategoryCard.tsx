@@ -1,5 +1,4 @@
 import type { Category } from "../types/types";
-import { DEFAULT_CATEGORY_IMAGE } from "../constants";
 import { Image } from "@/components/base/Image";
 import { cn } from "@/utils/cssHelpers";
 
@@ -26,7 +25,7 @@ export function CategoryCard({
     >
       <div className="relative aspect-square overflow-hidden">
         <Image
-          src={category.image || DEFAULT_CATEGORY_IMAGE}
+          src={category.image}
           alt={category.name}
           className={cn("object-contain", imgClassName)}
         />

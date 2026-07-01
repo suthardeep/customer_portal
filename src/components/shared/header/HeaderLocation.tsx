@@ -2,60 +2,45 @@ import { Icon } from "@/components/base/icon/Icon";
 import AddressSelectorSheet from "@/features/account/my-address/components/AddressSelectorSheet";
 import { ADDRESS_TYPE_CONFIG } from "@/features/account/my-address/constants";
 import { AddressTypeEnum } from "@/features/account/my-address/enums";
-import { useDetectLocation } from "@/features/account/my-address/hooks/useDetectLocation";
+import { useAddressSelector } from "@/features/account/my-address/hooks/useAddressSelector";
 import { addressQueries } from "@/features/account/my-address/addressQueries";
 import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
-import type { Address } from "@/features/account/my-address/types/types";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { formatAddress } from "@/utils/formatAddress";
-import { haversineDistance } from "@/utils/haversine";
-import { useToggle } from "@/hooks/useToggle";
 import { useQuery } from "@tanstack/react-query";
-import { ADDRESS_MATCH_THRESHOLD_METERS } from "./constants";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 
 export function HeaderLocation() {
   const { isAuthenticated, isLoading } = useAuth();
-  const { activeAddress, selectSavedAddress, setDetectedAddress, clearSelection, _hasHydrated } =
+  const { activeAddress, clearSelection, _hasHydrated } =
     useSelectedAddressStore();
+
+  const { openSheet, isDetecting, sheetProps, addDialog } = useAddressSelector({
+    autoDetect: true,
+  });
+
+  const { data: savedAddresses, isSuccess: savedAddressesLoaded } = useQuery({
+    ...addressQueries.list(),
+    enabled: isAuthenticated,
+  });
 
   useEffect(() => {
     if (_hasHydrated && !isLoading && !isAuthenticated && activeAddress?.id) {
       clearSelection();
     }
   }, [_hasHydrated, isLoading, isAuthenticated, activeAddress?.id, clearSelection]);
-  const selectedAddressId = activeAddress?.id ?? null;
-  const sheetToggle = useToggle();
-  const { data: savedAddresses } = useQuery({
-    ...addressQueries.list(),
-    enabled: isAuthenticated,
-  });
-  const savedAddressesRef = useRef(savedAddresses);
-  savedAddressesRef.current = savedAddresses;
 
-  const hasSavedAddresses = !!savedAddresses?.length;
-
-  const { detect, isDetecting, error } = useDetectLocation(
-    (detected) => {
-      const match = savedAddressesRef.current?.find(
-        (addr) =>
-          addr.latitude != null &&
-          addr.longitude != null &&
-          haversineDistance(
-            detected.latitude,
-            detected.longitude,
-            addr.latitude,
-            addr.longitude,
-          ) <= ADDRESS_MATCH_THRESHOLD_METERS,
-      );
-      if (match) {
-        selectSavedAddress(match);
-      } else {
-        setDetectedAddress(detected);
-      }
-    },
-    { autoDetect: _hasHydrated && !activeAddress && !hasSavedAddresses },
-  );
+  // Clear a stale selection: the active address references a saved address id
+  // that no longer exists in the list (e.g. deleted in another session).
+  useEffect(() => {
+    if (
+      savedAddressesLoaded &&
+      activeAddress?.id &&
+      !savedAddresses?.some((addr) => addr.id === activeAddress.id)
+    ) {
+      clearSelection();
+    }
+  }, [savedAddressesLoaded, savedAddresses, activeAddress?.id, clearSelection]);
 
   const typeLabel = activeAddress?.addressType
     ? activeAddress.addressType === AddressTypeEnum.OTHER &&
@@ -68,27 +53,14 @@ export function HeaderLocation() {
     ? "Detecting..."
     : activeAddress
       ? formatAddress(activeAddress)
-      : error
-        ? error
+      : sheetProps.detectError
+        ? sheetProps.detectError
         : "Detect location";
-
-  const handleClick = () => {
-    if (activeAddress || hasSavedAddresses) {
-      sheetToggle.open();
-    } else {
-      detect();
-    }
-  };
-
-  const handleSelect = (address: Address) => {
-    selectSavedAddress(address);
-    sheetToggle.close();
-  };
 
   return (
     <>
       <button
-        onClick={handleClick}
+        onClick={openSheet}
         disabled={isDetecting}
         className="flex items-center gap-2 group cursor-pointer"
       >
@@ -113,12 +85,8 @@ export function HeaderLocation() {
           </p>
         </div>
       </button>
-      <AddressSelectorSheet
-        isOpen={sheetToggle.isOpen}
-        onClose={sheetToggle.close}
-        selectedAddressId={selectedAddressId}
-        onSelect={handleSelect}
-      />
+      <AddressSelectorSheet {...sheetProps} />
+      {addDialog}
     </>
   );
 }

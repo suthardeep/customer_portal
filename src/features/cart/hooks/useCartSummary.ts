@@ -18,7 +18,7 @@ const pincodeSchema = z.object({
 type PincodeFormData = z.infer<typeof pincodeSchema>;
 
 export function useCartSummary() {
-	const { couponCode, gstDetailsId } = useCheckoutStore();
+	const { couponCode, gstDetailsId, selectedCartItemIds } = useCheckoutStore();
 	const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 	const { data: addressList, isLoading: isAddressLoading } = useQuery({
 		...addressQueries.list(),
@@ -57,6 +57,7 @@ export function useCartSummary() {
 				: {}),
 		...(couponCode && { couponCode }),
 		...(gstDetailsId && { gstDetailsId }),
+		...(selectedCartItemIds.length > 0 && { selectedCartItemIds }),
 	};
 
 	const authAndAddressReady =

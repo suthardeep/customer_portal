@@ -6,6 +6,7 @@ import { ADDRESS_TYPE_ITEMS } from "@/features/account/my-address/constants";
 import { AddressTypeEnum } from "@/features/account/my-address/enums";
 import { addressFormSchema } from "@/features/account/my-address/schemas/addressFormSchema";
 import type { AddressFormData } from "@/features/account/my-address/types/types";
+import { usePincodeAutofill } from "@/features/account/my-address/hooks/usePincodeAutofill";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
 
@@ -16,7 +17,6 @@ interface AddEditAddressFormProps {
   isMutating?: boolean;
   className?: string;
   onCancel?: () => void;
-  onSuccess?: () => void;
 }
 
 const AddEditAddressForm = ({
@@ -26,12 +26,13 @@ const AddEditAddressForm = ({
   isMutating = false,
   className,
   onCancel,
-  onSuccess,
 }: AddEditAddressFormProps) => {
   const {
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<AddressFormData>({
     resolver: zodResolver(addressFormSchema),
@@ -53,9 +54,15 @@ const AddEditAddressForm = ({
 
   const addressType = useWatch({ control, name: "addressType" });
 
+  const { isLoading: isResolvingPincode } = usePincodeAutofill({
+    watch,
+    setValue,
+  });
+
   const handleFormSubmit = (data: AddressFormData) => {
+    // Closing is owned by the caller's mutation `onSuccess` so the dialog
+    // stays open (and form values are preserved) if the save fails.
     onSubmit(data);
-    onSuccess?.();
   };
 
   return (
@@ -140,9 +147,9 @@ const AddEditAddressForm = ({
         <Input
           {...register("city")}
           label="City"
-          placeholder="Enter City name"
+          placeholder={isResolvingPincode ? "Detecting…" : "Enter City name"}
           error={errors.city?.message}
-          disabled={isMutating}
+          disabled={isMutating || isResolvingPincode}
           required
           fullWidth
         />
@@ -150,9 +157,9 @@ const AddEditAddressForm = ({
         <Input
           {...register("state")}
           label="State"
-          placeholder="Enter State name"
+          placeholder={isResolvingPincode ? "Detecting…" : "Enter State name"}
           error={errors.state?.message}
-          disabled={isMutating}
+          disabled={isMutating || isResolvingPincode}
           required
           fullWidth
         />

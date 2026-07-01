@@ -24,7 +24,11 @@ import ApplyCouponsDialog from "./ApplyCouponsDialog";
 import { ChargesSummary } from "./ChargesSummary";
 import { CartSummarySkeleton } from "./skeletons/CartSkeleton";
 
-export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
+export function CartSummary({
+  cart,
+  summary: cartSummary,
+  selectedCount,
+}: CartSummaryProps) {
   const gstToggle = useToggle();
   const applyCouponToggle = useToggle();
   const addAddressToggle = useToggle();
@@ -53,12 +57,17 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
   if (!authAndAddressReady || summaryQuery.isLoading)
     return <CartSummarySkeleton />;
 
-  const totalCoins = cart.items.reduce(
+  // MRP/coins are UI-only lines the backend doesn't total for us, so we sum
+  // them from summary.items — the selected items the API returned — to stay in
+  // sync with the API subtotal. Fall back to the full cart until it loads.
+  const summaryItems = summary?.items ?? cart.items;
+
+  const totalCoins = summaryItems.reduce(
     (acc, item) => acc + item.totalAavakCoinForUser * item.quantity,
     0,
   );
 
-  const totalMrp = cart.items.reduce(
+  const totalMrp = summaryItems.reduce(
     (sum, item) => sum + item.mrp * item.quantity,
     0,
   );
@@ -97,7 +106,8 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
 
   const hasBelowMoqItems = cart.items.some(isBelowMoq);
   const hasSkippedItems = skippedItems.length > 0;
-  const cannotContinue = hasBelowMoqItems || hasSkippedItems;
+  const noItemsSelected = selectedCount === 0;
+  const cannotContinue = hasBelowMoqItems || hasSkippedItems || noItemsSelected;
 
   const disableContinue =
     summaryQuery?.isError || summaryQuery?.isLoading || cannotContinue;
@@ -190,11 +200,6 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
           {summaryQuery?.isError && (
             <ErrorText withBgCard> {summaryQuery?.error?.message} </ErrorText>
           )}
-          {subtotal !== undefined && (
-            <SummaryRow label="Item Total" value={formatCurrency(subtotal)} />
-          )}
-
-          <hr className="border-dashed border-n-400" />
           <SummaryRow
             label="Total MRP (incl. of taxes)"
             value={formatCurrency(totalMrp)}
@@ -205,6 +210,10 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
               value={`-${formatCurrency(itemDiscount)}`}
               valueClass="font-medium text-success-600"
             />
+          )}
+          <hr className="border-dashed border-n-400" />
+          {subtotal !== undefined && (
+            <SummaryRow label="Item Total" value={formatCurrency(subtotal)} />
           )}
           <hr className="border-dashed border-n-400" />
 
@@ -291,11 +300,17 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
 
         {/* Continue button — desktop only (mobile uses sticky bar below) */}
         <div className="hidden lg:flex flex-col gap-3 p-4 pt-0">
-          {cannotContinue && (
+          {noItemsSelected ? (
             <ErrorText withBgCard>
-              Some items can&apos;t be included in your order. Update or remove
-              them to continue.
+              Select at least one item to continue.
             </ErrorText>
+          ) : (
+            cannotContinue && (
+              <ErrorText withBgCard>
+                Some items can&apos;t be included in your order. Update or remove
+                them to continue.
+              </ErrorText>
+            )
           )}
           <Button
             variant="filled"
@@ -343,11 +358,17 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
 
       {/* Sticky bottom bar — mobile only */}
       <div className="fixed bottom-0 left-0 right-0 z-20 flex flex-col gap-3 border-t border-n-300 bg-n-50 p-4 lg:hidden">
-        {hasBelowMoqItems && (
+        {noItemsSelected ? (
           <ErrorText withBgCard>
-            Some items don&apos;t meet their minimum order quantity. Update or
-            remove them to continue.
+            Select at least one item to continue.
           </ErrorText>
+        ) : (
+          hasBelowMoqItems && (
+            <ErrorText withBgCard>
+              Some items don&apos;t meet their minimum order quantity. Update or
+              remove them to continue.
+            </ErrorText>
+          )
         )}
         <Button
           variant="filled"
@@ -367,6 +388,7 @@ export function CartSummary({ cart, summary: cartSummary }: CartSummaryProps) {
 interface CartSummaryProps {
   cart: Cart;
   summary: ReturnType<typeof useCartSummary>;
+  selectedCount: number;
 }
 
 interface SummaryRowProps {

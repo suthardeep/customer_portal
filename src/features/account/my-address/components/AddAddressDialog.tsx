@@ -30,7 +30,6 @@ const AddAddressDialog = ({
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onCancel={onClose}
-        onSuccess={onClose}
         isMutating={isMutating}
       />
     </Dialog>

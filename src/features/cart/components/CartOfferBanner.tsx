@@ -40,9 +40,10 @@ function OfferCard({ offer }: { offer: CartOffer }) {
             {offer.discountName}
           </p>
           <p className="text-xs text-success-700">
-            {offer.savingsAmount > 0
+            {offer.message}
+            {/* {offer.savingsAmount > 0
               ? `You save ${formatCurrency(offer.savingsAmount)}`
-              : offer.message}
+              : offer.message} */}
           </p>
         </div>
         <span className="shrink-0 rounded-md bg-success-500 px-2 py-0.5 text-xs font-bold text-white">

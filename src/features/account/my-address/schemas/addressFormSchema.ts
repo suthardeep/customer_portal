@@ -3,12 +3,21 @@ import { z } from "zod";
 
 export const addressFormSchema = z.object({
   fullName: z.string().min(3, "Full name must be at least 3 characters").max(100, "Full name must be at most 100 characters"),
-  phone: z.string().length(10, "Enter a valid 10-digit mobile number"),
+  phone: z
+    .string()
+    .regex(
+      /^[6-9]\d{9}$/,
+      "Phone must be a valid 10-digit Indian mobile number",
+    ),
   addressLine1: z.string().min(10, "Address must be at least 10 characters").max(100, "Address must be at most 100 characters"),
   addressLine2: z
-    .string()
-    .min(3, "Address line 2 must be at least 3 characters")
-    .max(100, "Address line 2 must be at most 100 characters")
+    .union([
+      z.literal(""),
+      z
+        .string()
+        .min(3, "Address line 2 must be at least 3 characters")
+        .max(100, "Address line 2 must be at most 100 characters"),
+    ])
     .optional(),
   landmark: z.string().max(100, "Landmark must be at most 100 characters").optional(),
   pincode: z.string().length(6, "Enter a valid 6-digit pincode"),

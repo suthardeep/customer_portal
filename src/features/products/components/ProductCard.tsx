@@ -106,7 +106,9 @@ export function ProductCard({
 					onClick={(e) => e.preventDefault()}
 				>
 					<ProductCardAddToCart
+						productId={product.id}
 						variantId={product.variantId}
+						hasVariants={product.hasVariants}
 						outOfStock={!product.inStock}
 						minOrderQuantity={product.minOrderQuantity}
 					/>

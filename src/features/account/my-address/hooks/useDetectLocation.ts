@@ -58,10 +58,24 @@ export const useDetectLocation: UseDetectLocation = (
           const houseNumber = a.house_number ? `${a.house_number}, ` : "";
           const neighbourhood = a.neighbourhood ?? a.quarter ?? "";
 
+          // City: prefer the actual city/town. For Indian metros, Nominatim
+          // often omits `city` and puts the city name in `state_district`
+          // (e.g. "Ahmedabad"), while `village`/`county` are smaller localities
+          // within it — so those must rank below `state_district`.
+          const city =
+            a.city ??
+            a.town ??
+            a.municipality ??
+            a.state_district ??
+            a.county ??
+            a.village ??
+            a.district ??
+            "";
+
           onSuccess({
             addressLine1: `${houseNumber}${road}`.trim(),
             addressLine2: neighbourhood || undefined,
-            city: a.city ?? a.town ?? a.village ?? a.county ?? a.district ?? "",
+            city,
             state: a.state ?? "",
             pincode: a.postcode ?? "",
             country: a.country ?? "",

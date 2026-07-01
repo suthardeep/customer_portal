@@ -1,20 +1,13 @@
-import { useToggle } from "@/hooks/useToggle";
 import AddressSelectorSheet from "@/features/account/my-address/components/AddressSelectorSheet";
-import { useSelectedAddressStore } from "@/features/account/my-address/stores/selectedAddressStore";
-import type { Address } from "@/features/account/my-address/types/types";
+import { useAddressSelector } from "@/features/account/my-address/hooks/useAddressSelector";
 import { Button } from "@/components/base/button/Button";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { formatAddress } from "@/utils/formatAddress";
 
 export function DeliveryInfo() {
-  const sheet = useToggle();
   const { isAuthenticated, isLoading } = useAuth();
-  const { activeAddress, selectSavedAddress } = useSelectedAddressStore();
-
-  const handleSelect = (address: Address) => {
-    selectSavedAddress(address);
-    sheet.close();
-  };
+  const { activeAddress, openSheet, sheetProps, addDialog } =
+    useAddressSelector();
 
   if (isLoading) {
     return <div className="shimmer rounded-xl w-full h-20.5" />;
@@ -35,19 +28,15 @@ export function DeliveryInfo() {
             variant="ghost"
             color="secondary"
             className="font-semibold text-s-700 hover:text-s-800 transition-colors text-sm"
-            onClick={sheet.open}
+            onClick={openSheet}
           >
             {activeAddress ? "Change" : "Select"}
           </Button>
         </div>
       </div>
 
-      <AddressSelectorSheet
-        isOpen={sheet.isOpen}
-        onClose={sheet.close}
-        selectedAddressId={activeAddress?.id ?? null}
-        onSelect={handleSelect}
-      />
+      <AddressSelectorSheet {...sheetProps} />
+      {addDialog}
     </>
   );
 }

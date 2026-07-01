@@ -10,7 +10,7 @@ import type {
 export const getCategoriesTree = createServerFn({ method: "GET" })
   .inputValidator((data?: CategoryTreeQueryParams) => data)
   .handler(async ({ data }): Promise<CategoryTreeResponse> => {
-    return apiRequest<CategoryTreeResponse>("/v2/categories/public/tree", {
+    return apiRequest<CategoryTreeResponse>("/v3/categories/public/tree", {
       params: data,
     });
   });

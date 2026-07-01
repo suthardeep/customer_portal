@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/base/button/Button";
+import { useEffect, useRef } from "react";
 import { Checkbox } from "@/components/base/checkbox/Checkbox";
 import type { CartItem } from "../types/types";
 import { CartItemCard } from "./CartItemCard";
@@ -8,6 +7,13 @@ import { ClearCartButton } from "./ClearCartButton";
 interface CartItemListProps {
 	items: CartItem[];
 	skippedVariantIds: Set<string>;
+	selectedIds: Set<string>;
+	selectedCount: number;
+	allSelected: boolean;
+	someSelected: boolean;
+	onToggleItem: (id: string) => void;
+	onSelectAll: () => void;
+	onClearAll: () => void;
 	onQuantityChange: (id: string, quantity: number) => void;
 	onDelete: (id: string) => void;
 	isUpdating: boolean;
@@ -16,21 +22,24 @@ interface CartItemListProps {
 export function CartItemList({
 	items,
 	skippedVariantIds,
+	selectedIds,
+	selectedCount,
+	allSelected,
+	someSelected,
+	onToggleItem,
+	onSelectAll,
+	onClearAll,
 	onQuantityChange,
 	onDelete,
 	isUpdating,
 }: CartItemListProps) {
-	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 	const selectAllRef = useRef<HTMLInputElement>(null);
 
 	const visibleItems = items.filter(
 		(item) => !skippedVariantIds.has(item.variantId),
 	);
 
-	const selectedCount = selectedIds.size;
 	const totalCount = visibleItems.length;
-	const allSelected = totalCount > 0 && selectedCount === totalCount;
-	const someSelected = selectedCount > 0 && selectedCount < totalCount;
 
 	useEffect(() => {
 		if (selectAllRef.current) {
@@ -40,38 +49,14 @@ export function CartItemList({
 
 	const handleSelectAll = (checked: boolean) => {
 		if (checked) {
-			setSelectedIds(new Set(visibleItems.map((i) => i.variantId)));
+			onSelectAll();
 		} else {
-			setSelectedIds(new Set());
+			onClearAll();
 		}
 	};
 
-	const handleSelectItem = (id: string, checked: boolean) => {
-		setSelectedIds((prev) => {
-			const next = new Set(prev);
-			if (checked) {
-				next.add(id);
-			} else {
-				next.delete(id);
-			}
-			return next;
-		});
-	};
-
-	const handleDelete = (id: string) => {
-		setSelectedIds((prev) => {
-			const next = new Set(prev);
-			next.delete(id);
-			return next;
-		});
-		onDelete(id);
-	};
-
-	const handleBulkRemove = () => {
-		selectedIds.forEach((id) => {
-			onDelete(id);
-		});
-		setSelectedIds(new Set());
+	const handleSelectItem = (id: string) => {
+		onToggleItem(id);
 	};
 
 	if (visibleItems.length === 0) return null;
@@ -90,17 +75,6 @@ export function CartItemList({
 					{selectedCount}/{totalCount} Item{totalCount !== 1 ? "s" : ""}{" "}
 					Selected
 				</p>
-				{selectedCount > 0 && (
-					<Button
-						variant="ghost"
-						color="danger"
-						size="sm"
-						onClick={handleBulkRemove}
-						disabled={isUpdating}
-					>
-						Remove Selected
-					</Button>
-				)}
 				<ClearCartButton />
 			</div>
 
@@ -108,10 +82,10 @@ export function CartItemList({
 				<CartItemCard
 					key={item.id}
 					item={item}
-					isSelected={selectedIds.has(item.variantId)}
+					isSelected={selectedIds.has(item.id)}
 					onSelectChange={handleSelectItem}
 					onQuantityChange={onQuantityChange}
-					onDelete={handleDelete}
+					onDelete={onDelete}
 					isUpdating={isUpdating}
 				/>
 			))}

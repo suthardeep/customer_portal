@@ -1,4 +1,5 @@
 import { categoryQueries } from "@/features/categories/categoryQueries";
+import { CATEGORY_TREE_PARAMS } from "@/features/categories/constants";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
@@ -6,12 +7,7 @@ import QueryStateHandler from "../compound/QueryStateHandler";
 import CategoriesTabNavSkeleton from "./CategoriesTabNavSkeleton";
 
 const CategoriesTabNav = () => {
-  const categoryQuery = useQuery(
-    categoryQueries.tree({
-      currentPage: 1,
-      pageSize: 100,
-    }),
-  );
+  const categoryQuery = useQuery(categoryQueries.tree(CATEGORY_TREE_PARAMS));
   const categoryResponse = categoryQuery.data;
   const categories = categoryResponse?.data ?? [];
 

@@ -10,6 +10,7 @@ export interface CheckoutPayload {
 	coinsToApply?: number;
 	gstDetailsId?: string;
 	affiliateCode?: string;
+	selectedCartItemIds?: string[];
 }
 
 export interface ShippingBreakdown {

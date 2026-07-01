@@ -15,7 +15,7 @@ import { isBelowMoq } from "../utils";
 interface CartItemCardProps {
 	item: CartItem;
 	isSelected?: boolean;
-	onSelectChange?: (id: string, checked: boolean) => void;
+	onSelectChange?: (id: string) => void;
 	onQuantityChange: (id: string, quantity: number) => void;
 	onDelete: (id: string) => void;
 	isUpdating: boolean;
@@ -78,7 +78,7 @@ export function CartItemCard({
 				{!hideSelect && (
 					<Checkbox
 						checked={isSelected}
-						onChange={(e) => onSelectChange?.(item.variantId, e.target.checked)}
+						onChange={() => onSelectChange?.(item.id)}
 						disabled={isUpdating}
 						className="mt-1"
 					/>

@@ -81,6 +81,7 @@ function CheckoutContent({ cart }: { cart: Cart }) {
 		isFullyCoveredByCoins,
 		couponCode,
 		affiliateCode,
+		selectedCartItemIds,
 	} = useCheckoutStore();
 
 	const { user } = useAuth();
@@ -109,6 +110,7 @@ function CheckoutContent({ cart }: { cart: Cart }) {
 				gstDetailsId,
 				couponCode,
 				affiliateCode,
+				selectedCartItemIds,
 			}),
 		[
 			addressId,
@@ -117,6 +119,7 @@ function CheckoutContent({ cart }: { cart: Cart }) {
 			gstDetailsId,
 			couponCode,
 			affiliateCode,
+			selectedCartItemIds,
 		],
 	);
 

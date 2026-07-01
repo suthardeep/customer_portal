@@ -13,3 +13,9 @@ export const ADDRESS_TYPE_CONFIG: Record<string, { icon: IconName; label: string
   [AddressTypeEnum.WORK]: { icon: "Briefcase", label: "Work" },
   [AddressTypeEnum.OTHER]: { icon: "Location", label: "Other" },
 };
+
+/**
+ * Max distance (in meters) between a detected location and a saved address for
+ * them to be treated as the same place.
+ */
+export const ADDRESS_MATCH_THRESHOLD_METERS = 200;

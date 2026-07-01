@@ -2,6 +2,7 @@ import HorizontalScrollSection from "@/components/compound/HorizontalScrollSecti
 import QueryStateHandler from "@/components/compound/QueryStateHandler";
 import FallbackView from "@/components/empty-states/FallbackView";
 import { categoryQueries } from "@/features/categories/categoryQueries";
+import { CATEGORY_TREE_PARAMS } from "@/features/categories/constants";
 import { CategoryCard } from "@/features/categories/components/CategoryCard";
 import { CategoryDetailSkeleton } from "@/features/categories/components/skeletons/CategoryDetailSkeleton";
 import { ProductCard } from "@/features/products/components/ProductCard";
@@ -21,25 +22,28 @@ export const Route = createFileRoute("/_public/categories/$categoryId")({
   beforeLoad: async ({ search, params, context }) => {
     if (!search.subCategoryId) {
       const tree = await context.queryClient.ensureQueryData(
-        categoryQueries.tree({ parentId: params.categoryId }),
+        categoryQueries.tree(CATEGORY_TREE_PARAMS),
       );
-      if (tree.data.length > 0) {
+      const mainCategory = tree.data.find((c) => c.id === params.categoryId);
+      const firstSub = mainCategory?.children?.[0];
+      if (firstSub) {
         throw redirect({
           to: "/categories/$categoryId",
           params: { categoryId: params.categoryId },
-          search: { subCategoryId: tree.data[0].id },
+          search: { subCategoryId: firstSub.id },
           replace: true,
         });
       }
     }
   },
   loader: async ({ context, params }) => {
-    return await context.queryClient.ensureQueryData(
-      categoryQueries.tree({ parentId: params.categoryId }),
+    const tree = await context.queryClient.ensureQueryData(
+      categoryQueries.tree(CATEGORY_TREE_PARAMS),
     );
+    return tree.data.find((c) => c.id === params.categoryId) ?? null;
   },
   head: ({ loaderData, params }) => {
-    const category = loaderData?.data?.[0];
+    const category = loaderData;
     const name = category?.name ?? "Category";
     return {
       meta: buildMeta({
@@ -67,10 +71,9 @@ function CategoryDetailComponent() {
   const { categoryId } = Route.useParams();
   const { subCategoryId } = Route.useSearch();
 
-  const { data } = useSuspenseQuery(
-    categoryQueries.tree({ mainCategoryId: categoryId }),
-  );
-  const subCategories = data.data;
+  const { data } = useSuspenseQuery(categoryQueries.tree(CATEGORY_TREE_PARAMS));
+  const mainCategory = data.data.find((c) => c.id === categoryId);
+  const subCategories = mainCategory?.children ?? [];
 
   const selectedSub =
     subCategories.find((s) => s.id === subCategoryId) ?? subCategories[0];
@@ -93,12 +96,12 @@ function CategoryDetailComponent() {
     ),
   });
 
-  if (data?.meta?.totalRows === 0) {
+  if (subCategories.length === 0) {
     return (
       <FallbackView
         icon="ShoppingCart"
-        title="No products found"
-        subtitle="We couldn't find any products matching your selection."
+        title="No categories found"
+        subtitle="This category has no sub-categories yet."
       />
     );
   }
@@ -118,7 +121,7 @@ function CategoryDetailComponent() {
             >
               <CategoryCard
                 category={{ ...category, image: category.image ?? undefined }}
-                isSelected={category.id === subCategoryId}
+                isSelected={category.id === selectedSub?.id}
               />
             </Link>
           ))}

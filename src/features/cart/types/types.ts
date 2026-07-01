@@ -153,6 +153,7 @@ export interface CartSummaryParams {
 	cartSessionId?: string;
 	paymentMethod?: PaymentMethod;
 	gstDetailsId?: string;
+	selectedCartItemIds?: string[];
 }
 
 export interface CartSummaryResponse {

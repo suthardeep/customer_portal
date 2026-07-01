@@ -41,3 +41,25 @@ export type CreateAddressRequest = Pick<
 >;
 
 export type UpdateAddressRequest = CreateAddressRequest & { id: string };
+
+/** City/state resolved from a pincode lookup. */
+export interface PincodeLocation {
+  city: string;
+  state: string;
+}
+
+/** Shape of a single post office entry from the postalpincode.in API. */
+interface PostOffice {
+  Name: string;
+  Block: string;
+  District: string;
+  State: string;
+  Country: string;
+}
+
+/** Raw response array from https://api.postalpincode.in/pincode/{pincode} */
+export type PostalPincodeResponse = Array<{
+  Message: string;
+  Status: "Success" | "Error";
+  PostOffice: PostOffice[] | null;
+}>;

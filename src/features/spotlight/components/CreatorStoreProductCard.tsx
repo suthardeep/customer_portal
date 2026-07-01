@@ -41,7 +41,11 @@ export function CreatorStoreProductCard({
 						onClick={(e) => e.preventDefault()}
 					>
 						<ProductCardAddToCart
+							productId={product.productId}
 							variantId={product.variantId}
+							// Creator-store API doesn't expose hasVariants; always open
+							// the selector so multi-variant products aren't mis-added.
+							hasVariants
 							outOfStock={!product.inStock}
 							minOrderQuantity={product.minOrderQuantity}
 						/>

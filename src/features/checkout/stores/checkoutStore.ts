@@ -11,6 +11,9 @@ interface CheckoutState {
   couponCode: string | undefined;
   affiliateCode: string | undefined;
 
+  // Cart-item ids selected to check out. Empty array = nothing selected.
+  selectedCartItemIds: string[];
+
   // GST display info (set alongside gstDetailsId)
   savedGstDetails: SaveGstResponse | undefined;
 
@@ -26,6 +29,9 @@ interface CheckoutState {
   applyCoupon: (code: string) => void;
   removeCoupon: () => void;
   setAffiliateCode: (code: string) => void;
+  toggleSelectedItem: (id: string) => void;
+  setSelectedItems: (ids: string[]) => void;
+  clearSelectedItems: () => void;
   reset: () => void;
 }
 
@@ -35,6 +41,7 @@ const initialState = {
   gstDetailsId: undefined,
   couponCode: undefined,
   affiliateCode: undefined,
+  selectedCartItemIds: [],
   savedGstDetails: undefined,
   isFullyCoveredByCoins: false,
 };
@@ -66,12 +73,23 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
 
   setAffiliateCode: (code) => set({ affiliateCode: code }),
 
+  toggleSelectedItem: (id) =>
+    set((state) => ({
+      selectedCartItemIds: state.selectedCartItemIds.includes(id)
+        ? state.selectedCartItemIds.filter((itemId) => itemId !== id)
+        : [...state.selectedCartItemIds, id],
+    })),
+
+  setSelectedItems: (ids) => set({ selectedCartItemIds: ids }),
+
+  clearSelectedItems: () => set({ selectedCartItemIds: [] }),
+
   reset: () => set(initialState),
 }));
 
 export function buildCheckoutPayload(
   addressId: string,
-  state: Pick<CheckoutState, "paymentMethod" | "coinsToApply" | "gstDetailsId" | "couponCode" | "affiliateCode">,
+  state: Pick<CheckoutState, "paymentMethod" | "coinsToApply" | "gstDetailsId" | "couponCode" | "affiliateCode" | "selectedCartItemIds">,
 ): CheckoutPayload {
   return {
     addressId,
@@ -80,6 +98,9 @@ export function buildCheckoutPayload(
     ...(state.gstDetailsId !== undefined && { gstDetailsId: state.gstDetailsId }),
     ...(state.couponCode !== undefined && { couponCode: state.couponCode }),
     ...(state.affiliateCode !== undefined && { affiliateCode: state.affiliateCode }),
+    ...(state.selectedCartItemIds.length > 0 && {
+      selectedCartItemIds: state.selectedCartItemIds,
+    }),
   };
 }
 
