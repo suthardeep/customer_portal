@@ -7,8 +7,10 @@ import type { CartItem } from "../types/types";
  * same selection drives the cart summary and the final checkout session.
  *
  * Reconciliation rules:
- * - First load (store selection empty): select all current cart items.
+ * - First load (selection never initialized): select all current cart items.
+ * - User-cleared selection stays empty — it is never re-seeded.
  * - Items removed from the cart: prune their ids so counts stay accurate.
+ * - Cart emptied: reset initialization so a re-filled cart seeds all again.
  *
  * Selection keys on `CartItem.id` (cart-item id), which is what the
  * `selectedCartItemIds` API param expects.
@@ -17,6 +19,9 @@ export function useSelectedCartItems(cartItems: CartItem[]) {
 	const selectedCartItemIds = useCheckoutStore(
 		(state) => state.selectedCartItemIds,
 	);
+	const selectionInitialized = useCheckoutStore(
+		(state) => state.selectionInitialized,
+	);
 	const setSelectedItems = useCheckoutStore((state) => state.setSelectedItems);
 	const toggleSelectedItem = useCheckoutStore(
 		(state) => state.toggleSelectedItem,
@@ -24,6 +29,10 @@ export function useSelectedCartItems(cartItems: CartItem[]) {
 	const clearSelectedItems = useCheckoutStore(
 		(state) => state.clearSelectedItems,
 	);
+	const initializeSelection = useCheckoutStore(
+		(state) => state.initializeSelection,
+	);
+	const resetSelection = useCheckoutStore((state) => state.resetSelection);
 
 	const availableIds = useMemo(
 		() => cartItems.map((item) => item.id),
@@ -31,11 +40,17 @@ export function useSelectedCartItems(cartItems: CartItem[]) {
 	);
 
 	useEffect(() => {
-		if (availableIds.length === 0) return;
+		if (availableIds.length === 0) {
+			// Cart emptied — clear selection and allow re-seeding when items return.
+			if (selectionInitialized) {
+				resetSelection();
+			}
+			return;
+		}
 
-		// Seed "all selected" the first time we know the cart.
-		if (selectedCartItemIds.length === 0) {
-			setSelectedItems(availableIds);
+		// Seed "all selected" only the first time we know the cart.
+		if (!selectionInitialized) {
+			initializeSelection(availableIds);
 			return;
 		}
 
@@ -45,7 +60,14 @@ export function useSelectedCartItems(cartItems: CartItem[]) {
 		if (pruned.length !== selectedCartItemIds.length) {
 			setSelectedItems(pruned);
 		}
-	}, [availableIds, selectedCartItemIds, setSelectedItems]);
+	}, [
+		availableIds,
+		selectedCartItemIds,
+		selectionInitialized,
+		setSelectedItems,
+		initializeSelection,
+		resetSelection,
+	]);
 
 	const selectedIds = useMemo(
 		() => new Set(selectedCartItemIds),

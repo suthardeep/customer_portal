@@ -25,6 +25,7 @@ export function BioSocialFields({ isPending }: BioSocialFieldsProps) {
           error={errors.instagramUrl?.message}
           disabled={isPending}
           fullWidth
+          required
         />
 
         <Input
@@ -35,6 +36,7 @@ export function BioSocialFields({ isPending }: BioSocialFieldsProps) {
           error={errors.youtubeUrl?.message}
           disabled={isPending}
           fullWidth
+          required
         />
       </div>
     </div>

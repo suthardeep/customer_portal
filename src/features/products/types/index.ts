@@ -30,7 +30,7 @@ export interface ProductQueryParams extends GeneralQueryParams {
   color?: string;
   targetAge?: string;
   targetGender?: "Unisex" | "Male" | "Female";
-  sortBy?: "price" | "rating" | "popularity" | "newest";
+  sortBy?: "NEWEST" | "PRICE_ASC" | "PRICE_DESC" | "RATING" | "POPULARITY";
   source?: string;
   filters?: string;
 }
@@ -62,15 +62,8 @@ export interface AutocompleteParams {
   q: string;
 }
 
-export type AutocompleteSuggestion = {
-  type: string;
-  keyword: string;
-  productImage: string;
-  productId: string;
-};
-
 export type AutocompleteSuggestionsResponse = BaseApiResponse<{
-  suggestions: AutocompleteSuggestion[];
+  suggestions: string[];
 }>;
 
 export type SearchSuggestion = {

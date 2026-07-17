@@ -1,7 +1,7 @@
 import { Icon } from "@/components/base/icon";
 import { productQueries } from "@/features/products/productQueries";
 import useDebounce from "@/hooks/useDebounce";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 interface SearchAutocompleteProps {
@@ -14,15 +14,15 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
   query,
 }) => {
   const navigate = useNavigate();
-  const debouncedQuery = useDebounce(query, 400);
+  const debouncedQuery = useDebounce(query, 100);
 
-  const { data } = useQuery({
+  const { data, isPlaceholderData } = useQuery({
     ...productQueries.autocomplete({ q: debouncedQuery }),
     enabled: debouncedQuery.trim().length > 0,
+    placeholderData: keepPreviousData,
   });
 
   const suggestions = data?.data?.suggestions ?? [];
-  console.log(data);
 
   if (!suggestions.length) return null;
 
@@ -32,16 +32,20 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div
+      className={`flex flex-col gap-1 transition-opacity ${
+        isPlaceholderData ? "opacity-50" : ""
+      }`}
+    >
       {suggestions.map((suggestion) => (
         <button
-          key={suggestion.productId}
+          key={suggestion}
           type="button"
-          onClick={() => handleSelect(suggestion.keyword)}
+          onClick={() => handleSelect(suggestion)}
           className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-n-100 text-left transition-colors"
         >
           <Icon name="Search" size="sm" className="text-n-500 shrink-0" />
-          <span className="text-n-900">{suggestion.keyword}</span>
+          <span className="text-n-900">{suggestion}</span>
         </button>
       ))}
     </div>

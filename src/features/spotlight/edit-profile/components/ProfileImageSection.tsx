@@ -31,6 +31,10 @@ export function ProfileImageSection({ mode }: ProfileImageSectionProps) {
 
   return (
     <>
+      <p className="text-sm font-medium text-n-800 mb-2">
+        Profile Photo
+        <sup className="ml-0.5">*</sup>
+      </p>
       <div className="relative w-fit mb-6">
         <div className="size-32 rounded-full overflow-hidden">
           <Image

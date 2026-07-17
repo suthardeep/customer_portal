@@ -2,10 +2,21 @@ import type { DeliveryInfo, ProductFeature, ProductOffer } from "./types/types";
 import type { ProductQueryParams } from "./types";
 
 export const TRENDING_PRODUCTS_PARAMS: ProductQueryParams = {
-  sortBy: "popularity",
+  sortBy: "POPULARITY",
   pageSize: 6,
   currentPage: 1,
 };
+
+export const PRODUCT_SORT_OPTIONS: {
+  value: NonNullable<ProductQueryParams["sortBy"]>;
+  label: string;
+}[] = [
+  { value: "POPULARITY", label: "Popularity" },
+  { value: "NEWEST", label: "Newest" },
+  { value: "PRICE_ASC", label: "Price: Low to High" },
+  { value: "PRICE_DESC", label: "Price: High to Low" },
+  { value: "RATING", label: "Rating" },
+];
 
 export const DEFAULT_PRODUCT_IMAGE =
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&h=400&q=80";

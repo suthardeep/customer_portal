@@ -3,9 +3,11 @@ import FallbackView from "@/components/empty-states/FallbackView";
 import { FiltersPanel } from "@/components/shared/filters/FiltersPanel";
 import { FiltersSheet } from "@/components/shared/filters/FiltersSheet";
 import { ProductCard } from "@/features/products/components/ProductCard";
+import { ProductSortDropdown } from "@/features/products/components/ProductSortDropdown";
 import { ProductListSkeleton } from "@/features/products/components/skeletons/ProductListSkeleton";
 import { productQueries } from "@/features/products/productQueries";
 import { productsListPageSearch } from "@/features/products/productsSearchSchema";
+import type { ProductQueryParams } from "@/features/products/types";
 import { getProductsPageLabel } from "@/features/products/utils";
 import { APP_NAME, APP_URL, buildMeta } from "@/utils/seo";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -61,7 +63,7 @@ function ProductsPage() {
   const handleApplyFilters = (selected: string[]) => {
     navigate({
       to: "/products",
-      search: { search: search.search, filters: selected.join(",") },
+      search: (prev) => ({ ...prev, filters: selected.join(",") }),
       replace: true,
     });
   };
@@ -71,6 +73,14 @@ function ProductsPage() {
       ? selectedFilters.filter((s) => s !== slug)
       : [...selectedFilters, slug];
     handleApplyFilters(next);
+  };
+
+  const handleSortChange = (sortBy: ProductQueryParams["sortBy"]) => {
+    navigate({
+      to: "/products",
+      search: (prev) => ({ ...prev, sortBy }),
+      replace: true,
+    });
   };
 
   if (!isLoading && products.length === 0) {
@@ -101,23 +111,31 @@ function ProductsPage() {
         )}
 
         <div className="flex-1 min-w-0">
-          <div className="flex gap-2 justify-between items-center mb-4">
+          <div className="flex flex-col gap-3 mb-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2">
             <p className="text-n-800">
               Showing all products from{" "}
               <span className="text-n-900 font-semibold text-sm">
                 {getProductsPageLabel(search)}
               </span>
             </p>
-            {availableFilters && availableFilters.optionGroups.length > 0 && (
-              <div className="lg:hidden">
-                <FiltersSheet
-                  filters={availableFilters}
-                  selectedOptionValues={selectedFilters}
-                  onApply={handleApplyFilters}
-                  isFetching={isLoading}
+            <div className="flex items-center gap-2">
+              {availableFilters && availableFilters.optionGroups.length > 0 && (
+                <div className="flex-1 lg:hidden">
+                  <FiltersSheet
+                    filters={availableFilters}
+                    selectedOptionValues={selectedFilters}
+                    onApply={handleApplyFilters}
+                    isFetching={isLoading}
+                  />
+                </div>
+              )}
+              <div className="flex-1 lg:flex-none">
+                <ProductSortDropdown
+                  value={search.sortBy}
+                  onChange={handleSortChange}
                 />
               </div>
-            )}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">

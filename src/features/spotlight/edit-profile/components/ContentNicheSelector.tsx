@@ -16,7 +16,10 @@ export function ContentNicheSelector({ isPending }: ContentNicheSelectorProps) {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium text-n-800">Content Niche</p>
+      <p className="text-sm font-medium text-n-800">
+        Content Niche
+        <sup className="ml-0.5">*</sup>
+      </p>
       <Controller
         name="niches"
         control={control}

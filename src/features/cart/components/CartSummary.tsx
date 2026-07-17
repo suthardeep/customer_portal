@@ -117,32 +117,36 @@ export function CartSummary({
     <>
       <div className="flex flex-col overflow-hidden rounded-xl border border-n-400 bg-n-50">
         {/* Apply Coupons section */}
-        {validSummary && (
+        {/* Remove row is decoupled from validSummary: a manual coupon that
+            conflicts with an auto-applied offer makes the summary error, and the
+            user must still be able to remove the coupon that caused it. The Apply
+            opener stays gated behind validSummary. */}
+        {couponCode ? (
           <div className="p-4">
-            {couponCode ? (
-              <div className="mt-3 flex items-center justify-between rounded-xl border border-success-300 bg-success-50 px-3 py-2.5">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="size-5 shrink-0">
-                    <Image
-                      src="/discount-3d-badge.png"
-                      alt="discount-3d-badge-alt"
-                    />
-                  </div>
-                  <p className="text-sm font-medium text-success-800 mr-auto truncate">
-                    <span className="font-mono font-semibold">
-                      {couponCode}
-                    </span>{" "}
-                    applied
-                  </p>
+            <div className="mt-3 flex items-center justify-between rounded-xl border border-success-300 bg-success-50 px-3 py-2.5">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="size-5 shrink-0">
+                  <Image
+                    src="/discount-3d-badge.png"
+                    alt="discount-3d-badge-alt"
+                  />
                 </div>
-                <button
-                  onClick={removeCoupon}
-                  className="shrink-0 text-xs font-semibold text-danger-600 hover:underline ml-2"
-                >
-                  Remove
-                </button>
+                <p className="text-sm font-medium text-success-800 mr-auto truncate">
+                  <span className="font-mono font-semibold">{couponCode}</span>{" "}
+                  applied
+                </p>
               </div>
-            ) : (
+              <button
+                onClick={removeCoupon}
+                className="shrink-0 text-xs font-semibold text-danger-600 hover:underline ml-2"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ) : (
+          validSummary && (
+            <div className="p-4">
               <div
                 onClick={applyCouponToggle.open}
                 className="mt-3 flex items-center gap-2 w-full cursor-pointer rounded-xl border border-n-400 bg-n-200 px-3 py-2.5"
@@ -160,8 +164,8 @@ export function CartSummary({
                   View All
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )
         )}
 
         <hr className="border-n-200" />

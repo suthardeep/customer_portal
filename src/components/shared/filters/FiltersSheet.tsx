@@ -64,10 +64,10 @@ export function FiltersSheet({
       <button
         type="button"
         onClick={handleOpen}
-        className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium cursor-pointer transition-colors ${
+        className={`relative flex w-full items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium cursor-pointer transition-colors ${
           isFetching
             ? "border-p-300 bg-p-50 text-p-700"
-            : "border-n-200 bg-white text-n-900 hover:bg-n-300"
+            : "border-n-700 bg-white text-n-900 hover:border-n-900"
         }`}
       >
         <Icon name="Filter" size="sm" />
@@ -95,7 +95,6 @@ export function FiltersSheet({
         isOpen={isOpen}
         onClose={close}
         title="Filters"
-        direction="right"
         size="sm"
         footer={
           <div className="flex gap-3">
@@ -165,7 +164,7 @@ function OptionGroupSection({
               className={`rounded-full border px-3 py-1 text-sm transition-colors cursor-pointer ${
                 isSelected
                   ? "border-p-500 bg-p-50 font-medium text-p-600"
-                  : "border-n-200 bg-white text-n-900 hover:bg-n-300"
+                  : "border-n-400 bg-white text-n-700 hover:border-n-600 hover:bg-n-100"
               }`}
             >
               {v.value}

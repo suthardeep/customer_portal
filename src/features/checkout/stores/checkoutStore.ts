@@ -14,6 +14,10 @@ interface CheckoutState {
   // Cart-item ids selected to check out. Empty array = nothing selected.
   selectedCartItemIds: string[];
 
+  // Whether the selection has been seeded from the cart. Distinguishes
+  // "never initialized" (seed all on first load) from "user cleared to zero".
+  selectionInitialized: boolean;
+
   // GST display info (set alongside gstDetailsId)
   savedGstDetails: SaveGstResponse | undefined;
 
@@ -32,6 +36,8 @@ interface CheckoutState {
   toggleSelectedItem: (id: string) => void;
   setSelectedItems: (ids: string[]) => void;
   clearSelectedItems: () => void;
+  initializeSelection: (ids: string[]) => void;
+  resetSelection: () => void;
   reset: () => void;
 }
 
@@ -42,6 +48,7 @@ const initialState = {
   couponCode: undefined,
   affiliateCode: undefined,
   selectedCartItemIds: [],
+  selectionInitialized: false,
   savedGstDetails: undefined,
   isFullyCoveredByCoins: false,
 };
@@ -83,6 +90,12 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
   setSelectedItems: (ids) => set({ selectedCartItemIds: ids }),
 
   clearSelectedItems: () => set({ selectedCartItemIds: [] }),
+
+  initializeSelection: (ids) =>
+    set({ selectedCartItemIds: ids, selectionInitialized: true }),
+
+  resetSelection: () =>
+    set({ selectedCartItemIds: [], selectionInitialized: false }),
 
   reset: () => set(initialState),
 }));

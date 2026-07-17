@@ -24,6 +24,7 @@ export function NameEmailFields({ isPending }: NameEmailFieldsProps) {
         error={errors.name?.message}
         disabled={isPending}
         fullWidth
+        required
       />
       <Input
         label="Mobile Number"
@@ -41,6 +42,7 @@ export function NameEmailFields({ isPending }: NameEmailFieldsProps) {
         error={errors.email?.message}
         disabled={isPending}
         fullWidth
+        required
       />
     </>
   );
